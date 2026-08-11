@@ -222,7 +222,7 @@ a{color:var(--accent)}
 
 .lbl{font-size:10.5px; text-transform:uppercase; letter-spacing:.1em; color:var(--faint); font-weight:700}
 .sect-h{display:flex; align-items:flex-end; gap:12px; margin:0 0 14px; flex-wrap:wrap}
-.sect-h > div:first-child{min-width:min(100%, 280px); flex:1 1 auto}
+.sect-h > div:first-child{flex:1 1 300px; min-width:0}
 .sect-h h2{font-size:19px}
 .sect-h p{font-size:12.8px; color:var(--muted)}
 
@@ -576,6 +576,10 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V9m5 11V4m5 16v-7m5 7V7" stroke-linecap="round"/></svg>
         Pagu &amp; DIPA
       </button>
+      <button class="navitem" data-view="sbm">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h9l4 4v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v5h5M9 13h6M9 17h4" stroke-linecap="round"/></svg>
+        Standar Biaya
+      </button>
     </nav>
 
     <nav class="navgroup">
@@ -639,6 +643,7 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
           <option value="pimpinan">Pimpinan</option>
           <option value="kabag">Kepala Bagian</option>
           <option value="bendahara">Bendahara</option>
+          <option value="admin">Admin Anggaran</option>
         </select>
       </div>
 
@@ -1094,7 +1099,7 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
                 <div class="seg" role="group">
                   <button aria-pressed="false">Dalam kota</button><button aria-pressed="true">Luar kota</button><button aria-pressed="false">Luar negeri</button>
                 </div>
-                <span class="hint">Jenis perjalanan menentukan akun belanja yang boleh dipakai.</span>
+                <span class="hint">Jenis perjalanan menentukan akun belanja dan kelompok tarif SBM yang dipakai.</span>
               </div>
               <div class="field">
                 <label for="f-keg">Kegiatan pada DIPA <span class="req">*</span></label>
@@ -1112,6 +1117,7 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
                 <h3 style="font-size:13.6px">Pembebanan anggaran</h3>
                 <span class="spacer"></span>
                 <span class="chip seal">SP DIPA-025.03.1.426871/2026 · rev. 03</span>
+                <span class="chip seal">SBM TA 2026</span>
               </header>
               <div class="body" style="padding:16px">
                 <div class="grid" style="grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px">
@@ -1342,56 +1348,96 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
         <!-- 05 RINCIAN UANG MUKA -->
         <div class="panel" data-panel="5">
           <div class="body stack" style="gap:16px">
+            <div class="row" style="gap:9px">
+              <span class="chip seal">SBM TA 2026 · PMK 49/PMK.02/2025</span>
+              <span class="chip info"><i class="bullet"></i>Seluruh komponen dibebankan pada akun 524111</span>
+              <span class="chip ok"><i class="bullet"></i>Dibekukan pada berkas ini sejak 8 Agu 2026</span>
+              <span class="spacer"></span>
+              <button class="btn sm" data-goto="sbm">Buka daftar tarif</button>
+            </div>
+
             <div class="note info">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
-              <div><b>Tarif dibandingkan otomatis dengan Standar Biaya Masukan (SBM) Prov. Sulawesi Selatan.</b> Baris yang melampaui batas ditandai merah dan wajib diberi alasan sebelum bisa dikirim. Seluruh komponen dibebankan pada akun DIPA yang disetujui pimpinan dan tidak dapat diubah di tahap ini.</div>
+              <div><b>Tiap baris dibandingkan seketika dengan SBM Prov. Sulawesi Selatan yang berlaku.</b> Naikkan harga satuan mana pun di atas batas untuk melihat baris berubah merah, kolom alasan terbuka, dan tombol pengajuan terkunci sampai alasannya diisi.</div>
             </div>
 
             <div class="tbl-wrap">
-              <table class="tbl" id="tblRencana">
+              <table class="tbl" id="tblRencana" style="min-width:640px">
                 <thead>
-                  <tr><th style="width:30%">Komponen biaya</th><th>Akun</th><th class="r">Volume</th><th>Satuan</th><th class="r">Harga satuan</th><th class="r">Jumlah</th><th>Terhadap SBM</th></tr>
+                  <tr><th style="width:30%">Komponen biaya</th><th class="r">Volume</th><th>Satuan</th><th class="r">Harga satuan</th><th class="r">Batas SBM</th><th class="r">Jumlah</th></tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <tr class="brs" data-sbm="3900000" data-ket="Batas tiket ekonomi PP rute CGK–UPG">
                     <td>Tiket pesawat CGK–UPG pulang pergi<div class="sub">3 pelaksana · kelas ekonomi</div></td>
-                    <td class="num" style="color:var(--accent); font-size:12px">524111</td>
-                    <td class="r"><input class="inp num-inp sm" data-vol value="1" style="width:70px; padding:4px 8px"></td>
+                    <td class="r"><input class="inp num-inp" data-vol value="1" style="width:56px; padding:4px 7px" aria-label="Volume Tiket pesawat CGK–UPG pulang pergi"></td>
                     <td>paket</td>
-                    <td class="r"><input class="inp num-inp" data-harga value="3800000" style="width:120px; padding:4px 8px"></td>
-                    <td class="r num" data-jml>Rp 3.800.000</td>
-                    <td><span class="chip ok"><i class="bullet"></i>Sesuai</span></td>
+                    <td class="r"><input class="inp num-inp" data-harga value="3800000" style="width:104px; padding:4px 7px" aria-label="Harga satuan Tiket pesawat CGK–UPG pulang pergi"></td>
+                    <td class="r"><div class="num" style="color:var(--muted)">Rp 3.900.000</div><div data-status style="margin-top:4px"></div></td>
+                    <td class="r num" data-jml></td>
                   </tr>
-                  <tr>
-                    <td>Penginapan<div class="sub">3 malam · tarif maks. SBM Rp 1.000.000</div></td>
-                    <td class="num" style="color:var(--accent); font-size:12px">524111</td>
-                    <td class="r"><input class="inp num-inp" data-vol value="3" style="width:70px; padding:4px 8px"></td>
+                  <tr class="als" hidden>
+                    <td colspan="6">
+                      <div class="row" style="gap:10px; align-items:center">
+                        <span class="chip crit"><i class="bullet"></i>Wajib diisi</span>
+                        <label for="als0" style="font-size:12.4px; font-weight:600; white-space:nowrap">Alasan melampaui SBM</label>
+                        <input class="inp" id="als0" data-alasan placeholder="Contoh: tarif hotel naik karena bersamaan dengan agenda nasional; tidak tersedia kamar pada tarif SBM." style="flex:1; min-width:200px">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="brs" data-sbm="1000000" data-ket="Penginapan Gol. III Prov. Sulawesi Selatan">
+                    <td>Penginapan<div class="sub">3 malam · Prov. Sulawesi Selatan</div></td>
+                    <td class="r"><input class="inp num-inp" data-vol value="3" style="width:56px; padding:4px 7px" aria-label="Volume Penginapan"></td>
                     <td>malam</td>
-                    <td class="r"><input class="inp num-inp" data-harga value="1000000" style="width:120px; padding:4px 8px"></td>
-                    <td class="r num" data-jml>Rp 3.000.000</td>
-                    <td><span class="chip ok"><i class="bullet"></i>Sesuai</span></td>
+                    <td class="r"><input class="inp num-inp" data-harga value="1000000" style="width:104px; padding:4px 7px" aria-label="Harga satuan Penginapan"></td>
+                    <td class="r"><div class="num" style="color:var(--muted)">Rp 1.000.000</div><div data-status style="margin-top:4px"></div></td>
+                    <td class="r num" data-jml></td>
                   </tr>
-                  <tr>
-                    <td>Uang harian<div class="sub">4 hari · Rp 430.000/hari (Sulsel)</div></td>
-                    <td class="num" style="color:var(--accent); font-size:12px">524111</td>
-                    <td class="r"><input class="inp num-inp" data-vol value="4" style="width:70px; padding:4px 8px"></td>
+                  <tr class="als" hidden>
+                    <td colspan="6">
+                      <div class="row" style="gap:10px; align-items:center">
+                        <span class="chip crit"><i class="bullet"></i>Wajib diisi</span>
+                        <label for="als1" style="font-size:12.4px; font-weight:600; white-space:nowrap">Alasan melampaui SBM</label>
+                        <input class="inp" id="als1" data-alasan placeholder="Contoh: tarif hotel naik karena bersamaan dengan agenda nasional; tidak tersedia kamar pada tarif SBM." style="flex:1; min-width:200px">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="brs" data-sbm="430000" data-ket="Uang harian Prov. Sulawesi Selatan">
+                    <td>Uang harian<div class="sub">4 hari · Prov. Sulawesi Selatan</div></td>
+                    <td class="r"><input class="inp num-inp" data-vol value="4" style="width:56px; padding:4px 7px" aria-label="Volume Uang harian"></td>
                     <td>hari</td>
-                    <td class="r"><input class="inp num-inp" data-harga value="430000" style="width:120px; padding:4px 8px"></td>
-                    <td class="r num" data-jml>Rp 1.720.000</td>
-                    <td><span class="chip ok"><i class="bullet"></i>Sesuai</span></td>
+                    <td class="r"><input class="inp num-inp" data-harga value="430000" style="width:104px; padding:4px 7px" aria-label="Harga satuan Uang harian"></td>
+                    <td class="r"><div class="num" style="color:var(--muted)">Rp 430.000</div><div data-status style="margin-top:4px"></div></td>
+                    <td class="r num" data-jml></td>
                   </tr>
-                  <tr>
+                  <tr class="als" hidden>
+                    <td colspan="6">
+                      <div class="row" style="gap:10px; align-items:center">
+                        <span class="chip crit"><i class="bullet"></i>Wajib diisi</span>
+                        <label for="als2" style="font-size:12.4px; font-weight:600; white-space:nowrap">Alasan melampaui SBM</label>
+                        <input class="inp" id="als2" data-alasan placeholder="Contoh: tarif hotel naik karena bersamaan dengan agenda nasional; tidak tersedia kamar pada tarif SBM." style="flex:1; min-width:200px">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="brs" data-sbm="250000" data-ket="Transpor lokal Prov. Sulawesi Selatan">
                     <td>Transpor lokal / taksi bandara<div class="sub">keberangkatan &amp; kepulangan</div></td>
-                    <td class="num" style="color:var(--accent); font-size:12px">524111</td>
-                    <td class="r"><input class="inp num-inp" data-vol value="2" style="width:70px; padding:4px 8px"></td>
+                    <td class="r"><input class="inp num-inp" data-vol value="2" style="width:56px; padding:4px 7px" aria-label="Volume Transpor lokal / taksi bandara"></td>
                     <td>kali</td>
-                    <td class="r"><input class="inp num-inp" data-harga value="250000" style="width:120px; padding:4px 8px"></td>
-                    <td class="r num" data-jml>Rp 500.000</td>
-                    <td><span class="chip ok"><i class="bullet"></i>Sesuai</span></td>
+                    <td class="r"><input class="inp num-inp" data-harga value="250000" style="width:104px; padding:4px 7px" aria-label="Harga satuan Transpor lokal / taksi bandara"></td>
+                    <td class="r"><div class="num" style="color:var(--muted)">Rp 250.000</div><div data-status style="margin-top:4px"></div></td>
+                    <td class="r num" data-jml></td>
+                  </tr>
+                  <tr class="als" hidden>
+                    <td colspan="6">
+                      <div class="row" style="gap:10px; align-items:center">
+                        <span class="chip crit"><i class="bullet"></i>Wajib diisi</span>
+                        <label for="als3" style="font-size:12.4px; font-weight:600; white-space:nowrap">Alasan melampaui SBM</label>
+                        <input class="inp" id="als3" data-alasan placeholder="Contoh: tarif hotel naik karena bersamaan dengan agenda nasional; tidak tersedia kamar pada tarif SBM." style="flex:1; min-width:200px">
+                      </div>
+                    </td>
                   </tr>
                 </tbody>
                 <tfoot>
-                  <tr><td colspan="5">Total rencana biaya</td><td class="r num" id="totRencana">Rp 9.020.000</td><td></td></tr>
+                  <tr><td colspan="5">Total rencana biaya</td><td class="r num" id="totRencana">Rp 9.020.000</td><td data-status-total></td></tr>
                 </tfoot>
               </table>
             </div>
@@ -1418,7 +1464,7 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
             </div>
           </div>
           <div class="foot">
-            <button class="btn primary" data-roles="pemohon,kabag" data-act="Rincian uang muka dikirim ke Bendahara">Ajukan ke Bendahara</button>
+            <button class="btn primary" id="btnAjukanSbm" data-roles="pemohon,kabag" data-act="Rincian uang muka dikirim ke Bendahara">Ajukan ke Bendahara</button>
             <button class="btn">Simpan</button>
             <button class="btn ghost">Salin dari perdin sebelumnya</button>
           </div>
@@ -1514,6 +1560,11 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
             <div class="note warn">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>
               <div><b>Tenggat SPJ: 26 Agustus 2026 — 5 hari kerja setelah kembali.</b> Lewat tenggat, pengajuan perdin baru atas nama pelaksana ini akan tertahan otomatis.</div>
+            </div>
+
+            <div class="note info">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+              <div><b>Realisasi diuji dengan SBM TA 2026 yang sama seperti rencana.</b> Uang harian bersifat lumpsum dan tidak boleh melebihi tarif; penginapan dan transpor dibayar sesuai bukti riil sampai batas SBM. Kelebihan di atas batas menjadi beban pribadi pelaksana, kecuali sudah beralasan dan disetujui Kepala Bagian pada tahap 05.</div>
             </div>
 
             <div class="tbl-wrap">
@@ -2010,6 +2061,104 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
 </section>
 
 <!-- ===================================================================
+     TAMPILAN — STANDAR BIAYA MASUKAN (SBM)
+     =================================================================== -->
+<section class="view" id="v-sbm">
+  <div class="sect-h">
+    <div><h2>Standar Biaya Masukan</h2><p>Data induk tarif. Diperbarui admin setiap tahun anggaran; seluruh rincian perdin mengacu ke versi yang berlaku.</p></div>
+    <div class="spacer"></div>
+    <button class="btn" data-roles="admin">Unduh templat XLSX</button>
+    <button class="btn primary" data-roles="admin" data-act="Berkas SBM tahun baru diunggah">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 16V4m0 0L8 8m4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 16v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3"/></svg>
+      Unggah SBM tahun baru
+    </button>
+  </div>
+
+  <div class="stack">
+    <div class="dipahead">
+      <div style="width:40px; height:40px; flex:none; border-radius:9px; border:1px solid var(--brass-line); display:grid; place-items:center; color:var(--brass)">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l4 4v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v5h5M9 13h6M9 17h4" stroke-linecap="round"/></svg>
+      </div>
+      <div style="min-width:0">
+        <div class="no">SBM Tahun Anggaran 2026</div>
+        <div class="sub">Dasar: PMK No. 49/PMK.02/2025 tentang Standar Biaya Masukan TA 2026 · berlaku sejak 1 Januari 2026</div>
+      </div>
+      <span class="spacer"></span>
+      <div style="text-align:right">
+        <span class="chip ok"><i class="bullet"></i>Versi berlaku</span>
+        <div class="sub" style="margin-top:4px">Diunggah Fitri Handayani (Admin Anggaran) · 12 Des 2025</div>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>
+      <div><b>SBM Tahun Anggaran 2027 belum diunggah.</b> Tenggat 31 Desember 2026. Bila terlewat, pengajuan perdin bertanggal 2027 tertahan karena tidak ada tarif acuan yang berlaku.</div>
+    </div>
+
+    <div class="card">
+      <header>
+        <div><h3>Daftar tarif</h3><p class="sub">Kolom pembanding memperlihatkan perubahan terhadap tahun anggaran sebelumnya.</p></div>
+        <span class="spacer"></span>
+        <div class="seg" id="segSbm" role="group" aria-label="Kategori tarif"></div>
+      </header>
+      <div class="tbl-wrap">
+        <table class="tbl" id="tblSbm" style="min-width:720px">
+          <thead>
+            <tr><th id="sbmKol">Uraian</th><th>Satuan</th><th class="r">Tarif TA 2026</th><th class="r">Tarif TA 2025</th><th class="r">Perubahan</th><th style="width:72px"></th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="foot">
+        <button class="btn sm" data-roles="admin">+ Tambah tarif</button>
+        <button class="btn sm" data-roles="admin">Impor dari XLSX</button>
+        <span class="spacer"></span>
+        <span style="font-size:12.3px; color:var(--muted)" id="sbmHitung"></span>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <header><h3>Riwayat versi SBM</h3><p class="sub">Satu versi berlaku pada satu waktu. Versi lama tidak dihapus — berkas lama tetap bisa dibaca dengan tarif yang dipakainya.</p></header>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th>Versi</th><th>Dasar hukum</th><th>Diunggah oleh</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td class="num">TA 2027</td><td>—</td><td>—</td><td><span class="chip warn"><i class="bullet"></i>Belum diunggah</span></td></tr>
+              <tr><td class="num">TA 2026</td><td>PMK 49/PMK.02/2025</td><td>Fitri Handayani</td><td><span class="chip ok"><i class="bullet"></i>Berlaku</span></td></tr>
+              <tr><td class="num">TA 2025</td><td>PMK 54/PMK.02/2024</td><td>Fitri Handayani</td><td><span class="chip mute">Arsip</span></td></tr>
+              <tr><td class="num">TA 2024</td><td>PMK 49/PMK.02/2023</td><td>Rahmat Hidayat</td><td><span class="chip mute">Arsip</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <header><h3>Aturan pemberlakuan</h3><p class="sub">Yang menentukan versi mana yang dipakai sebuah berkas.</p></header>
+        <div class="body stack" style="gap:12px">
+          <div class="note info">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+            <div><b>Berkas mengambil SBM yang berlaku pada tanggal berangkat</b>, bukan tanggal pengajuan. Perjalanan 28 Des 2026–3 Jan 2027 memakai SBM TA 2026 untuk seluruh harinya.</div>
+          </div>
+          <div class="note ok">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 13 4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div><b>Versi dibekukan saat Surat Tugas terbit.</b> Pembaruan SBM setelah itu tidak mengubah rincian yang sudah disetujui — auditor melihat tarif yang benar-benar berlaku saat keputusan diambil.</div>
+          </div>
+          <div class="note warn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 9v4m0 4h.01M10.3 3.9 2.6 17.4A2 2 0 0 0 4.3 20.4h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" stroke-linecap="round"/></svg>
+            <div><b>Berkas yang masih draf ikut versi terbaru.</b> Saat SBM baru diberlakukan, sistem menandai draf yang tarifnya menjadi tidak sesuai dan memberi tahu pemohonnya — 4 berkas terdampak pada pemberlakuan TA 2026.</div>
+          </div>
+          <div class="note info">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+            <div><b>Melebihi SBM bukan berarti terlarang.</b> Baris yang melampaui batas wajib diberi alasan tertulis dan disetujui Kepala Bagian; alasan ikut tercetak pada kertas kerja rincian biaya.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================
      TAMPILAN 7 — ALUR & PERAN
      =================================================================== -->
 <section class="view" id="v-alur">
@@ -2043,8 +2192,9 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
       </div>
 
       <div class="card">
-        <header><h3>Tujuh keputusan desain</h3><p class="sub">Alasan di balik bentuk antarmuka ini.</p></header>
+        <header><h3>Delapan keputusan desain</h3><p class="sub">Alasan di balik bentuk antarmuka ini.</p></header>
         <div class="body stack" style="gap:13px">
+          <div><b style="font-size:13px">SBM adalah data induk, bukan angka hafalan</b><p style="font-size:12.6px; color:var(--muted)">Tarif diperbarui admin sekali setahun di satu tempat, lalu dipakai ulang oleh setiap rincian. Versinya dibekukan saat Surat Tugas terbit agar berkas lama tidak berubah ketika tarif baru berlaku.</p></div>
           <div><b style="font-size:13px">DIPA adalah gerbang, bukan lampiran</b><p style="font-size:12.6px; color:var(--muted)">Mata anggaran diisi di tahap 01 dan diuji di tahap 02. Pengajuan tanpa akun yang sah tidak bisa dikirim, dan persetujuan terkunci bila sisa efektif tidak cukup.</p></div>
           <div><b style="font-size:13px">Rel 12 tahap sebagai tulang punggung</b><p style="font-size:12.6px; color:var(--muted)">Semua orang melihat posisi berkas yang sama. Penomoran dipakai karena ini memang urutan wajib, bukan hiasan.</p></div>
           <div><b style="font-size:13px">Uang selalu ditampilkan berpasangan</b><p style="font-size:12.6px; color:var(--muted)">Rencana ↔ realisasi, uang muka ↔ selisih. Angka tunggal tanpa pembanding memicu salah tafsir.</p></div>
@@ -2211,7 +2361,7 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
 
   /* ---------- Navigasi tampilan ---------- */
   const JUDUL = {dashboard:'Beranda', daftar:'Daftar Perdin', kotakmasuk:'Kotak Persetujuan',
-                 dipa:'Pagu & DIPA', detail:'PD/2026/08/0147', dokumen:'Arsip Dokumen',
+                 dipa:'Pagu & DIPA', sbm:'Standar Biaya', detail:'PD/2026/08/0147', dokumen:'Arsip Dokumen',
                  keuangan:'Kas & Pembayaran', alur:'Alur & Peran', sistem:'Panduan Desain'};
 
   function bukaTampilan(v){
@@ -2228,12 +2378,13 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
   document.getElementById('burger').addEventListener('click',()=>document.getElementById('rail').classList.toggle('open'));
 
   /* ---------- Peran ---------- */
-  const NAMA_PERAN = {pemohon:'Pemohon', pimpinan:'Pimpinan', kabag:'Kepala Bagian', bendahara:'Bendahara'};
+  const NAMA_PERAN = {pemohon:'Pemohon', pimpinan:'Pimpinan', kabag:'Kepala Bagian', bendahara:'Bendahara', admin:'Admin Anggaran'};
   const IDENTITAS = {
     pemohon:  ['RM','Rizal Maulana','Amil — Div. Pengumpulan'],
     pimpinan: ['RH','Dr. H. Ridwan Hakim','Ketua Bidang Pengumpulan'],
     kabag:    ['IS','Drs. H. Imam Santoso','Kepala Bagian Umum'],
-    bendahara:['SM','Siti Marlina','Bendahara Pengeluaran']
+    bendahara:['SM','Siti Marlina','Bendahara Pengeluaran'],
+    admin:    ['FH','Fitri Handayani','Admin Anggaran & Referensi']
   };
   const sel = document.getElementById('roleSel');
 
@@ -2242,10 +2393,11 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
     document.querySelectorAll('[data-roles]').forEach(b=>{
       const boleh = b.dataset.roles.split(',').includes(r);
       const pagu = b.dataset.pagublokir === '1';
-      b.disabled = !boleh || pagu;
-      b.title = pagu
-        ? 'Terkunci: pagu DIPA tidak tersedia pada akun yang dibebankan'
-        : (boleh ? '' : 'Wewenang ' + b.dataset.roles.split(',').map(x=>NAMA_PERAN[x]).join(' atau '));
+      const sbm  = b.dataset.sbmblokir === '1';
+      b.disabled = !boleh || pagu || sbm;
+      b.title = pagu ? 'Terkunci: pagu DIPA tidak tersedia pada akun yang dibebankan'
+             : sbm  ? 'Terkunci: ada baris melampaui SBM yang belum diberi alasan'
+             : (boleh ? '' : 'Wewenang ' + b.dataset.roles.split(',').map(x=>NAMA_PERAN[x]).join(' atau '));
     });
     const id = IDENTITAS[r];
     document.querySelector('.railfoot .avatar').textContent = id[0];
@@ -2378,16 +2530,48 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
     }
   });
 
-  /* ---------- Tahap 05: rincian uang muka ---------- */
+  /* ---------- Tahap 05: rincian uang muka terhadap SBM ---------- */
   const tblR = document.getElementById('tblRencana');
   function hitungRencana(){
-    let total = 0;
-    tblR.querySelectorAll('tbody tr').forEach(tr=>{
+    let total = 0, lampaui = 0, tanpaAlasan = 0;
+    tblR.querySelectorAll('tr.brs').forEach(tr=>{
       const v = parseFloat(tr.querySelector('[data-vol]').value) || 0;
       const h = parseFloat(tr.querySelector('[data-harga]').value) || 0;
       const j = v*h; total += j;
       tr.querySelector('[data-jml]').textContent = rp(j);
+
+      const batas = parseFloat(tr.dataset.sbm);
+      const inp = tr.querySelector('[data-harga]');
+      const selisih = h - batas;
+      const st = tr.querySelector('[data-status]');
+      const brsAlasan = tr.nextElementSibling;
+      const isiAlasan = brsAlasan.querySelector('[data-alasan]');
+
+      if(selisih > 0){
+        lampaui++;
+        st.innerHTML = '<span class="chip crit"><i class="bullet"></i>Lebih ' + rp(selisih) + '</span>';
+        tr.style.background = 'var(--crit-tint)';
+        inp.style.borderColor = 'var(--crit)';
+        brsAlasan.hidden = false;
+        if(!isiAlasan.value.trim()) tanpaAlasan++;
+      } else {
+        st.innerHTML = selisih === 0
+          ? '<span class="chip ok"><i class="bullet"></i>Tepat batas</span>'
+          : '<span class="chip ok"><i class="bullet"></i>Sesuai</span>';
+        tr.style.background = '';
+        inp.style.borderColor = '';
+        brsAlasan.hidden = true;
+      }
     });
+
+    const tot = tblR.querySelector('[data-status-total]');
+    tot.innerHTML = lampaui === 0
+      ? '<span class="chip ok"><i class="bullet"></i>Seluruh baris sesuai SBM</span>'
+      : '<span class="chip crit"><i class="bullet"></i>' + lampaui + ' baris melampaui SBM</span>';
+
+    const btn = document.getElementById('btnAjukanSbm');
+    btn.dataset.sbmblokir = tanpaAlasan > 0 ? '1' : '0';
+    terapkanPeran();
     const pct = parseInt(document.getElementById('pctUM').value,10);
     const um = total*pct/100;
     document.getElementById('totRencana').textContent = rp(total);
@@ -2399,6 +2583,56 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
   }
   tblR.querySelectorAll('input').forEach(i=>i.addEventListener('input', hitungRencana));
   document.getElementById('pctUM').addEventListener('input', hitungRencana);
+
+  /* ---------- Data induk SBM — diperbarui admin tiap tahun anggaran ---------- */
+  const SBM = {
+    tahun:2026, dasar:'PMK No. 49/PMK.02/2025',
+    kategori:[
+      {id:'harian', nm:'Uang harian', kol:'Provinsi', satuan:'orang/hari', baris:[
+        ['DKI Jakarta',530000,530000], ['Jawa Barat',440000,430000], ['Jawa Timur',410000,410000],
+        ['Bali',480000,480000], ['Sulawesi Selatan',430000,420000], ['Papua',600000,580000]
+      ]},
+      {id:'inap', nm:'Penginapan', kol:'Provinsi — Gol. III / Eselon III–IV', satuan:'orang/malam', baris:[
+        ['DKI Jakarta',1170000,1130000], ['Jawa Barat',620000,600000], ['Jawa Timur',680000,660000],
+        ['Bali',1200000,1150000], ['Sulawesi Selatan',1000000,960000], ['Papua',1400000,1350000]
+      ]},
+      {id:'transpor', nm:'Transpor lokal', kol:'Provinsi', satuan:'orang/kali', baris:[
+        ['DKI Jakarta',300000,290000], ['Jawa Barat',225000,215000], ['Jawa Timur',240000,230000],
+        ['Bali',275000,260000], ['Sulawesi Selatan',250000,240000], ['Papua',380000,360000]
+      ]},
+      {id:'tiket', nm:'Tiket pesawat', kol:'Rute — kelas ekonomi pulang pergi', satuan:'orang/PP', baris:[
+        ['CGK–UPG Jakarta–Makassar',3900000,3740000], ['CGK–DPS Jakarta–Denpasar',2600000,2480000],
+        ['CGK–SUB Jakarta–Surabaya',2200000,2100000], ['CGK–DJJ Jakarta–Jayapura',7400000,7050000]
+      ]}
+    ]
+  };
+
+  (function(){
+    const seg = document.getElementById('segSbm');
+    seg.innerHTML = SBM.kategori.map((k,i)=>
+      '<button aria-pressed="'+(i===0)+'" data-kat="'+k.id+'">'+k.nm+'</button>').join('');
+
+    function gambar(id){
+      const k = SBM.kategori.find(x=>x.id===id);
+      document.getElementById('sbmKol').textContent = k.kol;
+      document.querySelector('#tblSbm tbody').innerHTML = k.baris.map(b=>{
+        const d = (b[1]-b[2])/b[2]*100;
+        const chip = d === 0 ? '<span class="chip mute">tetap</span>'
+          : '<span class="chip ' + (d>0?'warn':'ok') + '">' + (d>0?'+':'−') + Math.abs(d).toFixed(1).replace('.',',') + '%</span>';
+        return '<tr><td><b>'+b[0]+'</b></td><td class="sub">'+k.satuan+'</td>'+
+          '<td class="r num" style="font-weight:650">'+rp(b[1])+'</td>'+
+          '<td class="r num" style="color:var(--muted)">'+rp(b[2])+'</td>'+
+          '<td class="r">'+chip+'</td>'+
+          '<td class="r"><button class="btn sm" data-roles="admin">Ubah</button></td></tr>';
+      }).join('');
+      document.getElementById('sbmHitung').textContent =
+        k.baris.length + ' tarif pada kategori ' + k.nm.toLowerCase() + ' · SBM TA ' + SBM.tahun;
+      terapkanPeran();
+    }
+
+    seg.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>gambar(b.dataset.kat)));
+    gambar(SBM.kategori[0].id);
+  })();
 
   /* ---------- Tahap 08: realisasi & selisih ---------- */
   const RENCANA = [3800000, 3000000, 1720000, 500000];
@@ -2484,7 +2718,7 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
     [2,'Persetujuan Pimpinan','L','P','L','V','Cek pagu DIPA lulus; keputusan bercatatan'],
     [3,'Eksekusi Kabag','L','L','E','L','Empat butir daftar periksa tercentang'],
     [4,'Surat Tugas','L','L','E','L','Tanda tangan elektronik terbubuh'],
-    [5,'Rincian Uang Muka','E','L','V','V','Seluruh baris sesuai SBM atau beralasan'],
+    [5,'Rincian Uang Muka','E','L','V','V','Sesuai SBM TA berjalan, atau beralasan tertulis'],
     [6,'Dokumen SPPD','L','L','E','L','SPPD terbit untuk tiap pelaksana'],
     [7,'Pembayaran Uang Muka','L','—','L','E','Bukti transfer terunggah'],
     [8,'Pertanggungjawaban','E','—','L','V','Tiap komponen punya bukti sah'],
