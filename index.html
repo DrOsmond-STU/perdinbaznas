@@ -211,6 +211,7 @@ a{color:var(--accent)}
   max-width:100%;
 }
 .dl dd .chip{white-space:normal}
+.dl dd.num{white-space:normal}
 .chip .bullet{width:6px; height:6px; border-radius:50%; background:currentColor; flex:none}
 .chip.ok{background:var(--ok-tint); color:var(--ok); border-color:var(--ok-line)}
 .chip.warn{background:var(--warn-tint); color:var(--warn); border-color:var(--warn-line)}
@@ -456,6 +457,64 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
 .sw .meta b{display:block; font-size:12.2px}
 .sw .meta code{font-family:var(--num); color:var(--muted); font-size:10.8px}
 
+/* ============================================================
+   DIPA — pagu, blokir, cadangan, sisa efektif
+   ============================================================ */
+.dipahead{
+  display:flex; gap:16px; align-items:center; flex-wrap:wrap;
+  padding:14px 18px; border-radius:var(--r-lg);
+  border:1px solid var(--brass-line); background:var(--brass-tint);
+}
+.dipahead .no{font-family:var(--num); font-weight:700; font-size:14.5px; color:var(--brass); letter-spacing:-.01em}
+.dipahead .sub{font-size:11.8px; color:var(--muted); margin-top:1px}
+
+.verdict{display:flex; gap:12px; align-items:flex-start; padding:13px 16px; border-radius:var(--r); border:1px solid}
+.verdict svg{width:19px; height:19px; flex:none; margin-top:1px}
+.verdict b{display:block; font-size:13.4px}
+.verdict span{font-size:12.4px; opacity:.92}
+.verdict.pass{background:var(--ok-tint); border-color:var(--ok-line); color:var(--ok)}
+.verdict.fail{background:var(--crit-tint); border-color:var(--crit-line); color:var(--crit)}
+
+/* Neraca pagu: label kiri, angka kanan, baris hasil ditebalkan */
+.ledger{border:1px solid var(--line); border-radius:var(--r); overflow:hidden; font-size:13px}
+.ledger .lrow{display:flex; justify-content:space-between; gap:14px; padding:9px 14px; border-bottom:1px solid var(--line)}
+.ledger .lrow:last-child{border-bottom:0}
+.ledger .lrow span{color:var(--muted); min-width:0; overflow-wrap:anywhere}
+.ledger .lrow b{font-family:var(--num); font-variant-numeric:tabular-nums; font-weight:600; white-space:nowrap}
+.ledger .lrow.minus b{color:var(--warn)}
+.ledger .lrow.sub{background:var(--surface-2)}
+.ledger .lrow.net{background:var(--accent-tint); border-top:1px solid var(--accent-line)}
+.ledger .lrow.net span{color:var(--accent); font-weight:650}
+.ledger .lrow.net b{color:var(--accent); font-size:15px}
+.ledger .lrow.net.bad{background:var(--crit-tint); border-top-color:var(--crit-line)}
+.ledger .lrow.net.bad span, .ledger .lrow.net.bad b{color:var(--crit)}
+
+/* Meter pagu empat segmen */
+.meter i.blok{background:repeating-linear-gradient(45deg, var(--crit) 0 3px, transparent 3px 6px); background-color:var(--crit-tint)}
+
+/* Pohon mata anggaran */
+.tree{font-size:12.6px; display:flex; flex-direction:column; gap:0}
+.tree .lv{display:flex; gap:9px; align-items:baseline; padding:6px 0 6px 0; border-bottom:1px dashed var(--line)}
+.tree .lv:last-child{border-bottom:0}
+.tree .kd{font-family:var(--num); font-size:11.8px; color:var(--accent); font-weight:650; white-space:nowrap; min-width:112px}
+.tree .lv[data-depth="1"]{padding-left:14px}
+.tree .lv[data-depth="2"]{padding-left:28px}
+.tree .lv[data-depth="3"]{padding-left:42px}
+.tree .lv[data-depth="4"]{padding-left:56px}
+.tree .lv[data-depth="5"]{padding-left:70px}
+.tree .tag{font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:var(--faint); font-weight:700; min-width:78px}
+
+/* Halaman III — rencana penarikan dana bulanan */
+.rpd{display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:5px; align-items:end}
+.rpd .col{display:flex; flex-direction:column; justify-content:flex-end; height:136px}
+.rpd .track{position:relative; width:100%; background:var(--sunk); border-radius:3px 3px 0 0; border-bottom:1px solid var(--line-strong)}
+.rpd .fill{position:absolute; left:0; right:0; bottom:0; border-radius:3px 3px 0 0}
+.rpd .fill.real{background:var(--accent)}
+.rpd .fill.cad{background:var(--brass); opacity:.85}
+.rpd .mo{font-size:9.5px; text-align:center; color:var(--faint); margin-top:6px; font-weight:600; letter-spacing:.02em}
+.rpd .col.now .mo{color:var(--accent)}
+.rpd .col.now .track{outline:1.5px solid var(--accent-line); outline-offset:1px}
+
 /* Responsif */
 @media (max-width:1100px){
   .detail-grid{grid-template-columns:minmax(0,1fr)}
@@ -508,6 +567,14 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
       <button class="navitem" data-view="kotakmasuk">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h5l2 3h4l2-3h5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.5 6.5 3 12v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6l-1.5-5.5A2 2 0 0 0 17.6 5H6.4a2 2 0 0 0-1.9 1.5Z"/></svg>
         Kotak Persetujuan <em class="tally">6</em>
+      </button>
+    </nav>
+
+    <nav class="navgroup">
+      <h4>Anggaran</h4>
+      <button class="navitem" data-view="dipa">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V9m5 11V4m5 16v-7m5 7V7" stroke-linecap="round"/></svg>
+        Pagu &amp; DIPA
       </button>
     </nav>
 
@@ -705,34 +772,38 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
       <div class="card">
         <header>
           <div>
-            <h3>Serapan anggaran perjalanan dinas</h3>
-            <p class="sub">Pagu operasional amil TA 2026 — kuartal berjalan.</p>
+            <h3>Pagu DIPA perjalanan dinas</h3>
+            <p class="sub">SP DIPA-025.03.1.426871/2026 revisi ke-03 — disahkan Kementerian Keuangan.</p>
           </div>
+          <span class="spacer"></span>
+          <button class="btn sm" data-goto="dipa">Buka DIPA</button>
         </header>
         <div class="body stack" style="gap:18px">
           <div>
             <div class="row" style="justify-content:space-between; margin-bottom:8px">
-              <span style="font-size:12.5px; font-weight:600; color:var(--ink-2)">Pagu <b class="num">Rp 2,40 M</b></span>
-              <span class="num" style="font-size:12.5px; color:var(--muted)">Sisa Rp 764,8 jt</span>
+              <span style="font-size:12.5px; font-weight:600; color:var(--ink-2)">Pagu lima akun perdin <b class="num">Rp 4,68 M</b></span>
+              <span class="num" style="font-size:12.5px; color:var(--ok); font-weight:600">Sisa efektif Rp 1,19 M</span>
             </div>
-            <div class="meter" role="img" aria-label="Terealisasi 53 persen, tertahan uang muka 15 persen">
-              <i class="used" style="width:53%"></i><i class="hold" style="width:15%"></i>
+            <div class="meter" role="img" aria-label="Realisasi 51 persen, cadangan 11 persen, blokir 12 persen">
+              <i class="used" style="width:50.9%"></i><i class="hold" style="width:11.4%"></i><i class="blok" style="width:12.2%"></i>
             </div>
             <div class="legend" style="margin-top:9px">
-              <b><i style="background:var(--accent)"></i>Terealisasi 53% · Rp 1,27 M</b>
-              <b><i style="background:var(--brass)"></i>Tertahan uang muka 15% · Rp 360,4 jt</b>
-              <b><i style="background:var(--sunk); border:1px solid var(--line-strong)"></i>Belum terpakai 32%</b>
+              <b><i style="background:var(--accent)"></i>Realisasi Rp 2,38 M</b>
+              <b><i style="background:var(--brass)"></i>Cadangan Rp 535,4 jt</b>
+              <b><i style="background:var(--crit)"></i>Blokir Rp 570,0 jt</b>
+              <b><i style="background:var(--sunk); border:1px solid var(--line-strong)"></i>Sisa efektif Rp 1,19 M</b>
             </div>
           </div>
 
           <div class="tbl-wrap">
             <table class="tbl">
-              <thead><tr><th>Unit kerja</th><th class="r">Berkas</th><th class="r">Realisasi</th><th class="r">Serapan</th></tr></thead>
+              <thead><tr><th>Akun belanja</th><th class="r">Pagu</th><th class="r">Sisa efektif</th><th class="r">Serapan</th></tr></thead>
               <tbody>
-                <tr><td>Pengumpulan</td><td class="r num">9</td><td class="r num">Rp 412,7 jt</td><td class="r"><span class="chip ok">61%</span></td></tr>
-                <tr><td>Pendistribusian &amp; Pendayagunaan</td><td class="r num">7</td><td class="r num">Rp 388,1 jt</td><td class="r"><span class="chip ok">57%</span></td></tr>
-                <tr><td>Perencanaan &amp; Kajian</td><td class="r num">4</td><td class="r num">Rp 236,4 jt</td><td class="r"><span class="chip warn">39%</span></td></tr>
-                <tr><td>Audit &amp; Kepatuhan</td><td class="r num">4</td><td class="r num">Rp 232,8 jt</td><td class="r"><span class="chip warn">34%</span></td></tr>
+                <tr><td><b class="num" style="color:var(--accent)">524111</b> Perjalanan Dinas Biasa</td><td class="r num">Rp 2,40 M</td><td class="r num">Rp 767,6 jt</td><td class="r"><span class="chip ok">53%</span></td></tr>
+                <tr><td><b class="num" style="color:var(--accent)">524113</b> Dalam Kota</td><td class="r num">Rp 340,0 jt</td><td class="r num">Rp 117,5 jt</td><td class="r"><span class="chip ok">58%</span></td></tr>
+                <tr><td><b class="num" style="color:var(--accent)">524114</b> Paket Meeting Dalam Kota</td><td class="r num">Rp 610,0 jt</td><td class="r num">Rp 152,7 jt</td><td class="r"><span class="chip ok">66%</span></td></tr>
+                <tr><td><b class="num" style="color:var(--accent)">524119</b> Paket Meeting Luar Kota</td><td class="r num">Rp 880,0 jt</td><td class="r num">Rp 153,0 jt</td><td class="r"><span class="chip warn">58%</span></td></tr>
+                <tr><td><b class="num" style="color:var(--crit)">524211</b> Luar Negeri<div class="sub">diblokir seluruhnya</div></td><td class="r num">Rp 450,0 jt</td><td class="r num" style="color:var(--crit)">Rp 0</td><td class="r"><span class="chip crit"><i class="bullet"></i>Terkunci</span></td></tr>
               </tbody>
             </table>
           </div>
@@ -875,18 +946,14 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
           <div class="stack" style="gap:14px">
             <dl class="dl">
               <dt>Dasar penugasan</dt><dd>Undangan Kadin Jatim No. 214/KADIN-JI/VIII/2026</dd>
-              <dt>Sumber dana</dt><dd>Operasional Amil — Divisi Pengumpulan</dd>
+              <dt>Mata anggaran</dt><dd class="num">2104.EBA.994 · 051 · <b style="color:var(--accent)">524111</b></dd>
+              <dt>Sumber dana</dt><dd>SP DIPA-025.03.1.426871/2026 revisi ke-03</dd>
               <dt>Moda</dt><dd>Kereta api eksekutif (PP) · penginapan 1 malam</dd>
               <dt>Kelengkapan</dt><dd><span class="chip ok"><i class="bullet"></i>Lampiran undangan &amp; TOR ada</span></dd>
             </dl>
             <div>
-              <span class="lbl">Cek pagu unit sebelum menyetujui</span>
-              <div class="meter" style="margin-top:8px"><i class="used" style="width:58%"></i><i class="hold" style="width:11%"></i></div>
-              <div class="legend" style="margin-top:8px">
-                <b><i style="background:var(--accent)"></i>Terpakai Rp 392,0 jt</b>
-                <b><i style="background:var(--brass)"></i>Pengajuan ini Rp 4,48 jt</b>
-                <b><i style="background:var(--sunk); border:1px solid var(--line-strong)"></i>Sisa Rp 283,5 jt</b>
-              </div>
+              <span class="lbl">Cek pagu DIPA — wajib sebelum memutuskan</span>
+              <div style="margin-top:8px" data-akun="524111" data-nilai="4480000"></div>
             </div>
           </div>
           <div class="field">
@@ -906,6 +973,41 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
         <button class="btn danger" data-roles="pimpinan" data-act="Pengajuan ditolak">Tolak</button>
         <span class="spacer"></span>
         <button class="btn ghost">Delegasikan ke Wakil Ketua</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <header>
+        <span class="chip crit"><i class="bullet"></i>Pagu terkunci</span>
+        <div><h3>PD/2026/08/0161 — World Zakat &amp; Waqf Forum</h3>
+        <p class="sub">Bayu Prasetyo (+1) · Kuala Lumpur, Malaysia · 8–11 Sep 2026 · diajukan 10 Agu 2026</p></div>
+        <span class="spacer"></span>
+        <span class="chip seal">Rp 42.500.000</span>
+      </header>
+      <div class="body">
+        <div class="grid g2">
+          <div class="stack" style="gap:14px">
+            <dl class="dl">
+              <dt>Mata anggaran</dt><dd class="num">2104.EBA.994 · 052 · <b style="color:var(--crit)">524211</b></dd>
+              <dt>Sumber dana</dt><dd>SP DIPA-025.03.1.426871/2026 revisi ke-03</dd>
+              <dt>Kelengkapan</dt><dd><span class="chip warn"><i class="bullet"></i>Izin Setneg belum terbit</span></dd>
+            </dl>
+            <div class="note info" style="font-size:12.3px">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+              <div>Berkas tetap tersimpan dan otomatis dinilai ulang begitu Revisi 04 disahkan — pemohon tidak perlu mengajukan ulang dari awal.</div>
+            </div>
+          </div>
+          <div>
+            <span class="lbl">Cek pagu DIPA — wajib sebelum memutuskan</span>
+            <div style="margin-top:8px" data-akun="524211" data-nilai="42500000" data-kunci="#aksiLN button[data-act='Pengajuan disetujui']"></div>
+          </div>
+        </div>
+      </div>
+      <div class="foot" id="aksiLN">
+        <button class="btn primary" data-roles="pimpinan" data-act="Pengajuan disetujui">Setujui</button>
+        <button class="btn" data-roles="pimpinan" data-act="Dikembalikan ke pemohon">Kembalikan untuk revisi</button>
+        <span class="spacer"></span>
+        <button class="btn" data-goto="dipa">Lihat status Revisi 04</button>
       </div>
     </div>
 
@@ -992,14 +1094,48 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
                 <div class="seg" role="group">
                   <button aria-pressed="false">Dalam kota</button><button aria-pressed="true">Luar kota</button><button aria-pressed="false">Luar negeri</button>
                 </div>
+                <span class="hint">Jenis perjalanan menentukan akun belanja yang boleh dipakai.</span>
               </div>
               <div class="field">
-                <label for="f-sumber">Sumber dana <span class="req">*</span></label>
-                <select class="inp" id="f-sumber">
-                  <option>Operasional Amil — Divisi Pengumpulan</option>
-                  <option>Dana Program — Pendistribusian</option>
-                  <option>APBN — Dukungan Manajemen</option>
+                <label for="f-keg">Kegiatan pada DIPA <span class="req">*</span></label>
+                <select class="inp" id="f-keg">
+                  <option>2104 — Pengelolaan dan Pembinaan Zakat dan Wakaf</option>
+                  <option>2104 — Fasilitasi Pengelolaan Wakaf</option>
+                  <option>6301 — Dukungan Manajemen dan Pelaksanaan Tugas Teknis</option>
                 </select>
+                <span class="hint">Hanya kegiatan yang boleh diakses unit kerja Anda yang ditampilkan.</span>
+              </div>
+            </div>
+
+            <div class="card" style="box-shadow:none; background:var(--surface-2)">
+              <header style="padding:12px 16px">
+                <h3 style="font-size:13.6px">Pembebanan anggaran</h3>
+                <span class="spacer"></span>
+                <span class="chip seal">SP DIPA-025.03.1.426871/2026 · rev. 03</span>
+              </header>
+              <div class="body" style="padding:16px">
+                <div class="grid" style="grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px">
+                  <div class="field"><label for="f-kro">KRO</label><select class="inp" id="f-kro"><option>2104.EBA — Fasilitasi dan Pembinaan Lembaga</option></select></div>
+                  <div class="field"><label for="f-ro">Rincian Output</label><select class="inp" id="f-ro"><option>994 — Layanan Pembinaan Pengelolaan Zakat</option></select></div>
+                  <div class="field"><label for="f-komp">Komponen</label><select class="inp" id="f-komp"><option>051 — Koordinasi dan Pembinaan Lembaga</option></select></div>
+                  <div class="field"><label for="f-akun">Akun belanja</label><select class="inp" id="f-akun"><option>524111 — Perjalanan Dinas Biasa</option><option>524113 — Perjalanan Dinas Dalam Kota</option><option>524119 — Paket Meeting Luar Kota</option></select></div>
+                </div>
+                <div class="grid g2" style="gap:16px; margin-top:16px; align-items:start">
+                  <div>
+                    <span class="lbl">Cek pagu seketika — dihitung ulang tiap kali nilai berubah</span>
+                    <div style="margin-top:8px" data-akun="524111" data-nilai="9020000"></div>
+                  </div>
+                  <div class="stack" style="gap:12px">
+                    <div class="note info">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+                      <div><b>Tidak ada perjalanan dinas di luar DIPA.</b> Pengajuan tanpa mata anggaran yang sah tidak dapat dikirim, dan nilainya dicocokkan langsung dengan sisa efektif akun sebelum masuk ke meja pimpinan.</div>
+                    </div>
+                    <div class="note warn">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 9v4m0 4h.01M10.3 3.9 2.6 17.4A2 2 0 0 0 4.3 20.4h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" stroke-linecap="round"/></svg>
+                      <div><b>Rencana penarikan dana Agustus tersisa Rp 21,6 jt.</b> Pengajuan ini masih di dalam rencana Halaman III, sehingga tidak memerlukan usulan revisi.</div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -1061,10 +1197,18 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
                 <dl class="dl">
                   <dt>Ringkas maksud</dt><dd>Rakornas Pengumpulan ZIS Wil. Timur</dd>
                   <dt>Nilai diajukan</dt><dd class="num">Rp 9.020.000</dd>
-                  <dt>Sisa pagu unit</dt><dd class="num">Rp 283.500.000</dd>
-                  <dt>Beban unit bulan ini</dt><dd>9 berkas · Rp 41,2 jt</dd>
+                  <dt>Akun dibebani</dt><dd class="num"><b style="color:var(--accent)">524111</b> — Perjalanan Dinas Biasa</dd>
                   <dt>Riwayat pemohon</dt><dd><span class="chip ok"><i class="bullet"></i>Tanpa tunggakan SPJ</span></dd>
                 </dl>
+                <div>
+                  <span class="lbl">Cek pagu DIPA saat keputusan — 8 Agu 2026, 10.24</span>
+                  <div class="ledger" style="margin-top:8px">
+                    <div class="lrow sub"><span>Sisa efektif akun 524111 saat itu</span><b>Rp 776.620.000</b></div>
+                    <div class="lrow minus"><span>Nilai pengajuan ini</span><b>− Rp 9.020.000</b></div>
+                    <div class="lrow net"><span>Sisa setelah disetujui</span><b>Rp 767.600.000</b></div>
+                  </div>
+                  <p style="font-size:11.8px; color:var(--muted); margin-top:7px">Angka dibekukan sebagai bukti audit: keputusan dinilai dengan pagu yang berlaku saat itu, bukan pagu hari ini.</p>
+                </div>
               </div>
               <div class="stack" style="gap:12px">
                 <span class="lbl">Jejak keputusan</span>
@@ -1076,7 +1220,7 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
                 </ul>
                 <div class="note info" style="font-size:12.3px">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
-                  <div>Nilai di atas Rp 25 juta atau perjalanan luar negeri menambah satu lapis persetujuan Ketua BAZNAS secara otomatis.</div>
+                  <div><b>Persetujuan langsung mencadangkan pagu.</b> Rp 9.020.000 terkunci pada akun 524111 sejak 8 Agu dan tidak dapat dipakai berkas lain sampai SP2D terbit atau berkas dibatalkan. Nilai di atas Rp 25 juta atau perjalanan luar negeri menambah satu lapis persetujuan Ketua BAZNAS.</div>
                 </div>
               </div>
             </div>
@@ -1200,17 +1344,18 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
           <div class="body stack" style="gap:16px">
             <div class="note info">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
-              <div><b>Tarif dibandingkan otomatis dengan Standar Biaya Masukan (SBM) Prov. Sulawesi Selatan.</b> Baris yang melampaui batas ditandai merah dan wajib diberi alasan sebelum bisa dikirim.</div>
+              <div><b>Tarif dibandingkan otomatis dengan Standar Biaya Masukan (SBM) Prov. Sulawesi Selatan.</b> Baris yang melampaui batas ditandai merah dan wajib diberi alasan sebelum bisa dikirim. Seluruh komponen dibebankan pada akun DIPA yang disetujui pimpinan dan tidak dapat diubah di tahap ini.</div>
             </div>
 
             <div class="tbl-wrap">
               <table class="tbl" id="tblRencana">
                 <thead>
-                  <tr><th style="width:34%">Komponen biaya</th><th class="r">Volume</th><th>Satuan</th><th class="r">Harga satuan</th><th class="r">Jumlah</th><th>Terhadap SBM</th></tr>
+                  <tr><th style="width:30%">Komponen biaya</th><th>Akun</th><th class="r">Volume</th><th>Satuan</th><th class="r">Harga satuan</th><th class="r">Jumlah</th><th>Terhadap SBM</th></tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>Tiket pesawat CGK–UPG pulang pergi<div class="sub">3 pelaksana · kelas ekonomi</div></td>
+                    <td class="num" style="color:var(--accent); font-size:12px">524111</td>
                     <td class="r"><input class="inp num-inp sm" data-vol value="1" style="width:70px; padding:4px 8px"></td>
                     <td>paket</td>
                     <td class="r"><input class="inp num-inp" data-harga value="3800000" style="width:120px; padding:4px 8px"></td>
@@ -1219,6 +1364,7 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
                   </tr>
                   <tr>
                     <td>Penginapan<div class="sub">3 malam · tarif maks. SBM Rp 1.000.000</div></td>
+                    <td class="num" style="color:var(--accent); font-size:12px">524111</td>
                     <td class="r"><input class="inp num-inp" data-vol value="3" style="width:70px; padding:4px 8px"></td>
                     <td>malam</td>
                     <td class="r"><input class="inp num-inp" data-harga value="1000000" style="width:120px; padding:4px 8px"></td>
@@ -1227,6 +1373,7 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
                   </tr>
                   <tr>
                     <td>Uang harian<div class="sub">4 hari · Rp 430.000/hari (Sulsel)</div></td>
+                    <td class="num" style="color:var(--accent); font-size:12px">524111</td>
                     <td class="r"><input class="inp num-inp" data-vol value="4" style="width:70px; padding:4px 8px"></td>
                     <td>hari</td>
                     <td class="r"><input class="inp num-inp" data-harga value="430000" style="width:120px; padding:4px 8px"></td>
@@ -1235,6 +1382,7 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
                   </tr>
                   <tr>
                     <td>Transpor lokal / taksi bandara<div class="sub">keberangkatan &amp; kepulangan</div></td>
+                    <td class="num" style="color:var(--accent); font-size:12px">524111</td>
                     <td class="r"><input class="inp num-inp" data-vol value="2" style="width:70px; padding:4px 8px"></td>
                     <td>kali</td>
                     <td class="r"><input class="inp num-inp" data-harga value="250000" style="width:120px; padding:4px 8px"></td>
@@ -1243,7 +1391,7 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
                   </tr>
                 </tbody>
                 <tfoot>
-                  <tr><td colspan="4">Total rencana biaya</td><td class="r num" id="totRencana">Rp 9.020.000</td><td></td></tr>
+                  <tr><td colspan="5">Total rencana biaya</td><td class="r num" id="totRencana">Rp 9.020.000</td><td></td></tr>
                 </tfoot>
               </table>
             </div>
@@ -1328,9 +1476,9 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
                   <dt>Nomor voucher</dt><dd class="num">BKK/2026/08/0219</dd>
                   <dt>Penerima</dt><dd>Rizal Maulana — ketua rombongan</dd>
                   <dt>Rekening</dt><dd class="num">BSI · 7211 xxxx 4408</dd>
-                  <dt>Metode</dt><dd>Transfer bank (host-to-host)</dd>
+                  <dt>Mekanisme</dt><dd>Uang Persediaan (UP) — bendahara pengeluaran</dd>
+                  <dt>Pembebanan</dt><dd class="num">524111 · 2104.EBA.994 · 051</dd>
                   <dt>Jadwal</dt><dd>15 Agu 2026 — H-3 keberangkatan</dd>
-                  <dt>Pembebanan</dt><dd>Operasional Amil — Div. Pengumpulan</dd>
                 </dl>
                 <div class="note ok">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 13 4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1348,7 +1496,7 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
                 <div class="file"><span class="ft img">JPG</span><div><b>Bukti-transfer-BKK-0219.jpg</b><span>640 KB · diunggah Bendahara · 15 Agu 09.14</span></div><span class="spacer"></span><span class="chip ok"><i class="bullet"></i>Terverifikasi</span></div>
                 <div class="note info" style="font-size:12.3px">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
-                  <div>Uang muka mengunci pagu. Selama belum di-SPJ, nilainya tampil sebagai “tertahan” pada grafik serapan anggaran unit.</div>
+                  <div><b>Dibayar dari Uang Persediaan, belum menjadi realisasi DIPA.</b> Nilainya tetap berstatus cadangan pada akun 524111 sampai SPJ rampung menjadi dasar SPM-GUP dan KPPN menerbitkan SP2D.</div>
                 </div>
               </div>
             </div>
@@ -1581,6 +1729,8 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
                   <dt>Penerima</dt><dd>Rizal Maulana</dd>
                   <dt>Rekening</dt><dd class="num">BSI · 7211 xxxx 4408</dd>
                   <dt>Nilai</dt><dd class="num" style="color:var(--accent); font-weight:700">Rp 1.910.000</dd>
+                  <dt>Pembebanan</dt><dd class="num">524111 · 2104.EBA.994 · 051</dd>
+                  <dt>Dasar penihilan</dt><dd class="num">SPM-GUP 00214/2026 → SP2D KPPN Jakarta II</dd>
                   <dt>Jadwal transfer</dt><dd>29 Agustus 2026 (siklus pembayaran Jumat)</dd>
                 </dl>
                 <div class="field"><label for="f-catbayar">Catatan bendahara</label>
@@ -1605,7 +1755,7 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
 
                 <div class="note info" style="font-size:12.3px">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
-                  <div>Setelah dibayar, berkas berstatus <b>Selesai</b>, uang muka dilepas dari pagu tertahan, dan seluruh dokumen dikunci — hanya bisa dibaca dan diunduh.</div>
+                  <div>Setelah SP2D terbit, berkas berstatus <b>Selesai</b>: nilai berpindah dari cadangan menjadi <b>realisasi</b> pada akun 524111, sisa efektif DIPA diperbarui, dan seluruh dokumen dikunci — hanya bisa dibaca dan diunduh.</div>
                 </div>
               </div>
             </div>
@@ -1740,6 +1890,126 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
 </section>
 
 <!-- ===================================================================
+     TAMPILAN — PAGU & DIPA
+     =================================================================== -->
+<section class="view" id="v-dipa">
+  <div class="sect-h">
+    <div><h2>Pagu &amp; DIPA</h2><p>Sumber kebenaran anggaran. Tidak ada perjalanan dinas yang bisa diajukan di luar mata anggaran yang terdaftar di sini.</p></div>
+    <div class="spacer"></div>
+    <button class="btn">Unduh RKA-K/L</button>
+    <button class="btn">Riwayat revisi</button>
+  </div>
+
+  <div class="stack">
+    <div class="dipahead">
+      <div style="width:40px; height:40px; flex:none; border-radius:9px; border:1px solid var(--brass-line); display:grid; place-items:center; color:var(--brass)">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 4 7v5c0 4.6 3.3 8.3 8 9 4.7-.7 8-4.4 8-9V7l-8-4Z"/><path d="m9 12 2 2 4-4" stroke-linecap="round"/></svg>
+      </div>
+      <div style="min-width:0">
+        <div class="no">SP DIPA-025.03.1.426871/2026</div>
+        <div class="sub">Satker 426871 — Badan Amil Zakat Nasional · BA 025.03 Ditjen Bimas Islam · Tahun Anggaran 2026</div>
+      </div>
+      <span class="spacer"></span>
+      <div style="text-align:right">
+        <span class="chip ok"><i class="bullet"></i>Disahkan Kementerian Keuangan</span>
+        <div class="sub" style="margin-top:4px">Revisi ke-03 · disahkan 14 Juli 2026 oleh Kanwil DJPb Prov. DKI Jakarta</div>
+      </div>
+    </div>
+
+    <div class="grid g4" id="dipaKpi"></div>
+
+    <div class="card">
+      <header>
+        <div><h3>Mata anggaran perjalanan dinas</h3><p class="sub">Sisa efektif = pagu − blokir − realisasi − cadangan. Hanya sisa efektif yang boleh dipakai menyetujui perdin baru.</p></div>
+      </header>
+      <div class="tbl-wrap">
+        <table class="tbl" id="tblAkun" style="min-width:860px">
+          <thead>
+            <tr><th>Akun belanja</th><th class="r">Pagu</th><th class="r">Blokir</th><th class="r">Realisasi</th><th class="r">Cadangan</th><th class="r">Sisa efektif</th><th style="width:150px">Komposisi</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="foot">
+        <div class="legend">
+          <b><i style="background:var(--accent)"></i>Realisasi — SP2D terbit</b>
+          <b><i style="background:var(--brass)"></i>Cadangan — disetujui, belum dibayar</b>
+          <b><i style="background:var(--crit)"></i>Blokir — tanda bintang halaman IV</b>
+          <b><i style="background:var(--sunk); border:1px solid var(--line-strong)"></i>Sisa efektif</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <header><h3>Struktur mata anggaran</h3><p class="sub">Jalur pembebanan berkas PD/2026/08/0147.</p></header>
+        <div class="body">
+          <div class="tree">
+            <div class="lv" data-depth="0"><span class="tag">Program</span><span class="kd">025.03.WA</span><span>Kerukunan Umat Beragama</span></div>
+            <div class="lv" data-depth="1"><span class="tag">Kegiatan</span><span class="kd">2104</span><span>Pengelolaan dan Pembinaan Zakat dan Wakaf</span></div>
+            <div class="lv" data-depth="2"><span class="tag">KRO</span><span class="kd">2104.EBA</span><span>Fasilitasi dan Pembinaan Lembaga</span></div>
+            <div class="lv" data-depth="3"><span class="tag">RO</span><span class="kd">2104.EBA.994</span><span>Layanan Pembinaan Pengelolaan Zakat</span></div>
+            <div class="lv" data-depth="4"><span class="tag">Komponen</span><span class="kd">051</span><span>Koordinasi dan Pembinaan Lembaga Pengelola Zakat</span></div>
+            <div class="lv" data-depth="5"><span class="tag">Akun</span><span class="kd">524111</span><span>Belanja Perjalanan Dinas Biasa</span></div>
+          </div>
+          <div class="note info" style="margin-top:14px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+            <div><b>Pemohon tidak mengetik kode.</b> Ia memilih kegiatan dari daftar yang boleh diakses unitnya; sistem menurunkan sendiri KRO, RO, komponen, dan akun belanja sesuai jenis perjalanan.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <header>
+          <div><h3>Halaman III — rencana penarikan dana</h3><p class="sub">Akun 524111 · pagu Rp 2,40 M sepanjang 2026.</p></div>
+        </header>
+        <div class="body">
+          <div class="rpd" id="rpdChart"></div>
+          <div class="legend" style="margin-top:14px">
+            <b><i style="background:var(--sunk); border:1px solid var(--line-strong)"></i>Rencana bulanan</b>
+            <b><i style="background:var(--accent)"></i>Realisasi</b>
+            <b><i style="background:var(--brass)"></i>Cadangan</b>
+          </div>
+          <div class="note warn" style="margin-top:14px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 9v4m0 4h.01M10.3 3.9 2.6 17.4A2 2 0 0 0 4.3 20.4h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" stroke-linecap="round"/></svg>
+            <div><b>Rencana Agustus tersisa Rp 21,6 jt.</b> Pengajuan melebihi rencana bulan berjalan tetap dapat disetujui, tetapi wajib disertai alasan dan memicu usulan revisi Halaman III.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <header><h3>Riwayat revisi DIPA</h3><p class="sub">Setiap revisi mengubah pagu yang boleh dipakai — berkas yang sedang berjalan dinilai ulang otomatis.</p></header>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Revisi</th><th>Perihal</th><th>Pengesah</th><th class="r">Dampak pada akun perdin</th><th>Tanggal sah</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="num">Revisi 03</td><td>Pergeseran antar-komponen dalam satu keluaran</td><td>Kanwil DJPb DKI Jakarta</td><td class="r num" style="color:var(--ok)">+Rp 180.000.000</td><td class="num">14 Jul 2026</td><td><span class="chip ok"><i class="bullet"></i>Berlaku</span></td></tr>
+            <tr><td class="num">Revisi 02</td><td>Pembukaan blokir sebagian akun 524119</td><td>Ditjen Anggaran Kemenkeu</td><td class="r num" style="color:var(--ok)">+Rp 240.000.000</td><td class="num">28 Apr 2026</td><td><span class="chip mute">Digantikan</span></td></tr>
+            <tr><td class="num">Revisi 01</td><td>Penyesuaian Halaman III rencana penarikan dana</td><td>Kanwil DJPb DKI Jakarta</td><td class="r num" style="color:var(--muted)">Rp 0</td><td class="num">17 Feb 2026</td><td><span class="chip mute">Digantikan</span></td></tr>
+            <tr><td class="num">DIPA Awal</td><td>Pengesahan DIPA Tahun Anggaran 2026</td><td>Ditjen Anggaran Kemenkeu</td><td class="r num">Rp 4.260.000.000</td><td class="num">28 Nov 2025</td><td><span class="chip mute">Digantikan</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <header><h3>Usulan revisi berjalan</h3></header>
+      <div class="body stack" style="gap:12px">
+        <div class="note warn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>
+          <div><b>Revisi 04 — pembukaan blokir akun 524211 (perjalanan dinas luar negeri) senilai Rp 450.000.000.</b> Diajukan 4 Agu 2026, menunggu izin Setneg dan penelaahan Ditjen Anggaran. Sampai revisi disahkan, seluruh pengajuan perdin luar negeri ditolak sistem.</div>
+        </div>
+        <div class="row" style="font-size:12.6px; color:var(--muted)">
+          <span class="chip mute"><i class="bullet"></i>Berkas tertahan: 2</span>
+          <span class="chip mute"><i class="bullet"></i>Nilai tertahan: Rp 78.400.000</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================
      TAMPILAN 7 — ALUR & PERAN
      =================================================================== -->
 <section class="view" id="v-alur">
@@ -1766,14 +2036,16 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
           <div class="row" style="gap:11px"><span class="chip warn" style="min-width:98px; justify-content:center"><i class="bullet"></i>Proses</span><span style="font-size:12.8px; color:var(--ink-2)">Ada pihak yang harus bertindak; SLA berjalan.</span></div>
           <div class="row" style="gap:11px"><span class="chip crit" style="min-width:98px; justify-content:center"><i class="bullet"></i>Dikembalikan</span><span style="font-size:12.8px; color:var(--ink-2)">Bola di pemohon; alasan wajib diisi dan tampil di riwayat.</span></div>
           <div class="row" style="gap:11px"><span class="chip info" style="min-width:98px; justify-content:center"><i class="bullet"></i>Siap bayar</span><span style="font-size:12.8px; color:var(--ink-2)">Menunggu siklus transfer, bukan menunggu keputusan.</span></div>
+          <div class="row" style="gap:11px"><span class="chip crit" style="min-width:98px; justify-content:center"><i class="bullet"></i>Pagu terkunci</span><span style="font-size:12.8px; color:var(--ink-2)">Akun diblokir atau sisa efektif tidak cukup; menunggu revisi DIPA.</span></div>
           <div class="row" style="gap:11px"><span class="chip crit" style="min-width:98px; justify-content:center"><i class="bullet"></i>Telat SPJ</span><span style="font-size:12.8px; color:var(--ink-2)">Melewati 5 hari kerja; menahan pengajuan baru pelaksana.</span></div>
           <div class="row" style="gap:11px"><span class="chip ok" style="min-width:98px; justify-content:center"><i class="bullet"></i>Selesai</span><span style="font-size:12.8px; color:var(--ink-2)">Dokumen terkunci, hanya bisa dibaca dan diunduh.</span></div>
         </div>
       </div>
 
       <div class="card">
-        <header><h3>Enam keputusan desain</h3><p class="sub">Alasan di balik bentuk antarmuka ini.</p></header>
+        <header><h3>Tujuh keputusan desain</h3><p class="sub">Alasan di balik bentuk antarmuka ini.</p></header>
         <div class="body stack" style="gap:13px">
+          <div><b style="font-size:13px">DIPA adalah gerbang, bukan lampiran</b><p style="font-size:12.6px; color:var(--muted)">Mata anggaran diisi di tahap 01 dan diuji di tahap 02. Pengajuan tanpa akun yang sah tidak bisa dikirim, dan persetujuan terkunci bila sisa efektif tidak cukup.</p></div>
           <div><b style="font-size:13px">Rel 12 tahap sebagai tulang punggung</b><p style="font-size:12.6px; color:var(--muted)">Semua orang melihat posisi berkas yang sama. Penomoran dipakai karena ini memang urutan wajib, bukan hiasan.</p></div>
           <div><b style="font-size:13px">Uang selalu ditampilkan berpasangan</b><p style="font-size:12.6px; color:var(--muted)">Rencana ↔ realisasi, uang muka ↔ selisih. Angka tunggal tanpa pembanding memicu salah tafsir.</p></div>
           <div><b style="font-size:13px">Serif hanya untuk dokumen resmi</b><p style="font-size:12.6px; color:var(--muted)">Surat Tugas dan SPPD memakai huruf berkait agar terbaca sebagai berkas, bukan layar aplikasi.</p></div>
@@ -1890,18 +2162,18 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
 
   /* ---------- Data 12 tahap ---------- */
   const TAHAP = [
-    {n:1,  nm:"Pengajuan Perdin",        st:"done", pj:"Pemohon",    desc:"Pemohon mengisi maksud, tujuan, tanggal, dan pelaksana. Formulir menyesuaikan jenis perjalanan agar tidak menanyakan hal yang tidak relevan."},
-    {n:2,  nm:"Persetujuan Pimpinan",    st:"done", pj:"Pimpinan",   desc:"Pimpinan memutuskan dengan melihat nilai pengajuan bersanding dengan sisa pagu unit dan riwayat SPJ pemohon."},
+    {n:1,  nm:"Pengajuan Perdin",        st:"done", pj:"Pemohon",    desc:"Pemohon mengisi maksud, tujuan, tanggal, pelaksana, dan mata anggaran DIPA yang dibebani. Pengajuan di luar akun yang terdaftar tidak dapat dikirim."},
+    {n:2,  nm:"Persetujuan Pimpinan",    st:"done", pj:"Pimpinan",   desc:"Pimpinan memutuskan dengan lembar cek pagu DIPA di hadapannya: pagu, blokir, realisasi, cadangan, dan sisa efektif akun yang dibebani."},
     {n:3,  nm:"Eksekusi Kabag",          st:"done", pj:"Kabag",      desc:"Kepala Bagian menerbitkan berkas: nomor agenda, penunjukan pemegang uang muka, dan penguncian komponen biaya."},
     {n:4,  nm:"Surat Tugas",             st:"done", pj:"Kabag",      desc:"Surat Tugas terbit dengan nomor resmi dan tanda tangan elektronik tersertifikasi."},
     {n:5,  nm:"Rincian Uang Muka",       st:"done", pj:"Pemohon",    desc:"Komponen biaya dirinci per satuan dan dibandingkan otomatis dengan Standar Biaya Masukan daerah tujuan."},
     {n:6,  nm:"Dokumen SPPD",            st:"done", pj:"Kabag",      desc:"SPPD terbit dua lembar: lembar penugasan dan lembar pengesahan yang dicap di tempat tujuan."},
-    {n:7,  nm:"Pembayaran Uang Muka",    st:"done", pj:"Bendahara",  desc:"Bendahara mentransfer uang muka ke rekening ketua rombongan dan mengunggah bukti transfer."},
+    {n:7,  nm:"Pembayaran Uang Muka",    st:"done", pj:"Bendahara",  desc:"Bendahara membayar uang muka dari Uang Persediaan ke rekening ketua rombongan. Nilainya masih berstatus cadangan DIPA, belum realisasi."},
     {n:8,  nm:"Pertanggung­jawaban", st:"now",  pj:"Pemohon",    desc:"Pelaksana mengisi realisasi per komponen beserta buktinya, bersanding dengan rencana biaya."},
     {n:9,  nm:"Upload SPJ Rampung",      st:"wait", pj:"Bendahara",  desc:"Seluruh bukti digabung dan diverifikasi. Berkas tidak dapat dinyatakan rampung selama masih ada dokumen bermasalah."},
     {n:10, nm:"Laporan Perdin",          st:"wait", pj:"Pemohon",    desc:"Laporan substansi: ringkasan pelaksanaan, hasil, tindak lanjut, dan dokumentasi kegiatan."},
     {n:11, nm:"Perhitungan Selisih",     st:"wait", pj:"Bendahara",  desc:"Selisih uang muka terhadap realisasi dihitung dan disahkan — bisa kurang bayar atau kelebihan yang wajib dikembalikan."},
-    {n:12, nm:"Pembayaran Sisa",         st:"wait", pj:"Bendahara",  desc:"Pelunasan sisa dieksekusi, uang muka dilepas dari pagu tertahan, dan berkas ditutup."}
+    {n:12, nm:"Pembayaran Sisa",         st:"wait", pj:"Bendahara",  desc:"Pelunasan sisa dieksekusi. Setelah SP2D terbit, nilai berpindah dari cadangan menjadi realisasi DIPA dan berkas ditutup."}
   ];
 
   const CHIP = {done:['ok','Selesai'], now:['warn','Sedang berjalan'], wait:['mute','Menunggu tahap sebelumnya']};
@@ -1939,8 +2211,8 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
 
   /* ---------- Navigasi tampilan ---------- */
   const JUDUL = {dashboard:'Beranda', daftar:'Daftar Perdin', kotakmasuk:'Kotak Persetujuan',
-                 detail:'PD/2026/08/0147', dokumen:'Arsip Dokumen', keuangan:'Kas & Pembayaran',
-                 alur:'Alur & Peran', sistem:'Panduan Desain'};
+                 dipa:'Pagu & DIPA', detail:'PD/2026/08/0147', dokumen:'Arsip Dokumen',
+                 keuangan:'Kas & Pembayaran', alur:'Alur & Peran', sistem:'Panduan Desain'};
 
   function bukaTampilan(v){
     document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on', s.id === 'v'+'-'+v));
@@ -1969,8 +2241,11 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
     const r = sel.value;
     document.querySelectorAll('[data-roles]').forEach(b=>{
       const boleh = b.dataset.roles.split(',').includes(r);
-      b.disabled = !boleh;
-      b.title = boleh ? '' : 'Wewenang ' + b.dataset.roles.split(',').map(x=>NAMA_PERAN[x]).join(' atau ');
+      const pagu = b.dataset.pagublokir === '1';
+      b.disabled = !boleh || pagu;
+      b.title = pagu
+        ? 'Terkunci: pagu DIPA tidak tersedia pada akun yang dibebankan'
+        : (boleh ? '' : 'Wewenang ' + b.dataset.roles.split(',').map(x=>NAMA_PERAN[x]).join(' atau '));
     });
     const id = IDENTITAS[r];
     document.querySelector('.railfoot .avatar').textContent = id[0];
@@ -1985,6 +2260,123 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
 
   /* ---------- Rupiah ---------- */
   const rp = n => 'Rp ' + Math.round(n).toLocaleString('id-ID');
+  const rpRingkas = n => n >= 1e9
+    ? 'Rp ' + (n/1e9).toFixed(2).replace('.',',') + ' M'
+    : 'Rp ' + (n/1e6).toFixed(1).replace('.',',') + ' jt';
+
+  /* ---------- DIPA — sumber kebenaran anggaran ---------- */
+  const DIPA = {
+    nomor:'SP DIPA-025.03.1.426871/2026',
+    revisi:3,
+    akun:[
+      {kd:'524111', ur:'Belanja Perjalanan Dinas Biasa',                      pagu:2400000000, blokir:0,         realisasi:1272000000, cadangan:360400000},
+      {kd:'524113', ur:'Belanja Perjalanan Dinas Dalam Kota',                 pagu:340000000,  blokir:0,         realisasi:198500000,  cadangan:24000000},
+      {kd:'524114', ur:'Belanja Perjalanan Dinas Paket Meeting Dalam Kota',   pagu:610000000,  blokir:0,         realisasi:402300000,  cadangan:55000000},
+      {kd:'524119', ur:'Belanja Perjalanan Dinas Paket Meeting Luar Kota',    pagu:880000000,  blokir:120000000, realisasi:511000000,  cadangan:96000000},
+      {kd:'524211', ur:'Belanja Perjalanan Dinas Biasa — Luar Negeri',        pagu:450000000,  blokir:450000000, realisasi:0,          cadangan:0}
+    ]
+  };
+  const sisaEfektif = a => a.pagu - a.blokir - a.realisasi - a.cadangan;
+  const akun = kd => DIPA.akun.find(a=>a.kd===kd);
+
+  /* Kartu ringkas DIPA */
+  (function(){
+    const t = DIPA.akun.reduce((s,a)=>({
+      pagu:s.pagu+a.pagu, blokir:s.blokir+a.blokir, realisasi:s.realisasi+a.realisasi, cadangan:s.cadangan+a.cadangan
+    }), {pagu:0,blokir:0,realisasi:0,cadangan:0});
+    const sisa = t.pagu - t.blokir - t.realisasi - t.cadangan;
+    const kartu = [
+      ['s-accent','Pagu perjalanan dinas', rpRingkas(t.pagu), 'info', '5 akun belanja · revisi ke-'+DIPA.revisi],
+      ['s-accent','Realisasi (SP2D terbit)', rpRingkas(t.realisasi), 'ok', Math.round(t.realisasi/t.pagu*100)+'% dari pagu'],
+      ['s-brass','Cadangan berkas berjalan', rpRingkas(t.cadangan), 'seal', 'disetujui, belum dibayar'],
+      ['s-crit','Diblokir (tanda bintang)', rpRingkas(t.blokir), 'crit', 'menunggu revisi &amp; izin Setneg']
+    ];
+    document.getElementById('dipaKpi').innerHTML = kartu.map(k=>
+      '<div class="card kpi '+k[0]+'"><i class="stripe"></i><span class="k-lbl">'+k[1]+
+      '</span><span class="k-val num">'+k[2]+'</span><span class="k-meta"><span class="chip '+k[3]+'">'+
+      (k[3]==='seal'?'':'<i class="bullet"></i>')+k[4]+'</span></span></div>').join('') +
+      '<div class="card kpi s-accent" style="grid-column:1/-1"><i class="stripe"></i><span class="k-lbl">Sisa efektif yang boleh dipakai menyetujui perdin baru</span><span class="k-val num">'+
+      rpRingkas(sisa)+'</span><span class="k-meta"><span class="chip info"><i class="bullet"></i>pagu − blokir − realisasi − cadangan</span></span></div>';
+  })();
+
+  /* Tabel mata anggaran */
+  document.querySelector('#tblAkun tbody').innerHTML = DIPA.akun.map(a=>{
+    const s = sisaEfektif(a);
+    const pc = x => (x/a.pagu*100).toFixed(1)+'%';
+    const habis = s === 0;
+    return '<tr><td><b class="num" style="color:var(--accent)">'+a.kd+'</b><div class="sub">'+a.ur+'</div></td>'+
+      '<td class="r num">'+rpRingkas(a.pagu)+'</td>'+
+      '<td class="r num" style="color:'+(a.blokir?'var(--crit)':'var(--faint)')+'">'+(a.blokir?rpRingkas(a.blokir):'—')+'</td>'+
+      '<td class="r num">'+rpRingkas(a.realisasi)+'</td>'+
+      '<td class="r num" style="color:var(--brass)">'+(a.cadangan?rpRingkas(a.cadangan):'—')+'</td>'+
+      '<td class="r"><b class="num" style="color:'+(habis?'var(--crit)':'var(--ok)')+'">'+rpRingkas(s)+'</b>'+
+      (habis?'<div class="sub" style="color:var(--crit)">tidak dapat dipakai</div>':'')+'</td>'+
+      '<td><div class="meter"><i class="used" style="width:'+pc(a.realisasi)+'"></i>'+
+      '<i class="hold" style="width:'+pc(a.cadangan)+'"></i>'+
+      '<i class="blok" style="width:'+pc(a.blokir)+'"></i></div></td></tr>';
+  }).join('');
+
+  /* Halaman III — rencana penarikan dana bulanan akun 524111 (juta rupiah) */
+  const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  const RPD_RENCANA  = [120,150,180,200,210,230,240,240,230,220,200,180];
+  const RPD_REALISASI= [108,142,171,196,205,232,218,  0,  0,  0,  0,  0];
+  const RPD_CADANGAN = [  0,  0,  0,  0,  0,  0,  0,218.4,142,  0,  0,  0];
+  (function(){
+    const maks = Math.max.apply(null, RPD_RENCANA);
+    document.getElementById('rpdChart').innerHTML = RPD_RENCANA.map((r,i)=>{
+      const tinggiTrack = (r/maks*100).toFixed(1);
+      const isi = RPD_REALISASI[i] + RPD_CADANGAN[i];
+      const hIsi = (isi/r*100).toFixed(1);
+      const hReal = (RPD_REALISASI[i]/r*100).toFixed(1);
+      return '<div class="col'+(i===7?' now':'')+'" title="'+BULAN[i]+': rencana Rp '+r+' jt">'+
+        '<div class="track" style="height:'+tinggiTrack+'%">'+
+        (isi>0 ? '<i class="fill cad" style="height:'+hIsi+'%"></i><i class="fill real" style="height:'+hReal+'%"></i>' : '')+
+        '</div><div class="mo">'+BULAN[i]+'</div></div>';
+    }).join('');
+  })();
+
+  /* Lembar cek pagu — dipakai di pengajuan, kotak persetujuan, dan tahap 02 */
+  const kurang = (label, nilai) => nilai > 0
+    ? '<div class="lrow minus"><span>'+label+'</span><b>− '+rpRingkas(nilai)+'</b></div>'
+    : '<div class="lrow"><span>'+label+'</span><b style="color:var(--faint)">Rp 0</b></div>';
+
+  function lembarPagu(el){
+    const a = akun(el.dataset.akun);
+    const nilai = parseFloat(el.dataset.nilai);
+    const sisa = sisaEfektif(a);
+    const sesudah = sisa - nilai;
+    const cukup = a.blokir < a.pagu && sesudah >= 0;
+    const alasan = a.blokir >= a.pagu
+      ? 'Seluruh pagu akun ' + a.kd + ' diblokir tanda bintang pada Halaman IV DIPA. Pengajuan tidak dapat disetujui sampai Revisi 04 disahkan Ditjen Anggaran.'
+      : 'Nilai pengajuan melebihi sisa efektif akun ' + a.kd + ' sebesar ' + rp(-sesudah) + '. Turunkan nilai, geser ke akun lain, atau ajukan revisi DIPA.';
+    el.innerHTML =
+      '<div class="ledger">'+
+        '<div class="lrow sub"><span>Akun '+a.kd+' — '+a.ur+'</span><b>'+rpRingkas(a.pagu)+'</b></div>'+
+        (a.blokir?'<div class="lrow minus"><span>Blokir tanda bintang (Halaman IV)</span><b>− '+rpRingkas(a.blokir)+'</b></div>':'')+
+        kurang('Realisasi — SP2D terbit', a.realisasi)+
+        kurang('Cadangan berkas berjalan', a.cadangan)+
+        '<div class="lrow sub"><span>Sisa efektif</span><b>'+rp(sisa)+'</b></div>'+
+        '<div class="lrow minus"><span>Nilai pengajuan ini</span><b>− '+rp(nilai)+'</b></div>'+
+        '<div class="lrow net'+(cukup?'':' bad')+'"><span>'+(cukup?'Sisa setelah disetujui':'Kekurangan pagu')+
+          '</span><b>'+rp(Math.abs(sesudah))+'</b></div>'+
+      '</div>'+
+      '<div class="verdict '+(cukup?'pass':'fail')+'" style="margin-top:12px">'+
+        (cukup
+          ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m5 13 4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Pagu tersedia — pengajuan boleh disetujui</b><span>Persetujuan langsung mencadangkan '+rp(nilai)+' pada akun '+a.kd+' sehingga tidak dapat dipakai berkas lain.</span></div>'
+          : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6" stroke-linecap="round"/></svg><div><b>Pagu tidak tersedia — persetujuan dikunci</b><span>'+alasan+'</span></div>')+
+      '</div>';
+    return cukup;
+  }
+  document.querySelectorAll('[data-akun]').forEach(el=>{
+    const cukup = lembarPagu(el);
+    if(!cukup && el.dataset.kunci){
+      document.querySelectorAll(el.dataset.kunci).forEach(b=>{
+        b.dataset.pagublokir = '1';
+        b.disabled = true;
+        b.title = 'Pagu DIPA tidak tersedia pada akun ' + el.dataset.akun;
+      });
+    }
+  });
 
   /* ---------- Tahap 05: rincian uang muka ---------- */
   const tblR = document.getElementById('tblRencana');
@@ -2088,8 +2480,8 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
 
   /* ---------- Matriks RACI ---------- */
   const RACI = [
-    [1,'Pengajuan Perdin','E','L','L','—','Lampiran dasar penugasan terunggah'],
-    [2,'Persetujuan Pimpinan','L','P','L','—','Keputusan disertai catatan'],
+    [1,'Pengajuan Perdin','E','L','L','—','Mata anggaran DIPA terisi dan pagu mencukupi'],
+    [2,'Persetujuan Pimpinan','L','P','L','V','Cek pagu DIPA lulus; keputusan bercatatan'],
     [3,'Eksekusi Kabag','L','L','E','L','Empat butir daftar periksa tercentang'],
     [4,'Surat Tugas','L','L','E','L','Tanda tangan elektronik terbubuh'],
     [5,'Rincian Uang Muka','E','L','V','V','Seluruh baris sesuai SBM atau beralasan'],
@@ -2099,7 +2491,7 @@ textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
     [9,'Upload SPJ Rampung','E','—','L','P','Tidak ada dokumen bermasalah'],
     [10,'Laporan Perdin','E','L','P','—','Ringkasan, hasil, dan tindak lanjut terisi'],
     [11,'Perhitungan Selisih','L','—','L','E','Selisih disahkan bendahara'],
-    [12,'Pembayaran Sisa','L','—','L','E','Tiga syarat penutupan terpenuhi']
+    [12,'Pembayaran Sisa','L','—','L','E','SP2D terbit; tiga syarat penutupan terpenuhi']
   ];
   const badge = v => {
     const map = {E:['info','E'], P:['warn','P'], V:['ok','V'], L:['mute','L']};
