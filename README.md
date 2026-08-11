@@ -8,6 +8,9 @@ dependensi eksternal — cukup dibuka di peramban.
 open index.html
 ```
 
+Dokumen kebutuhan produk lengkap — termasuk arsitektur Laravel, skema basis data
+MySQL, dan kriteria penerimaan — ada pada [`PRD.md`](PRD.md).
+
 ## Dasar anggaran — DIPA
 
 Seluruh perjalanan dinas dibebankan pada mata anggaran yang terdaftar dalam DIPA
