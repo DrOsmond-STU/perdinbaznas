@@ -28,9 +28,15 @@ yang disahkan Kementerian Keuangan. Tidak ada jalur lain.
 
   *Blokir* adalah tanda bintang Halaman IV; *realisasi* adalah nilai yang SP2D-nya
   sudah terbit; *cadangan* adalah berkas yang sudah disetujui tetapi belum dibayar.
-- **Tahap 01** mewajibkan pemohon memilih kegiatan DIPA; sistem menurunkan KRO,
-  RO, komponen, dan akun belanja sesuai jenis perjalanan. Pemohon tidak mengetik
-  kode. Pengajuan tanpa mata anggaran yang sah tidak dapat dikirim.
+- **Tahap 01** mewajibkan pemohon memilih kegiatan DIPA sebagai **usulan
+  pembebanan**; sistem menurunkan KRO, RO, komponen, dan akun belanja sesuai
+  jenis perjalanan. Pemohon tidak mengetik kode, dan usulannya belum mengikat.
+- **Tahap 03 — Verifikasi & Alokasi Anggaran.** Verifikator mencocokkan usulan
+  dengan data DIPA dan **menetapkan akun definitif**. Bila akun usulan keliru,
+  cadangan pagu dipindahkan: satu mutasi pelepasan pada akun usulan dan satu
+  mutasi pencadangan pada akun definitif, sehingga jumlah beban tidak berubah.
+  **Surat Tugas tidak dapat terbit sebelum penetapan ini ada**, karena dasar
+  pembebanan dan nomor register anggaran ikut tercetak di dalamnya.
 - **Tahap 02** menempatkan lembar cek pagu DIPA sebagai permukaan keputusan
   pimpinan — pagu, blokir, realisasi, cadangan, sisa efektif, nilai pengajuan,
   dan sisa setelah disetujui, ditutup satu putusan tegas: boleh atau terkunci.
@@ -58,14 +64,14 @@ menjadi acuan seluruh pengajuan uang muka serta rincian perdin.
   mengubah rincian yang sudah disetujui, sehingga auditor melihat tarif yang
   benar-benar berlaku saat keputusan diambil. Berkas yang masih draf ikut versi
   terbaru dan pemohonnya diberi tahu bila tarifnya jadi tidak sesuai.
-- **Tahap 05** membandingkan tiap baris dengan SBM secara langsung: kolom
+- **Tahap 06** membandingkan tiap baris dengan SBM secara langsung: kolom
   *Batas SBM* memperlihatkan tarif acuan dan putusan kesesuaiannya. Baris yang
   melampaui batas berubah merah, membuka kolom **alasan wajib**, dan mengunci
   tombol *Ajukan ke Bendahara* sampai alasannya diisi.
-- **Tahap 08** menguji realisasi dengan SBM yang sama: uang harian lumpsum tidak
+- **Tahap 09** menguji realisasi dengan SBM yang sama: uang harian lumpsum tidak
   boleh melebihi tarif; penginapan dan transpor dibayar riil sampai batas SBM.
 
-## Cakupan — 12 tahap
+## Cakupan — 13 tahap
 
 Rel proses adalah tulang punggung aplikasi. Setiap tahap punya layar kerjanya
 sendiri, penanggung jawab yang jelas, dan syarat yang harus dipenuhi sebelum
@@ -73,27 +79,28 @@ berkas boleh berpindah.
 
 | # | Tahap | Penanggung jawab | Syarat berpindah |
 |---|---|---|---|
-| 01 | Pengajuan Perdin | Pemohon | Mata anggaran DIPA terisi dan pagu mencukupi |
+| 01 | Pengajuan Perdin | Pemohon | Usulan pembebanan terisi dan pagu mencukupi |
 | 02 | Persetujuan Pimpinan | Pimpinan | Cek pagu DIPA lulus; keputusan bercatatan |
-| 03 | Eksekusi Kabag | Kepala Bagian | Empat butir daftar periksa tercentang |
-| 04 | Surat Tugas | Kepala Bagian | Tanda tangan elektronik terbubuh |
-| 05 | Rincian Uang Muka | Pemohon (verifikasi Kabag & Bendahara) | Sesuai SBM TA berjalan, atau beralasan tertulis |
-| 06 | Dokumen SPPD | Kepala Bagian | SPPD terbit untuk tiap pelaksana |
-| 07 | Pembayaran Uang Muka | Bendahara | Bukti transfer terunggah |
-| 08 | Pertanggungjawaban Perdin | Pemohon | Tiap komponen punya bukti sah |
-| 09 | Upload SPJ Rampung | Bendahara | Tidak ada dokumen bermasalah |
-| 10 | Dokumen Laporan Perdin | Pemohon | Ringkasan, hasil, dan tindak lanjut terisi |
-| 11 | Perhitungan Selisih Uang Muka | Bendahara | Selisih disahkan bendahara |
-| 12 | Pembayaran Sisa Perdin | Bendahara | SP2D terbit; tiga syarat penutupan terpenuhi |
+| 03 | **Verifikasi & Alokasi Anggaran** | **Verifikator Anggaran** | Akun definitif ditetapkan; cadangan terbentuk di akun tersebut |
+| 04 | Eksekusi Kabag | Kepala Bagian | Empat butir daftar periksa tercentang |
+| 05 | Surat Tugas | Kepala Bagian | Tanda tangan elektronik terbubuh |
+| 06 | Rincian Uang Muka | Pemohon (verifikasi Kabag & Bendahara) | Sesuai SBM TA berjalan, atau beralasan tertulis |
+| 07 | Dokumen SPPD | Kepala Bagian | SPPD terbit untuk tiap pelaksana |
+| 08 | Pembayaran Uang Muka | Bendahara | Bukti transfer terunggah |
+| 09 | Pertanggungjawaban Perdin | Pemohon | Tiap komponen punya bukti sah |
+| 10 | Upload SPJ Rampung | Bendahara | Tidak ada dokumen bermasalah |
+| 11 | Dokumen Laporan Perdin | Pemohon | Ringkasan, hasil, dan tindak lanjut terisi |
+| 12 | Perhitungan Selisih Uang Muka | Bendahara | Selisih disahkan bendahara |
+| 13 | Pembayaran Sisa Perdin | Bendahara | SP2D terbit; tiga syarat penutupan terpenuhi |
 
 ## Sepuluh layar
 
 - **Beranda** — KPI, antrean tugas berdasarkan tenggat, pagu DIPA per akun, perdin terbaru
 - **Pagu & DIPA** — mata anggaran, Halaman III, riwayat revisi, usulan revisi berjalan
 - **Standar Biaya** — data induk tarif per tahun anggaran, dikelola Admin Anggaran
-- **Daftar Perdin** — tabel dengan kolom posisi berkas pada rel 12 tahap
+- **Daftar Perdin** — tabel dengan kolom posisi berkas pada rel 13 tahap
 - **Kotak Persetujuan** — layar keputusan pimpinan, lengkap dengan cek pagu dan SLA
-- **Detail Berkas** — rel 12 tahap + panel kerja tiap tahap + linimasa audit
+- **Detail Berkas** — rel 13 tahap + panel kerja tiap tahap + linimasa audit
 - **Arsip Dokumen** — semua dokumen terikat nomor berkas dan tahap penerbitnya
 - **Kas & Pembayaran** — layar kerja bendahara: uang muka, pelunasan, pengembalian
 - **Alur & Peran** — matriks tanggung jawab dan kamus status
@@ -101,19 +108,22 @@ berkas boleh berpindah.
 
 ## Yang bisa dicoba
 
-- **Ganti peran** di kanan atas (Pemohon / Pimpinan / Kabag / Bendahara / Admin
-  Anggaran) — tombol
+- **Ganti peran** di kanan atas (Pemohon / Pimpinan / Verifikator Anggaran /
+  Kabag / Bendahara / Admin Anggaran) — tombol
   di luar wewenang menjadi nonaktif, bukan hilang, sehingga pengguna tetap tahu
   langkah berikutnya dan siapa yang berwenang.
 - **Kotak Persetujuan, berkas PD/2026/08/0161** — contoh pagu terkunci. Akun 524211
   diblokir seluruhnya, sehingga tombol *Setujui* dikunci walau peran diganti ke
   Pimpinan. Alasannya ditulis lengkap, bukan sekadar tombol mati.
-- **Tahap 05** — naikkan harga satuan penginapan di atas Rp 1.000.000. Baris
+- **Tahap 03** — lihat usulan pemohon (akun 524119 Paket Meeting Luar Kota)
+  bersanding dengan penetapan verifikator (akun 524111 Perjalanan Dinas Biasa),
+  beserta alasan pemindahan dan jejak perpindahan cadangan pagunya.
+- **Tahap 06** — naikkan harga satuan penginapan di atas Rp 1.000.000. Baris
   berubah merah, kolom alasan terbuka, dan tombol *Ajukan ke Bendahara* terkunci
   sampai alasannya diisi. Total, uang muka, dan nilai tertahan ikut terhitung ulang.
 - **Layar Standar Biaya dengan peran Admin Anggaran** — sepuluh kontrol pengelolaan
   tarif yang tertutup bagi peran lain menjadi terbuka.
-- **Tahap 08** — ubah nilai realisasi; kolom selisih berganti warna dan arah, dan
+- **Tahap 09** — ubah nilai realisasi; kolom selisih berganti warna dan arah, dan
   kotak hitung berpindah antara "BAZNAS masih harus membayar" dan "wajib
   dikembalikan pelaksana".
 - **Klik tahap mana pun** pada rel proses untuk membuka layar kerjanya.
@@ -131,19 +141,21 @@ agar sebidang dengan aksen.
 isyarat bahwa berkas itu akan dicetak dan ditandatangani; mono tabular untuk
 seluruh nominal, nomor berkas, dan tanggal agar sejajar dalam kolom.
 
-**Delapan keputusan yang membentuk antarmuka ini**
+**Sembilan keputusan yang membentuk antarmuka ini**
 
-1. DIPA adalah gerbang, bukan lampiran — diisi di tahap 01, diuji di tahap 02.
-2. SBM adalah data induk, bukan angka hafalan — satu tempat pembaruan, dibekukan
+1. DIPA adalah gerbang, bukan lampiran — diusulkan di tahap 01, diuji di tahap 02,
+   ditetapkan di tahap 03.
+2. Pemohon mengusulkan, verifikator menetapkan — struktur DIPA bukan beban pemohon.
+3. SBM adalah data induk, bukan angka hafalan — satu tempat pembaruan, dibekukan
    per berkas saat Surat Tugas terbit.
-3. Rel 12 tahap sebagai tulang punggung — penomoran dipakai karena ini memang
+4. Rel 13 tahap sebagai tulang punggung — penomoran dipakai karena ini memang
    urutan wajib, bukan hiasan.
-4. Uang selalu ditampilkan berpasangan: rencana ↔ realisasi, uang muka ↔ selisih.
-5. Serif hanya di dalam pratinjau dokumen resmi.
-6. Selisih punya dua arah, dan keduanya punya warna serta alur yang berbeda.
-7. Tombol tak pernah hilang, hanya nonaktif dengan penjelasan wewenang, pagu,
+5. Uang selalu ditampilkan berpasangan: rencana ↔ realisasi, uang muka ↔ selisih.
+6. Serif hanya di dalam pratinjau dokumen resmi.
+7. Selisih punya dua arah, dan keduanya punya warna serta alur yang berbeda.
+8. Tombol tak pernah hilang, hanya nonaktif dengan penjelasan wewenang, pagu,
    atau alasan SBM yang belum diisi.
-8. Laporan substansi terpisah dari SPJ keuangan — satu struk hilang tidak boleh
+9. Laporan substansi terpisah dari SPJ keuangan — satu struk hilang tidak boleh
    menahan laporan yang sudah selesai.
 
 ## Teknis
@@ -157,7 +169,7 @@ seluruh nominal, nomor berkas, dan tanggal agar sejajar dalam kolom.
   samping — penting karena SPJ sering diisi dari lapangan lewat ponsel.
 - Fokus papan tik terlihat di seluruh kontrol; `prefers-reduced-motion` dihormati.
 - Diuji pada lebar 390 / 1024 / 1440 piksel, tema terang dan gelap, seluruh
-  sepuluh layar dan dua belas tahap.
+  sepuluh layar dan tiga belas tahap.
 
 ## Catatan
 

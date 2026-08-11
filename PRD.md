@@ -3,7 +3,7 @@
 
 | | |
 |---|---|
-| **Versi dokumen** | 1.1 |
+| **Versi dokumen** | 1.2 |
 | **Tanggal** | 11 Agustus 2026 |
 | **Status** | Draf untuk ditinjau pemilik proses dan tim teknis |
 | **Pemilik produk** | Bagian Umum — BAZNAS RI |
@@ -21,7 +21,7 @@
 3. [Sasaran dan ukuran keberhasilan](#3-sasaran-dan-ukuran-keberhasilan)
 4. [Pengguna dan peran](#4-pengguna-dan-peran)
 5. [Glosarium](#5-glosarium)
-6. [Alur proses — dua belas tahap](#6-alur-proses--dua-belas-tahap)
+6. [Alur proses — tiga belas tahap](#6-alur-proses--tiga-belas-tahap)
 7. [Kebutuhan fungsional](#7-kebutuhan-fungsional)
 8. [Aturan bisnis](#8-aturan-bisnis)
 9. [Status berkas](#9-status-berkas)
@@ -55,7 +55,7 @@
 ## 1. Ringkasan eksekutif
 
 SIPERDIN mengelola satu berkas perjalanan dinas dari pengajuan sampai pelunasan
-sisa dalam **dua belas tahap yang berurutan dan tidak dapat dilompati**. Sistem
+sisa dalam **tiga belas tahap yang berurutan dan tidak dapat dilompati**. Sistem
 menegakkan dua gerbang kepatuhan yang selama ini dikerjakan manual:
 
 1. **Gerbang anggaran (DIPA).** Tidak ada perjalanan dinas di luar mata anggaran
@@ -114,6 +114,7 @@ pindah/mutasi.
 | **Pemohon** | Amil/pegawai pelaksana; ketua rombongan | Mengajukan, merinci biaya, mempertanggungjawabkan, menyusun laporan | Menyetujui, menerbitkan surat, membayar |
 | **Pimpinan** | Ketua Bidang / Ketua BAZNAS | Menyetujui, mengembalikan, menolak, mendelegasikan | Mengubah rincian biaya, membayar |
 | **Kepala Bagian** | Kabag Umum | Menerbitkan berkas, Surat Tugas, SPPD; menyetujui alasan melampaui SBM; menyetujui laporan perdin | Menyetujui pengajuan, membayar |
+| **Verifikator Anggaran** | Staf verifikasi pada Bagian Keuangan | Mencocokkan usulan pembebanan dengan data DIPA, menetapkan akun definitif, memindahkan akun bila usulan keliru, menerbitkan register anggaran | Menyetujui substansi perjalanan, menerbitkan surat, membayar |
 | **Bendahara** | Bendahara Pengeluaran | Membayar uang muka, memverifikasi SPJ, menghitung dan mengesahkan selisih, melunasi sisa | Mengubah maksud perjalanan, menyetujui pengajuan |
 | **Admin Anggaran** | Pengelola data induk | Mengunggah dan memelihara SBM per tahun anggaran; menyinkronkan DIPA dan revisinya | Menyentuh berkas perjalanan dinas |
 | **Auditor** *(baca saja)* | Satuan Audit Internal, BPK | Membaca berkas, dokumen, dan jejak audit; mengunduh paket audit | Semua aksi ubah |
@@ -145,25 +146,32 @@ siapa yang berwenang.
 
 ---
 
-## 6. Alur proses — dua belas tahap
+## 6. Alur proses — tiga belas tahap
 
-Rel dua belas tahap adalah tulang punggung sistem. Setiap tahap memiliki satu
+Rel tiga belas tahap adalah tulang punggung sistem. Setiap tahap memiliki satu
 penanggung jawab, satu syarat perpindahan, dan satu layar kerja.
 
 | # | Tahap | Penanggung jawab | Syarat berpindah |
 |---|---|---|---|
-| 01 | Pengajuan Perdin | Pemohon | Mata anggaran DIPA terisi dan pagu mencukupi |
+| 01 | Pengajuan Perdin | Pemohon | Usulan pembebanan terisi dan pagu mencukupi |
 | 02 | Persetujuan Pimpinan | Pimpinan | Cek pagu DIPA lulus; keputusan bercatatan |
-| 03 | Eksekusi Kabag | Kepala Bagian | Empat butir daftar periksa tercentang |
-| 04 | Surat Tugas | Kepala Bagian | Tanda tangan elektronik terbubuh |
-| 05 | Rincian Uang Muka | Pemohon (verifikasi Kabag & Bendahara) | Sesuai SBM TA berjalan, atau beralasan tertulis |
-| 06 | Dokumen SPPD | Kepala Bagian | SPPD terbit untuk tiap pelaksana |
-| 07 | Pembayaran Uang Muka | Bendahara | Bukti transfer terunggah |
-| 08 | Pertanggungjawaban Perdin | Pemohon | Tiap komponen punya bukti sah |
-| 09 | Upload SPJ Rampung | Bendahara | Tidak ada dokumen bermasalah |
-| 10 | Dokumen Laporan Perdin | Pemohon | Ringkasan, hasil, dan tindak lanjut terisi |
-| 11 | Perhitungan Selisih Uang Muka | Bendahara | Selisih disahkan bendahara |
-| 12 | Pembayaran Sisa Perdin | Bendahara | SP2D terbit; tiga syarat penutupan terpenuhi |
+| 03 | **Verifikasi & Alokasi Anggaran** | **Verifikator Anggaran** | **Akun definitif ditetapkan; cadangan terbentuk pada akun tersebut** |
+| 04 | Eksekusi Kabag | Kepala Bagian | Empat butir daftar periksa tercentang |
+| 05 | Surat Tugas | Kepala Bagian | Tanda tangan elektronik terbubuh |
+| 06 | Rincian Uang Muka | Pemohon (verifikasi Kabag & Bendahara) | Sesuai SBM TA berjalan, atau beralasan tertulis |
+| 07 | Dokumen SPPD | Kepala Bagian | SPPD terbit untuk tiap pelaksana |
+| 08 | Pembayaran Uang Muka | Bendahara | Bukti transfer terunggah |
+| 09 | Pertanggungjawaban Perdin | Pemohon | Tiap komponen punya bukti sah |
+| 10 | Upload SPJ Rampung | Bendahara | Tidak ada dokumen bermasalah |
+| 11 | Dokumen Laporan Perdin | Pemohon | Ringkasan, hasil, dan tindak lanjut terisi |
+| 12 | Perhitungan Selisih Uang Muka | Bendahara | Selisih disahkan bendahara |
+| 13 | Pembayaran Sisa Perdin | Bendahara | SP2D terbit; tiga syarat penutupan terpenuhi |
+
+**Mengapa verifikasi berdiri sendiri.** Pemohon tahu ke mana ia pergi dan untuk
+apa; ia tidak dituntut menguasai struktur DIPA. Karena itu pembebanan yang
+diisinya berstatus **usulan**. Verifikator Anggaran-lah yang mencocokkannya
+dengan DIPA dan menetapkan akun definitif — dan Surat Tugas tidak dapat terbit
+sebelum penetapan itu ada, karena dasar pembebanan ikut tercetak di dalamnya.
 
 **Perpindahan mundur.** Berkas dapat dikembalikan ke tahap sebelumnya oleh
 pemegang wewenang tahap berjalan, disertai alasan wajib yang tampil di riwayat.
@@ -185,10 +193,10 @@ Penomoran mengikuti pengelompokan: `F-1xx` pengajuan, `F-2xx` persetujuan,
 | F-101 | Pemohon mengisi jenis perjalanan (dalam kota / luar kota / luar negeri), maksud, dasar penugasan, tempat tujuan, tanggal berangkat dan kembali, serta daftar pelaksana | Wajib |
 | F-102 | Formulir menyesuaikan jenis perjalanan: luar negeri menambah kolom paspor, visa, dan izin Setneg; dalam kota menyembunyikan penginapan dan tiket | Wajib |
 | F-103 | Lama perjalanan dihitung sistem dari tanggal berangkat dan kembali; tidak dapat diketik manual | Wajib |
-| F-104 | Pemohon memilih **kegiatan pada DIPA**; sistem menurunkan KRO, RO, komponen, dan akun belanja sesuai jenis perjalanan. Pemohon tidak mengetik kode akun | Wajib |
+| F-104 | Pemohon memilih **kegiatan pada DIPA** sebagai **usulan pembebanan**; sistem menurunkan KRO, RO, komponen, dan akun belanja sesuai jenis perjalanan. Pemohon tidak mengetik kode akun, dan usulannya belum mengikat | Wajib |
 | F-105 | Hanya kegiatan yang boleh diakses unit kerja pemohon yang ditampilkan | Wajib |
 | F-106 | Sistem menampilkan cek pagu seketika: sisa efektif akun, nilai pengajuan, dan sisa setelah disetujui | Wajib |
-| F-107 | Pengajuan **tidak dapat dikirim** bila mata anggaran kosong, akun diblokir seluruhnya, atau nilai melebihi sisa efektif | Wajib |
+| F-107 | Pengajuan **tidak dapat dikirim** bila usulan mata anggaran kosong, akun diblokir seluruhnya, atau nilai melebihi sisa efektif akun yang diusulkan | Wajib |
 | F-108 | Tingkat jabatan tiap pelaksana ditarik dari data kepegawaian dan menentukan golongan tarif SBM pada tahap 05 | Wajib |
 | F-109 | Lampiran dasar penugasan (undangan, TOR) wajib diunggah sebelum kirim | Wajib |
 | F-110 | Pemohon dapat menyimpan draf tanpa validasi penuh | Wajib |
@@ -203,7 +211,7 @@ Penomoran mengikuti pengelompokan: `F-1xx` pengajuan, `F-2xx` persetujuan,
 | F-202 | Lembar cek ditutup satu putusan tegas: *pagu tersedia* atau *pagu tidak tersedia* disertai alasan | Wajib |
 | F-203 | Tombol **Setujui** dikunci sistem bila pagu tidak tersedia; tombol *Kembalikan untuk revisi* tetap terbuka | Wajib |
 | F-204 | Keputusan wajib disertai catatan yang tampil di riwayat berkas dan terkirim ke pemohon | Wajib |
-| F-205 | Persetujuan **mencadangkan pagu** pada akun yang dibebani seketika, dalam satu transaksi basis data dengan penguncian baris | Wajib |
+| F-205 | Persetujuan **mencadangkan pagu** pada akun yang **diusulkan**, seketika, dalam satu transaksi basis data dengan penguncian baris | Wajib |
 | F-206 | Angka yang mendasari keputusan **dibekukan** sebagai bukti audit; berkas menyimpan salinan sisa efektif pada saat keputusan | Wajib |
 | F-207 | Nilai di atas ambang tertentu atau perjalanan luar negeri menambah satu lapis persetujuan secara otomatis | Wajib |
 | F-208 | Pimpinan dapat mendelegasikan wewenang persetujuan untuk rentang tanggal tertentu | Wajib |
@@ -211,21 +219,38 @@ Penomoran mengikuti pengelompokan: `F-1xx` pengajuan, `F-2xx` persetujuan,
 | F-210 | Sistem menampilkan riwayat kepatuhan SPJ pemohon pada layar keputusan | Sebaiknya |
 | F-211 | Persetujuan massal untuk berkas yang seluruh cek pagunya lulus | Bisa nanti |
 
-### 7.3 Eksekusi dan dokumen (tahap 03, 04, 06)
+### 7.3 Verifikasi dan alokasi anggaran (tahap 03)
 
 | ID | Kebutuhan | Prioritas |
 |---|---|---|
-| F-301 | Kabag menjalankan daftar periksa: kelengkapan lampiran, alokasi nomor Surat Tugas, verifikasi rincian terhadap SBM, penunjukan bendahara pembayar | Wajib |
+| F-321 | Verifikator melihat **usulan pemohon dan penetapannya bersanding**, lengkap dengan kegiatan, KRO, RO, komponen, dan akun | Wajib |
+| F-322 | Verifikator **menetapkan akun definitif**; ia berwenang memilih akun yang berbeda dari usulan | Wajib |
+| F-323 | Pemindahan akun **memindahkan cadangan pagu**: satu mutasi pelepasan pada akun usulan dan satu mutasi pencadangan pada akun definitif, dalam satu transaksi | Wajib |
+| F-324 | Verifikator wajib mengisi **alasan** bila akun yang ditetapkan berbeda dari usulan; alasan tampil di riwayat dan pada kertas kerja | Wajib |
+| F-325 | Daftar periksa verifikasi minimal: mata anggaran terdaftar pada DIPA revisi berlaku; akun sesuai jenis perjalanan; tidak ada blokir; sisa efektif mencukupi; sesuai rencana Halaman III bulan berjalan | Wajib |
+| F-326 | Sistem menolak penetapan pada akun yang **tidak sesuai jenis perjalanan** (mis. paket meeting untuk perjalanan biasa) | Wajib |
+| F-327 | Penetapan alokasi menerbitkan **nomor register anggaran** yang menjadi rujukan pembebanan pada Surat Tugas dan SPPD | Wajib |
+| F-328 | Verifikator dapat mengembalikan berkas ke pemohon atau pimpinan disertai alasan | Wajib |
+| F-329 | **Surat Tugas tidak dapat diterbitkan** sebelum alokasi definitif ditetapkan | Wajib |
+| F-330 | Antrean verifikasi memiliki SLA tersendiri dan tampil sebagai layar kerja Verifikator Anggaran | Wajib |
+| F-331 | Verifikator tidak berwenang mengubah maksud, tanggal, pelaksana, atau nilai pengajuan | Wajib |
+
+### 7.4 Eksekusi dan dokumen (tahap 04, 05, 07)
+
+| ID | Kebutuhan | Prioritas |
+|---|---|---|
+| F-301 | Kabag menjalankan daftar periksa: kelengkapan lampiran, **alokasi anggaran definitif diterima dari verifikator**, alokasi nomor Surat Tugas, penunjukan bendahara pembayar | Wajib |
 | F-302 | Kabag menunjuk pemegang uang muka (satu rekening per rombongan) | Wajib |
 | F-303 | Penerbitan berkas **mengunci komponen biaya**; perubahan setelahnya harus melalui adendum bernomor dan menerbitkan ulang Surat Tugas | Wajib |
 | F-304 | Nomor Surat Tugas dan SPPD dibangkitkan sistem menurut format resmi, berurutan, dan tidak dapat diketik manual | Wajib |
 | F-305 | Surat Tugas dan SPPD ditandatangani dengan tanda tangan elektronik tersertifikasi | Wajib |
+| F-310 | Surat Tugas dan SPPD **mencantumkan dasar pembebanan**: nomor DIPA, kegiatan, komponen, akun, dan nomor register anggaran | Wajib |
 | F-306 | SPPD terbit dua lembar: lembar penugasan dan lembar pengesahan yang dicetak untuk dibubuhi cap tiba dan berangkat di tempat tujuan | Wajib |
 | F-307 | SPPD dapat diterbitkan sekaligus untuk seluruh pelaksana dalam satu rombongan | Wajib |
 | F-308 | Setiap dokumen memiliki versi; versi lama tetap tersimpan dan dapat dibaca | Wajib |
 | F-309 | Dokumen memuat penanda keaslian (kode QR menuju halaman verifikasi publik) | Sebaiknya |
 
-### 7.4 Anggaran dan DIPA
+### 7.5 Anggaran dan DIPA
 
 | ID | Kebutuhan | Prioritas |
 |---|---|---|
@@ -241,7 +266,7 @@ Penomoran mengikuti pengelompokan: `F-1xx` pengajuan, `F-2xx` persetujuan,
 | F-410 | Berkas yang tertahan karena blokir **tidak dihapus**; berkas dinilai ulang begitu revisi disahkan tanpa pengajuan ulang | Wajib |
 | F-411 | Data DIPA disinkronkan dari sistem keuangan negara; unggahan berkas menjadi jalur cadangan yang wajib tersedia sejak Fase 1 | Wajib |
 
-### 7.5 Standar Biaya Masukan dan rincian (tahap 05)
+### 7.6 Standar Biaya Masukan dan rincian (tahap 06)
 
 | ID | Kebutuhan | Prioritas |
 |---|---|---|
@@ -266,7 +291,7 @@ Penomoran mengikuti pengelompokan: `F-1xx` pengajuan, `F-2xx` persetujuan,
 | F-519 | Seluruh komponen dibebankan pada akun DIPA yang disetujui pimpinan dan tidak dapat diubah pada tahap ini | Wajib |
 | F-520 | Rekening penerima uang muka diverifikasi terhadap data kepegawaian | Wajib |
 
-### 7.6 Pembayaran (tahap 07 dan 12)
+### 7.7 Pembayaran (tahap 08 dan 13)
 
 | ID | Kebutuhan | Prioritas |
 |---|---|---|
@@ -279,7 +304,7 @@ Penomoran mengikuti pengelompokan: `F-1xx` pengajuan, `F-2xx` persetujuan,
 | F-607 | Pelunasan sisa hanya dapat dieksekusi setelah SPJ rampung, laporan disetujui, dan selisih disahkan | Wajib |
 | F-608 | Integrasi transfer bank *host-to-host* dengan persetujuan berjenjang | Bisa nanti |
 
-### 7.7 Pertanggungjawaban dan selisih (tahap 08, 09, 11)
+### 7.8 Pertanggungjawaban dan selisih (tahap 09, 10, 12)
 
 | ID | Kebutuhan | Prioritas |
 |---|---|---|
@@ -295,7 +320,7 @@ Penomoran mengikuti pengelompokan: `F-1xx` pengajuan, `F-2xx` persetujuan,
 | F-710 | Tenggat SPJ 5 hari kerja setelah kembali; pelanggaran menahan pengajuan baru pelaksana | Wajib |
 | F-711 | Pemindaian bukti dengan pembacaan nominal otomatis | Bisa nanti |
 
-### 7.8 Laporan, arsip, dan penutupan (tahap 10, 12)
+### 7.9 Laporan, arsip, dan penutupan (tahap 11, 13)
 
 | ID | Kebutuhan | Prioritas |
 |---|---|---|
@@ -315,7 +340,7 @@ Penomoran mengikuti pengelompokan: `F-1xx` pengajuan, `F-2xx` persetujuan,
 | ID | Aturan | Ditegakkan di |
 |---|---|---|
 | BR-01 | `sisa efektif = pagu − blokir − realisasi − cadangan`. Hanya sisa efektif yang boleh dipakai menyetujui pengajuan baru | `AnggaranService::sisaEfektif()` |
-| BR-02 | Persetujuan mencadangkan pagu seketika. Cadangan dilepas bila berkas dibatalkan atau ditolak | `AnggaranService::cadangkan()` / `lepasCadangan()` |
+| BR-02 | Persetujuan mencadangkan pagu pada akun usulan. Verifikasi memindahkannya ke akun definitif. Cadangan dilepas bila berkas dibatalkan atau ditolak | `AnggaranService::cadangkan()` · `pindahkanCadangan()` · `lepasCadangan()` |
 | BR-03 | Nilai menjadi realisasi hanya setelah SP2D terbit — bukan saat uang muka ditransfer dari UP | `AnggaranService::realisasikan()` |
 | BR-04 | Versi SBM ditentukan tanggal berangkat, dan dibekukan pada berkas saat Surat Tugas terbit | `SbmResolver::untukBerkas()` |
 | BR-05 | Melampaui SBM diperbolehkan dengan alasan tertulis yang disetujui Kepala Bagian; tanpa alasan, rincian tidak dapat dikirim | `RincianService::validasiSbm()` |
@@ -326,6 +351,7 @@ Penomoran mengikuti pengelompokan: `F-1xx` pengajuan, `F-2xx` persetujuan,
 | BR-10 | SLA persetujuan 2×24 jam kerja; pelanggaran dieskalasi ke atasan pemberi persetujuan | Penjadwal harian |
 | BR-11 | Nomor berkas, Surat Tugas, SPPD, dan voucher dibangkitkan sistem, berurutan, tanpa lompatan, dan tidak dapat digunakan ulang | `NomorService` dengan penguncian baris |
 | BR-12 | Perubahan setelah Surat Tugas terbit memerlukan adendum bernomor dan penerbitan ulang dokumen | `PerdinState` |
+| BR-15 | Surat Tugas hanya dapat terbit bila `perdin.mata_anggaran_id` (akun definitif) dan nomor register anggaran sudah terisi | `PenerbitSuratTugas` |
 | BR-13 | Efisiensi realisasi terhadap rencana kembali ke pagu, bukan menjadi hak pelaksana | `SelisihService` |
 | BR-14 | Berkas selesai bersifat hanya-baca; koreksi dilakukan melalui berkas koreksi yang merujuk berkas asal | `PerdinPolicy::update()` |
 
@@ -353,7 +379,9 @@ Draf ──► Menunggu persetujuan ──► Disetujui ──► Terbit ──�
 | `dikembalikan` | Bola di pemohon; alasan wajib dan tampil di riwayat | Pemohon |
 | `ditolak` | Berakhir; cadangan tidak pernah terbentuk | — |
 | `pagu_terkunci` | Akun diblokir atau sisa efektif tidak cukup | Admin Anggaran |
-| `disetujui` | Cadangan terbentuk | Kepala Bagian |
+| `disetujui` | Cadangan terbentuk pada akun usulan | Verifikator Anggaran |
+| `menunggu_verifikasi` | Menunggu penetapan akun definitif | Verifikator Anggaran |
+| `teralokasi` | Akun definitif ditetapkan; register anggaran terbit | Kepala Bagian |
 | `terbit` | Surat Tugas & SPPD terbit; komponen biaya terkunci | Bendahara |
 | `dibayar_di_muka` | Uang muka ditransfer dari UP | Pemohon |
 | `pertanggungjawaban` | Realisasi sedang diisi | Pemohon |
@@ -618,9 +646,11 @@ Kolom uang bertipe `BIGINT UNSIGNED` dalam rupiah penuh.
 | Kolom | Tipe | Keterangan |
 |---|---|---|
 | `id` | BIGINT UNSIGNED PK | |
-| `mata_anggaran_id` | FK → `mata_anggaran` | |
+| `mata_anggaran_usulan_id` | FK → `mata_anggaran` | diisi pemohon pada tahap 01 |
+| `mata_anggaran_id` | FK → `mata_anggaran` nullable | **akun definitif**, diisi verifikator pada tahap 03 |
+| `nomor_register_anggaran` | VARCHAR(32) UNIQUE nullable | terbit saat alokasi ditetapkan |
 | `perdin_id` | FK → `perdin` (nullable) | |
-| `jenis` | ENUM('cadangan','lepas_cadangan','realisasi','koreksi_pagu','blokir','buka_blokir') | |
+| `jenis` | ENUM('cadangan','lepas_cadangan','pindah_keluar','pindah_masuk','realisasi','koreksi_pagu','blokir','buka_blokir') | `pindah_keluar` dan `pindah_masuk` selalu berpasangan dalam satu transaksi |
 | `nilai` | BIGINT SIGNED | positif menambah beban, negatif melepas |
 | `referensi` | VARCHAR(64) | nomor SP2D / SPM / revisi |
 | `keterangan` | VARCHAR(255) | |
@@ -739,6 +769,27 @@ Kolom uang bertipe `BIGINT UNSIGNED` dalam rupiah penuh.
 | `snapshot_sisa_efektif` | BIGINT UNSIGNED |
 | `nilai_diajukan` | BIGINT UNSIGNED |
 | `diputus_pada` | TIMESTAMP |
+
+**`perdin_verifikasi`** — penetapan alokasi anggaran
+
+| Kolom | Tipe | Keterangan |
+|---|---|---|
+| `id` | BIGINT UNSIGNED PK | |
+| `perdin_id` | FK unik → `perdin` | satu penetapan berlaku per berkas |
+| `verifikator_id` | FK → `users` | |
+| `mata_anggaran_usulan_id` | FK → `mata_anggaran` | disalin saat verifikasi |
+| `mata_anggaran_final_id` | FK → `mata_anggaran` | |
+| `dipindahkan` | BOOLEAN | `true` bila akun final berbeda dari usulan |
+| `alasan_pemindahan` | VARCHAR(500) nullable | wajib bila `dipindahkan` |
+| `periksa_terdaftar_dipa` | BOOLEAN | |
+| `periksa_sesuai_jenis` | BOOLEAN | |
+| `periksa_tanpa_blokir` | BOOLEAN | |
+| `periksa_pagu_cukup` | BOOLEAN | |
+| `periksa_sesuai_rpd` | BOOLEAN | |
+| `nomor_register_anggaran` | VARCHAR(32) | |
+| `ditetapkan_pada` | TIMESTAMP | |
+
+> Indeks: `(verifikator_id, ditetapkan_pada)`.
 
 **`perdin_rincian`** — rencana biaya
 
@@ -874,7 +925,7 @@ app/
 │   └── BangunUlangSaldoAnggaran.php    # rekonsiliasi dari buku besar
 ├── Domain/
 │   ├── Anggaran/
-│   │   ├── AnggaranService.php         # cadangkan, lepasCadangan, realisasikan
+│   │   ├── AnggaranService.php         # cadangkan, pindahkanCadangan, lepasCadangan, realisasikan
 │   │   ├── SisaEfektif.php             # objek nilai
 │   │   └── Exceptions/PaguTidakCukup.php
 │   ├── Sbm/
@@ -886,6 +937,7 @@ app/
 │   │   ├── Actions/
 │   │   │   ├── KirimPengajuan.php
 │   │   │   ├── PutuskanPersetujuan.php
+│   │   │   ├── TetapkanAlokasiAnggaran.php
 │   │   │   ├── TerbitkanBerkas.php
 │   │   │   ├── SimpanRincian.php
 │   │   │   ├── SimpanRealisasi.php
@@ -908,12 +960,14 @@ app/
 │   ├── Perdin/TabelRincian.php         # validasi SBM langsung
 │   ├── Perdin/TabelRealisasi.php
 │   ├── Persetujuan/LembarCekPagu.php
+│   ├── Verifikasi/PenetapanAlokasi.php  # banding usulan vs penetapan
 │   ├── Sbm/KelolaTarif.php
 │   └── Keuangan/AntreanPembayaran.php
 ├── Models/
 ├── Policies/
 │   ├── PerdinPolicy.php
 │   ├── PersetujuanPolicy.php
+│   ├── VerifikasiPolicy.php
 │   ├── PembayaranPolicy.php
 │   └── SbmPolicy.php
 ├── Enums/
@@ -945,7 +999,8 @@ app/
 | Peristiwa | Pendengar |
 |---|---|
 | `PengajuanDikirim` | Beri tahu pimpinan · mulai penghitung SLA |
-| `PengajuanDisetujui` | Cadangkan pagu · beri tahu Kabag dan pemohon |
+| `PengajuanDisetujui` | Cadangkan pagu pada akun usulan · beri tahu Verifikator Anggaran |
+| `AlokasiAnggaranDitetapkan` | Pindahkan cadangan bila akun berubah · terbitkan register anggaran · beri tahu Kabag |
 | `PengajuanDitolak` / `PerdinDibatalkan` | Lepas cadangan · beri tahu pemohon |
 | `BerkasDiterbitkan` | Bekukan versi SBM · bangkitkan Surat Tugas & SPPD · kunci rincian |
 | `UangMukaDibayar` | Perbarui status · jadwalkan pengingat tenggat SPJ |
@@ -974,10 +1029,12 @@ app/
 | `GET /` | Beranda — KPI, antrean tugas, pagu DIPA, perdin terbaru | Semua |
 | `GET /perdin` | Daftar perdin dengan saringan | Semua |
 | `GET /perdin/create` · `POST /perdin` | Formulir pengajuan | Pemohon |
-| `GET /perdin/{perdin}` | Detail berkas — rel 12 tahap | Semua (sesuai lingkup) |
+| `GET /perdin/{perdin}` | Detail berkas — rel 13 tahap | Semua (sesuai lingkup) |
 | `POST /perdin/{perdin}/kirim` | Kirim ke pimpinan | Pemohon |
 | `GET /persetujuan` | Kotak persetujuan | Pimpinan |
 | `POST /perdin/{perdin}/putuskan` | Setujui/kembalikan/tolak | Pimpinan |
+| `GET /verifikasi` | Antrean verifikasi anggaran | Verifikator |
+| `POST /perdin/{perdin}/alokasi` | Tetapkan akun definitif & register anggaran | Verifikator |
 | `POST /perdin/{perdin}/terbitkan` | Eksekusi Kabag | Kabag |
 | `GET/POST /perdin/{perdin}/rincian` | Rincian uang muka | Pemohon, Kabag |
 | `GET /perdin/{perdin}/dokumen/{jenis}` | Unduh dokumen | Sesuai lingkup |
@@ -1069,7 +1126,7 @@ dijalankan sebagai tugas antrean dengan percobaan ulang bertahap.
 | Fitur | Setiap kriteria penerimaan di bawah, melalui HTTP dan Livewire | Pest + `Livewire::test()` |
 | Kebijakan | Matriks peran × aksi lengkap | Pest |
 | Serentak | Dua persetujuan bersamaan pada akun yang sama | Pest + transaksi paralel |
-| Ujung ke ujung | Alur 12 tahap satu berkas | Laravel Dusk |
+| Ujung ke ujung | Alur 13 tahap satu berkas | Laravel Dusk |
 
 **Ambang mutu.** Cakupan pengujian pada `app/Domain` ≥ 90%. Analisis statis
 Larastan tingkat 6 tanpa galat. Setiap kebutuhan berprioritas *Wajib* memiliki
@@ -1104,6 +1161,26 @@ sekurang-kurangnya satu uji fitur yang menyebut ID kebutuhannya.
 > **maka** baris ditandai melampaui batas sebesar Rp 400.000, kolom alasan
 > terbuka dan wajib diisi, dan aksi *Ajukan ke Bendahara* ditolak peladen
 > selama alasan kosong — bukan hanya dinonaktifkan di antarmuka.
+
+**AC-11 — Pemindahan akun memindahkan cadangan** *(F-323)*
+> **Diberikan** berkas disetujui dengan usulan akun `524119` sehingga cadangannya
+> terbentuk di sana,
+> **ketika** verifikator menetapkan akun definitif `524111` disertai alasan,
+> **maka** terbentuk sepasang mutasi `pindah_keluar` pada `524119` dan
+> `pindah_masuk` pada `524111` dalam satu transaksi, sisa efektif `524119`
+> bertambah kembali sebesar nilai berkas, sisa efektif `524111` berkurang sebesar
+> nilai yang sama, dan jumlah beban keseluruhan tidak berubah.
+
+**AC-12 — Surat Tugas terkunci sebelum alokasi** *(F-329, BR-15)*
+> **Diberikan** berkas yang sudah disetujui pimpinan tetapi belum diverifikasi,
+> **ketika** Kabag mencoba menerbitkan Surat Tugas,
+> **maka** aksi ditolak kebijakan dengan alasan *alokasi anggaran belum
+> ditetapkan*, dan tidak ada nomor Surat Tugas yang terpakai.
+
+**AC-13 — Pemindahan akun wajib beralasan** *(F-324)*
+> **Diberikan** verifikator memilih akun yang berbeda dari usulan,
+> **ketika** ia menetapkan alokasi tanpa mengisi alasan,
+> **maka** peladen menolak dengan galat validasi pada kolom alasan.
 
 **AC-05 — Versi SBM dibekukan** *(F-508)*
 > **Diberikan** berkas yang Surat Tugasnya terbit dengan SBM TA 2026,
@@ -1179,6 +1256,7 @@ FILESYSTEM_DISK=s3
 PERDIN_UANG_MUKA_PERSEN_MAKS=80
 PERDIN_TENGGAT_SPJ_HARI_KERJA=5
 PERDIN_SLA_PERSETUJUAN_JAM=48
+PERDIN_SLA_VERIFIKASI_JAM=24
 PERDIN_AMBANG_PERSETUJUAN_LAPIS_2=25000000
 SAKTI_BASE_URL=
 BSRE_BASE_URL=
@@ -1206,8 +1284,8 @@ menyentuh kode — karena angka-angka ini memang berubah mengikuti peraturan.
 
 | Fase | Cakupan | Hasil yang bisa dipakai |
 |---|---|---|
-| **Fase 1 — Inti** | Tahap 01–07 · DIPA unggah manual · SBM · peran & kebijakan · Surat Tugas & SPPD · jejak audit | Perdin dapat diajukan, disetujui dengan cek pagu, diterbitkan surat, dan dibayar uang mukanya |
-| **Fase 2 — Penutupan siklus** | Tahap 08–12 · arsip dokumen · laporan pengelola · ekspor | Siklus penuh sampai pelunasan dan penutupan berkas |
+| **Fase 1 — Inti** | Tahap 01–08 · DIPA unggah manual · SBM · peran & kebijakan · Surat Tugas & SPPD · jejak audit | Perdin dapat diajukan, disetujui dengan cek pagu, diterbitkan surat, dan dibayar uang mukanya |
+| **Fase 2 — Penutupan siklus** | Tahap 09–13 · arsip dokumen · laporan pengelola · ekspor | Siklus penuh sampai pelunasan dan penutupan berkas |
 | **Fase 3 — Integrasi** | Sinkronisasi sistem keuangan negara, kepegawaian, TTE penuh, *host-to-host* perbankan | Pengurangan entri ganda dan rekonsiliasi manual |
 | **Fase 4 — Penajaman** | Persetujuan massal · pembacaan bukti otomatis · papan analitik lanjutan | Percepatan pekerjaan berulang |
 
@@ -1233,6 +1311,7 @@ menyentuh kode — karena angka-angka ini memang berubah mengikuti peraturan.
 | Integrasi sistem keuangan negara tertunda | Pagu tidak mutakhir; keputusan salah | Unggahan manual DIPA sejak Fase 1, dengan penanda waktu sinkronisasi terakhir yang tampil di layar keputusan |
 | Admin terlambat mengunggah SBM tahun baru | Pengajuan awal tahun tertahan | Peringatan otomatis sejak 1 Desember; peran cadangan admin |
 | Dua persetujuan serentak melampaui pagu | Temuan audit | Penguncian baris pada transaksi pencadangan; uji serentak wajib |
+| Verifikasi menjadi leher botol baru | Surat Tugas terlambat, perjalanan mendesak terhambat | SLA verifikasi 1×24 jam dengan eskalasi; verifikator cadangan; penetapan massal untuk berkas yang usulannya sudah benar |
 | Ringkasan saldo menyimpang dari buku besar | Angka keputusan salah | Rekonsiliasi harian otomatis dengan laporan selisih |
 | Pengguna menghindari sistem saat mendesak | Berkas tidak lengkap | Jalur perdin mendesak yang tetap tercatat, dengan pengesahan menyusul berbatas waktu |
 | Kualitas bukti pindai buruk | SPJ bolak-balik | Pemeriksaan keterbacaan saat unggah, contoh bukti yang baik, opsi surat pernyataan riil |
@@ -1271,6 +1350,9 @@ menyentuh kode — karena angka-angka ini memang berubah mengikuti peraturan.
 | Q-8 | Bagaimana perlakuan perjalanan dinas yang dibatalkan setelah tiket terlanjur dibeli? | Bagian Keuangan | Aturan pelepasan cadangan dan penggantian biaya hangus |
 | Q-9 | Apakah aplikasi ditempatkan di pusat data lembaga atau layanan awan? | Tim TI | Menentukan rancangan penyebaran dan pencadangan |
 | Q-10 | Apakah sudah ada penyedia SSO lembaga yang harus dipakai? | Tim TI | Menentukan rancangan otentikasi |
+| Q-11 | Siapa yang memegang peran Verifikator Anggaran — staf Bagian Keuangan, PPK, atau PPSPM? | Bagian Keuangan | Menentukan pemisahan wewenang dan siapa cadangannya |
+| Q-12 | Berapa SLA verifikasi anggaran yang wajar, dan apa yang terjadi bila terlampaui? | Bagian Keuangan | `PERDIN_SLA_VERIFIKASI_JAM` belum dapat diisi |
+| Q-13 | Apakah verifikator boleh mengubah nilai pengajuan, atau hanya akunnya? Dokumen ini mengasumsikan hanya akun | Bagian Keuangan, SAI | Menentukan lingkup F-331 |
 
 ---
 
@@ -1293,19 +1375,20 @@ menyentuh kode — karena angka-angka ini memang berubah mengikuti peraturan.
 
 **E** = eksekutor · **P** = pemutus · **V** = verifikator · **L** = dilihat saja
 
-| # | Tahap | Pemohon | Pimpinan | Kabag | Bendahara | Admin |
-|---|---|:---:|:---:|:---:|:---:|:---:|
-| 01 | Pengajuan Perdin | E | L | L | — | — |
-| 02 | Persetujuan Pimpinan | L | P | L | V | — |
-| 03 | Eksekusi Kabag | L | L | E | L | — |
-| 04 | Surat Tugas | L | L | E | L | — |
-| 05 | Rincian Uang Muka | E | L | V | V | — |
-| 06 | Dokumen SPPD | L | L | E | L | — |
-| 07 | Pembayaran Uang Muka | L | — | L | E | — |
-| 08 | Pertanggungjawaban | E | — | L | V | — |
-| 09 | Upload SPJ Rampung | E | — | L | P | — |
-| 10 | Laporan Perdin | E | L | P | — | — |
-| 11 | Perhitungan Selisih | L | — | L | E | — |
-| 12 | Pembayaran Sisa | L | — | L | E | — |
-| — | Data induk SBM | L | L | L | L | E |
-| — | Data induk DIPA | L | L | L | V | E |
+| # | Tahap | Pemohon | Pimpinan | Verifikator | Kabag | Bendahara | Admin |
+|---|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| 01 | Pengajuan Perdin | E | L | — | L | — | — |
+| 02 | Persetujuan Pimpinan | L | P | L | L | V | — |
+| 03 | Verifikasi & Alokasi Anggaran | L | L | E | L | V | L |
+| 04 | Eksekusi Kabag | L | L | L | E | L | — |
+| 05 | Surat Tugas | L | L | L | E | L | — |
+| 06 | Rincian Uang Muka | E | L | V | V | V | — |
+| 07 | Dokumen SPPD | L | L | — | E | L | — |
+| 08 | Pembayaran Uang Muka | L | — | L | L | E | — |
+| 09 | Pertanggungjawaban | E | — | L | L | V | — |
+| 10 | Upload SPJ Rampung | E | — | L | L | P | — |
+| 11 | Laporan Perdin | E | L | — | P | — | — |
+| 12 | Perhitungan Selisih | L | — | V | L | E | — |
+| 13 | Pembayaran Sisa | L | — | L | L | E | — |
+| — | Data induk SBM | L | L | L | L | L | E |
+| — | Data induk DIPA | L | L | V | L | V | E |
