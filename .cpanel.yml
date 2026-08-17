@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/semestat/perdin.semestateknologiutama.com
+    - /bin/cp -f public/index.html $DEPLOYPATH/index.html

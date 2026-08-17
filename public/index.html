@@ -1,0 +1,2853 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Prototipe antarmuka Sistem Informasi Perjalanan Dinas BAZNAS. Data contoh untuk keperluan perancangan.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%230F5FA6%27/%3E%3Cpath d=%27M16 6 8 10v6c0 5.5 3.9 10 8 10.8 4.1-.8 8-5.3 8-10.8v-6l-8-4Z%27 fill=%27none%27 stroke=%27%23fff%27 stroke-width=%272%27 stroke-linejoin=%27round%27/%3E%3Cpath d=%27m12 16 3 3 5-5%27 fill=%27none%27 stroke=%27%23fff%27 stroke-width=%272.4%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E">
+<style>*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0}img,svg{vertical-align:middle}</style>
+</head>
+<body>
+<title>SIPERDIN BAZNAS — Desain Antarmuka Perjalanan Dinas</title>
+
+<style>
+/* ============================================================
+   TOKEN — palet lengkap didefinisikan di :root (mode terang)
+   ============================================================ */
+:root{
+  --paper:#F4F6F8;
+  --surface:#FFFFFF;
+  --surface-2:#FAFBFC;
+  --sunk:#EEF2F5;
+  --line:#DCE3E9;
+  --line-strong:#C3CEd8;
+  --ink:#0B1721;
+  --ink-2:#33485A;
+  --muted:#5B6C7A;
+  --faint:#8496A4;
+
+  --accent:#0F5FA6;
+  --accent-hi:#0C4E8A;
+  --accent-ink:#FFFFFF;
+  --accent-tint:#E7F0F8;
+  --accent-line:#B9D4EA;
+
+  --brass:#8C6420;
+  --brass-tint:#F6F0E1;
+  --brass-line:#E0CFA6;
+
+  --ok:#166B48;      --ok-tint:#E4F2EB;   --ok-line:#B4D9C7;
+  --warn:#8E5B06;    --warn-tint:#FBF0DD; --warn-line:#E6CD9C;
+  --crit:#A4322A;    --crit-tint:#FAE9E7; --crit-line:#EDBFBA;
+
+  --shadow:0 1px 2px rgba(11,23,33,.05), 0 6px 18px -10px rgba(11,23,33,.18);
+  --shadow-lg:0 2px 6px rgba(11,23,33,.06), 0 24px 48px -24px rgba(11,23,33,.30);
+
+  --r-sm:4px; --r:7px; --r-lg:12px;
+
+  --ui:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --doc:"Times New Roman","Liberation Serif",Georgia,serif;
+  --num:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0A121A;
+    --surface:#111C25;
+    --surface-2:#16232E;
+    --sunk:#0E1922;
+    --line:#22333F;
+    --line-strong:#314655;
+    --ink:#E7EEF4;
+    --ink-2:#BACAD6;
+    --muted:#93A6B4;
+    --faint:#71879A;
+
+    --accent:#57A6E6;
+    --accent-hi:#7FBDF0;
+    --accent-ink:#06131E;
+    --accent-tint:#12293A;
+    --accent-line:#27506E;
+
+    --brass:#D9AC5C;
+    --brass-tint:#27200F;
+    --brass-line:#4A3B1C;
+
+    --ok:#5CC297;      --ok-tint:#0F2A21;   --ok-line:#1F5040;
+    --warn:#E0AC55;    --warn-tint:#2A2110; --warn-line:#584219;
+    --crit:#E88B80;    --crit-tint:#2C1715; --crit-line:#5C2E29;
+
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px -10px rgba(0,0,0,.6);
+    --shadow-lg:0 2px 6px rgba(0,0,0,.45), 0 24px 48px -24px rgba(0,0,0,.75);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0A121A; --surface:#111C25; --surface-2:#16232E; --sunk:#0E1922;
+  --line:#22333F; --line-strong:#314655;
+  --ink:#E7EEF4; --ink-2:#BACAD6; --muted:#93A6B4; --faint:#71879A;
+  --accent:#57A6E6; --accent-hi:#7FBDF0; --accent-ink:#06131E; --accent-tint:#12293A; --accent-line:#27506E;
+  --brass:#D9AC5C; --brass-tint:#27200F; --brass-line:#4A3B1C;
+  --ok:#5CC297; --ok-tint:#0F2A21; --ok-line:#1F5040;
+  --warn:#E0AC55; --warn-tint:#2A2110; --warn-line:#584219;
+  --crit:#E88B80; --crit-tint:#2C1715; --crit-line:#5C2E29;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px -10px rgba(0,0,0,.6);
+  --shadow-lg:0 2px 6px rgba(0,0,0,.45), 0 24px 48px -24px rgba(0,0,0,.75);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--ui); font-size:14px; line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{margin:0; text-wrap:balance; letter-spacing:-.012em; font-weight:650}
+p{margin:0}
+button{font:inherit; color:inherit}
+a{color:var(--accent)}
+.num{font-family:var(--num); font-variant-numeric:tabular-nums; letter-spacing:-.02em; white-space:nowrap}
+:where(button,a,input,select,textarea,[tabindex]):focus-visible{
+  outline:2px solid var(--accent); outline-offset:2px; border-radius:var(--r-sm);
+}
+@media (prefers-reduced-motion:reduce){*{animation:none !important; transition:none !important}}
+
+/* ============================================================
+   APP SHELL
+   ============================================================ */
+.app{display:grid; grid-template-columns:262px 1fr; min-height:100vh}
+
+.rail{
+  background:var(--surface); border-right:1px solid var(--line);
+  display:flex; flex-direction:column; position:sticky; top:0; height:100vh; overflow-y:auto;
+}
+.brand{display:flex; gap:11px; align-items:center; padding:18px 18px 16px; border-bottom:1px solid var(--line)}
+.mark{width:34px; height:34px; flex:none; border-radius:9px; background:var(--accent); display:grid; place-items:center}
+.mark svg{width:20px; height:20px}
+.brand b{display:block; font-size:14.5px; letter-spacing:.01em; line-height:1.2}
+.brand span{display:block; font-size:11px; color:var(--muted); letter-spacing:.04em; text-transform:uppercase}
+
+.navgroup{padding:14px 12px 4px}
+.navgroup > h4{
+  font-size:10.5px; text-transform:uppercase; letter-spacing:.11em;
+  color:var(--faint); font-weight:700; padding:0 8px 7px;
+}
+.navitem{
+  display:flex; align-items:center; gap:10px; width:100%; text-align:left;
+  padding:8px 9px; border:0; background:transparent; border-radius:var(--r);
+  cursor:pointer; color:var(--ink-2); font-size:13.4px; transition:background .12s, color .12s;
+}
+.navitem:hover{background:var(--sunk); color:var(--ink)}
+.navitem[aria-current="page"]{background:var(--accent-tint); color:var(--accent); font-weight:600}
+.navitem .ico{width:17px; height:17px; flex:none; opacity:.85}
+.navitem .tally{
+  margin-left:auto; font-family:var(--num); font-style:normal; font-size:11px; padding:1px 6px;
+  border-radius:20px; background:var(--sunk); color:var(--muted);
+}
+.navitem[aria-current="page"] .tally{background:var(--accent); color:var(--accent-ink)}
+.railfoot{margin-top:auto; padding:14px; border-top:1px solid var(--line)}
+.who{display:flex; gap:10px; align-items:center}
+.avatar{
+  width:32px; height:32px; border-radius:50%; flex:none; display:grid; place-items:center;
+  background:var(--brass-tint); color:var(--brass); font-weight:700; font-size:12px;
+  border:1px solid var(--brass-line);
+}
+.who b{font-size:12.8px; display:block; line-height:1.3}
+.who span{font-size:11.5px; color:var(--muted)}
+
+.main{min-width:0; display:flex; flex-direction:column}
+.topbar{
+  position:sticky; top:0; z-index:30; background:var(--paper);
+  background:color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter:blur(9px); border-bottom:1px solid var(--line);
+  display:flex; align-items:center; gap:14px; padding:11px 26px;
+}
+.crumb{font-size:12.5px; color:var(--muted); display:flex; gap:7px; align-items:center; min-width:0}
+.crumb b{color:var(--ink); font-weight:600}
+.crumb .sep{color:var(--line-strong)}
+.search{
+  margin-left:auto; display:flex; align-items:center; gap:8px; background:var(--surface);
+  border:1px solid var(--line); border-radius:var(--r); padding:6px 10px; width:260px; color:var(--faint);
+}
+.search input{border:0; background:transparent; outline:none; color:var(--ink); width:100%; font-size:13px}
+.rolepick{display:flex; align-items:center; gap:7px; background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:5px 9px}
+.rolepick label{font-size:10.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--faint); font-weight:700}
+.rolepick select{border:0; background:transparent; outline:none; color:var(--ink); font-size:13px; font-weight:600; cursor:pointer}
+.iconbtn{
+  width:34px; height:34px; border-radius:var(--r); border:1px solid var(--line); background:var(--surface);
+  display:grid; place-items:center; cursor:pointer; position:relative; color:var(--ink-2);
+}
+.iconbtn:hover{border-color:var(--line-strong)}
+.iconbtn .dot{position:absolute; top:6px; right:6px; width:7px; height:7px; border-radius:50%; background:var(--crit); border:2px solid var(--surface)}
+.burger{display:none}
+
+.canvas{padding:26px; max-width:1240px; width:100%}
+.view{display:none}
+.view.on{display:block; animation:rise .22s ease-out}
+@keyframes rise{from{opacity:0; transform:translateY(5px)} to{opacity:1; transform:none}}
+
+/* ============================================================
+   PRIMITIF
+   ============================================================ */
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg); box-shadow:var(--shadow)}
+.card > header{
+  display:flex; align-items:center; gap:12px; padding:14px 18px; border-bottom:1px solid var(--line);
+  flex-wrap:wrap;
+}
+.card > header > div{min-width:0}
+.card > header h3{font-size:14.5px}
+.card > header .sub{font-size:12px; color:var(--muted); margin-top:1px}
+.card .body{padding:18px}
+.card .foot{padding:12px 18px; border-top:1px solid var(--line); background:var(--surface-2); border-radius:0 0 var(--r-lg) var(--r-lg); display:flex; gap:9px; align-items:center; flex-wrap:wrap}
+.spacer{margin-left:auto}
+
+.btn{
+  display:inline-flex; align-items:center; gap:7px; padding:7px 14px; border-radius:var(--r);
+  border:1px solid var(--line-strong); background:var(--surface); cursor:pointer;
+  font-size:13.2px; font-weight:600; transition:background .12s, border-color .12s, transform .06s;
+}
+.btn:hover{background:var(--sunk)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent); border-color:var(--accent); color:var(--accent-ink)}
+.btn.primary:hover{background:var(--accent-hi); border-color:var(--accent-hi)}
+.btn.ghost{border-color:transparent; background:transparent; color:var(--muted)}
+.btn.ghost:hover{background:var(--sunk); color:var(--ink)}
+.btn.danger{color:var(--crit); border-color:var(--crit-line); background:var(--crit-tint)}
+.btn.sm{padding:4px 10px; font-size:12.3px}
+.btn[disabled]{opacity:.45; cursor:not-allowed}
+.btn[disabled]:hover{background:var(--surface); transform:none}
+.btn .ico{width:15px; height:15px}
+
+.chip{
+  display:inline-flex; align-items:center; gap:6px; padding:2px 9px; border-radius:20px;
+  font-size:11.6px; font-weight:650; border:1px solid transparent; white-space:nowrap; letter-spacing:.005em;
+  max-width:100%;
+}
+.dl dd .chip{white-space:normal}
+.dl dd.num{white-space:normal}
+.chip .bullet{width:6px; height:6px; border-radius:50%; background:currentColor; flex:none}
+.chip.ok{background:var(--ok-tint); color:var(--ok); border-color:var(--ok-line)}
+.chip.warn{background:var(--warn-tint); color:var(--warn); border-color:var(--warn-line)}
+.chip.crit{background:var(--crit-tint); color:var(--crit); border-color:var(--crit-line)}
+.chip.info{background:var(--accent-tint); color:var(--accent); border-color:var(--accent-line)}
+.chip.mute{background:var(--sunk); color:var(--muted); border-color:var(--line)}
+.chip.seal{background:var(--brass-tint); color:var(--brass); border-color:var(--brass-line); font-family:var(--num); font-size:11px}
+
+.lbl{font-size:10.5px; text-transform:uppercase; letter-spacing:.1em; color:var(--faint); font-weight:700}
+.sect-h{display:flex; align-items:flex-end; gap:12px; margin:0 0 14px; flex-wrap:wrap}
+.sect-h > div:first-child{flex:1 1 300px; min-width:0}
+.sect-h h2{font-size:19px}
+.sect-h p{font-size:12.8px; color:var(--muted)}
+
+.grid{display:grid; gap:16px}
+.grid > *{min-width:0}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.stack{display:flex; flex-direction:column; gap:16px; min-width:0}
+.stack > *{min-width:0}
+.row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+
+/* Tabel */
+.tbl-wrap{overflow-x:auto}
+table.tbl{width:100%; border-collapse:collapse; font-size:13px}
+table.tbl th{
+  text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.09em; color:var(--faint);
+  font-weight:700; padding:9px 14px; border-bottom:1px solid var(--line); background:var(--surface-2); white-space:nowrap;
+}
+table.tbl td{padding:11px 14px; border-bottom:1px solid var(--line); vertical-align:middle}
+table.tbl tbody tr:last-child td{border-bottom:0}
+table.tbl tbody tr:hover{background:var(--surface-2)}
+table.tbl td.r, table.tbl th.r{text-align:right}
+.tbl .kode{font-family:var(--num); font-size:12px; color:var(--accent); font-weight:600}
+.tbl .sub{font-size:11.6px; color:var(--muted)}
+tfoot td{background:var(--surface-2); font-weight:650; border-top:1px solid var(--line-strong) !important}
+#tblRencana, #tblRealisasi{min-width:700px}
+
+/* Field */
+.field{display:flex; flex-direction:column; gap:5px}
+.field > label{font-size:12.2px; font-weight:600; color:var(--ink-2)}
+.field > label .req{color:var(--crit)}
+.field .hint{font-size:11.5px; color:var(--faint)}
+.inp{
+  width:100%; padding:8px 11px; border:1px solid var(--line-strong); border-radius:var(--r);
+  background:var(--surface); color:var(--ink); font:inherit; font-size:13.2px; outline:none;
+}
+.inp:focus{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-tint)}
+.inp::placeholder{color:var(--faint)}
+select.inp{cursor:pointer}
+textarea.inp{resize:vertical; min-height:84px; line-height:1.6}
+.inp.num-inp{font-family:var(--num); text-align:right; font-variant-numeric:tabular-nums}
+.seg{display:inline-flex; flex-wrap:wrap; max-width:100%; background:var(--sunk); padding:3px; border-radius:var(--r); gap:2px}
+.seg button{border:0; background:transparent; padding:5px 12px; border-radius:5px; cursor:pointer; font-size:12.6px; font-weight:600; color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface); color:var(--ink); box-shadow:var(--shadow)}
+
+/* Definisi ringkas */
+.dl{display:grid; grid-template-columns:auto 1fr; gap:7px 18px; font-size:13px; align-items:baseline}
+.dl dt{color:var(--muted); font-size:12.4px; white-space:nowrap}
+.dl dd{margin:0; font-weight:550; min-width:0; overflow-wrap:anywhere}
+
+/* ============================================================
+   DASHBOARD
+   ============================================================ */
+.kpi{padding:15px 17px; display:flex; flex-direction:column; gap:3px; position:relative; overflow:hidden}
+.kpi .k-lbl{font-size:11.8px; color:var(--muted); font-weight:600}
+.kpi .k-val{font-family:var(--num); font-size:27px; font-weight:600; letter-spacing:-.03em; line-height:1.15}
+.kpi .k-val small{font-size:14px; color:var(--muted); font-weight:500}
+.kpi .k-meta{font-size:11.8px; display:flex; align-items:center; gap:5px; margin-top:3px}
+.kpi .stripe{position:absolute; left:0; top:0; bottom:0; width:3px}
+.kpi.s-accent .stripe{background:var(--accent)}
+.kpi.s-warn .stripe{background:var(--warn)}
+.kpi.s-crit .stripe{background:var(--crit)}
+.kpi.s-brass .stripe{background:var(--brass)}
+.spark{margin-top:8px; height:34px; width:100%; display:block}
+
+.queue{display:flex; flex-direction:column}
+.qitem{display:flex; gap:13px; align-items:center; padding:12px 18px; border-bottom:1px solid var(--line); cursor:pointer}
+.qitem:last-child{border-bottom:0}
+.qitem:hover{background:var(--surface-2)}
+.qnum{
+  width:26px; height:26px; flex:none; border-radius:7px; display:grid; place-items:center;
+  font-family:var(--num); font-size:11.5px; font-weight:700; background:var(--accent-tint); color:var(--accent);
+}
+.qitem b{font-size:13.2px; font-weight:600; display:block}
+.qitem .qmeta{font-size:11.8px; color:var(--muted)}
+
+/* ============================================================
+   REL 12 TAHAP — tulang punggung aplikasi
+   ============================================================ */
+.railstage{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r-lg);
+  box-shadow:var(--shadow); padding:16px 4px 4px; overflow:hidden;
+}
+.railstage .rs-head{display:flex; align-items:center; gap:12px; padding:0 16px 12px; flex-wrap:wrap}
+.rs-scroll{overflow-x:auto; padding:4px 16px 16px; scrollbar-width:thin}
+.rs-track{display:flex; gap:0; min-width:min-content; position:relative}
+.station{
+  border:0; background:transparent; cursor:pointer; padding:0; flex:none; width:130px;
+  display:flex; flex-direction:column; gap:7px; align-items:flex-start; text-align:left; position:relative;
+}
+.station .bar{height:3px; width:100%; background:var(--line); border-radius:2px; position:relative}
+.station.done .bar{background:var(--ok)}
+.station.now .bar{background:var(--accent)}
+.station .pin{
+  width:22px; height:22px; border-radius:50%; display:grid; place-items:center; margin-top:-1px;
+  font-family:var(--num); font-size:10.5px; font-weight:700;
+  background:var(--surface); border:1.5px solid var(--line-strong); color:var(--muted);
+}
+.station.done .pin{background:var(--ok); border-color:var(--ok); color:var(--surface)}
+:root[data-theme="dark"] .station.done .pin{color:#0A1A14}
+.station.now .pin{background:var(--accent); border-color:var(--accent); color:var(--accent-ink); box-shadow:0 0 0 4px var(--accent-tint)}
+.station .nm{
+  font-size:11.5px; line-height:1.35; color:var(--muted); padding-right:14px; font-weight:550;
+  overflow-wrap:anywhere; hyphens:manual;
+}
+.station.done .nm{color:var(--ink-2)}
+.station.now .nm{color:var(--accent); font-weight:700}
+.station[aria-selected="true"] .nm{text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1.5px}
+.station:hover .nm{color:var(--ink)}
+
+.stagehead{display:flex; gap:14px; align-items:flex-start; padding:16px 18px; border-bottom:1px solid var(--line); flex-wrap:wrap}
+.stagehead .idx{
+  font-family:var(--num); font-size:12px; font-weight:700; color:var(--accent);
+  background:var(--accent-tint); border:1px solid var(--accent-line); padding:3px 8px; border-radius:var(--r-sm);
+}
+.stagehead h3{font-size:16.5px}
+.stagehead .desc{font-size:12.6px; color:var(--muted); margin-top:2px; max-width:62ch}
+.panel{display:none}
+.panel.on{display:block}
+
+.detail-grid{display:grid; grid-template-columns:minmax(0,1fr) 302px; gap:16px; align-items:start}
+.detail-grid > *{min-width:0}
+
+/* Linimasa */
+.tl{display:flex; flex-direction:column; padding:6px 0}
+.tl li{display:grid; grid-template-columns:auto 1fr; gap:11px; padding:8px 18px; list-style:none; position:relative}
+.tl li::before{
+  content:""; position:absolute; left:26px; top:26px; bottom:-8px; width:1px; background:var(--line);
+}
+.tl li:last-child::before{display:none}
+.tl .tdot{
+  width:17px; height:17px; border-radius:50%; margin-top:3px; display:grid; place-items:center; flex:none;
+  background:var(--sunk); border:1px solid var(--line-strong); z-index:1;
+}
+.tl .tdot.ok{background:var(--ok-tint); border-color:var(--ok-line); color:var(--ok)}
+.tl .tdot.now{background:var(--accent); border-color:var(--accent)}
+.tl .tdot svg{width:9px; height:9px}
+.tl b{font-size:12.7px; display:block; font-weight:600}
+.tl span{font-size:11.6px; color:var(--muted)}
+.tl ul{margin:0; padding:0}
+
+/* Pratinjau dokumen resmi */
+.doc{
+  font-family:var(--doc); background:var(--surface); color:var(--ink);
+  border:1px solid var(--line); border-radius:var(--r); padding:32px 38px; font-size:14.5px; line-height:1.7;
+}
+.doc .kop{display:flex; gap:16px; align-items:center; border-bottom:3px double var(--ink); padding-bottom:12px; margin-bottom:6px}
+.doc .kop .seal{width:52px; height:52px; flex:none; border-radius:50%; border:1.5px solid var(--brass); display:grid; place-items:center; color:var(--brass)}
+.doc .kop h4{font-family:var(--doc); font-size:17px; font-weight:700; letter-spacing:.02em}
+.doc .kop .org{font-size:19px; font-weight:700; letter-spacing:.04em}
+.doc .kop .adr{font-size:11.5px; color:var(--muted); font-family:var(--ui); line-height:1.45}
+.doc .title{text-align:center; margin:20px 0 4px; font-weight:700; font-size:16px; letter-spacing:.06em; text-decoration:underline; text-underline-offset:4px}
+.doc .nomor{text-align:center; font-size:13.5px; margin-bottom:18px}
+.doc .clause{display:grid; grid-template-columns:118px 12px 1fr; gap:3px 6px; margin:10px 0}
+.doc .clause .k{font-weight:600}
+.doc ol{margin:4px 0; padding-left:20px}
+.doc .ttd{margin-top:26px; display:flex; justify-content:flex-end}
+.doc .ttd .blk{width:250px; text-align:center; font-size:13.5px}
+.esign{
+  margin:10px auto; width:82px; height:82px; border-radius:6px; border:1px dashed var(--brass);
+  background:var(--brass-tint); display:grid; place-items:center; color:var(--brass);
+}
+.docnote{
+  font-family:var(--ui); font-size:11.5px; color:var(--muted); display:flex; gap:7px; align-items:center;
+  padding:9px 12px; background:var(--sunk); border-radius:var(--r); margin-bottom:12px;
+}
+
+/* Kotak hitung */
+.calc{border:1px solid var(--line); border-radius:var(--r); overflow:hidden}
+.calc .crow{display:flex; justify-content:space-between; gap:14px; padding:10px 15px; border-bottom:1px solid var(--line); font-size:13.2px}
+.calc .crow:last-child{border-bottom:0}
+.calc .crow span{color:var(--muted)}
+.calc .crow b{font-family:var(--num); font-variant-numeric:tabular-nums; font-weight:600}
+.calc .crow.total{background:var(--sunk)}
+.calc .crow.result{background:var(--accent-tint); border-top:1px solid var(--accent-line)}
+.calc .crow.result span{color:var(--accent); font-weight:650}
+.calc .crow.result b{color:var(--accent); font-size:16px}
+.calc .crow.result.minus{background:var(--warn-tint); border-top-color:var(--warn-line)}
+.calc .crow.result.minus span, .calc .crow.result.minus b{color:var(--warn)}
+
+/* Bar anggaran */
+.meter{height:9px; border-radius:20px; background:var(--sunk); overflow:hidden; display:flex}
+.meter i{display:block; height:100%}
+.meter i.used{background:var(--accent)}
+.meter i.hold{background:var(--brass); opacity:.75}
+.legend{display:flex; gap:14px; flex-wrap:wrap; font-size:11.6px; color:var(--muted)}
+.legend b{display:inline-flex; align-items:center; gap:5px; font-weight:550; color:var(--ink-2)}
+.legend b i{width:8px; height:8px; border-radius:2px; display:block}
+
+/* Dropzone & berkas */
+.drop{
+  border:1.5px dashed var(--line-strong); border-radius:var(--r-lg); padding:26px; text-align:center;
+  background:var(--surface-2); cursor:pointer; transition:border-color .15s, background .15s;
+}
+.drop:hover{border-color:var(--accent); background:var(--accent-tint)}
+.drop .big{font-size:13.6px; font-weight:600}
+.drop .small{font-size:11.8px; color:var(--muted); margin-top:3px}
+.file{display:flex; gap:12px; align-items:center; padding:10px 13px; border:1px solid var(--line); border-radius:var(--r); background:var(--surface)}
+.file .ft{
+  width:32px; height:38px; flex:none; border-radius:4px; background:var(--sunk); border:1px solid var(--line);
+  display:grid; place-items:center; font-family:var(--num); font-size:9px; font-weight:700; color:var(--muted);
+}
+.file .ft.pdf{background:var(--crit-tint); border-color:var(--crit-line); color:var(--crit)}
+.file .ft.img{background:var(--accent-tint); border-color:var(--accent-line); color:var(--accent)}
+.file b{font-size:12.9px; font-weight:600; display:block; line-height:1.35}
+.file span{font-size:11.4px; color:var(--muted)}
+
+/* Callout */
+.note{display:flex; gap:11px; padding:12px 14px; border-radius:var(--r); font-size:12.7px; border:1px solid; align-items:flex-start}
+.note svg{width:16px; height:16px; flex:none; margin-top:1px}
+.note.info{background:var(--accent-tint); border-color:var(--accent-line); color:var(--accent)}
+.note.warn{background:var(--warn-tint); border-color:var(--warn-line); color:var(--warn)}
+.note.ok{background:var(--ok-tint); border-color:var(--ok-line); color:var(--ok)}
+.note b{font-weight:700}
+
+/* Toast */
+.toaster{position:fixed; right:20px; bottom:20px; z-index:100; display:flex; flex-direction:column; gap:9px; align-items:flex-end}
+.toast{
+  background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--ok);
+  border-radius:var(--r); box-shadow:var(--shadow-lg); padding:11px 15px; max-width:340px;
+  animation:slidein .2s ease-out; display:flex; gap:10px; align-items:flex-start;
+}
+@keyframes slidein{from{opacity:0; transform:translateX(14px)} to{opacity:1; transform:none}}
+.toast b{font-size:13px; display:block}
+.toast span{font-size:11.9px; color:var(--muted)}
+
+/* Swatch (halaman sistem) */
+.sw{border:1px solid var(--line); border-radius:var(--r); overflow:hidden}
+.sw .chipbox{height:56px}
+.sw .meta{padding:8px 10px; font-size:11.4px; border-top:1px solid var(--line)}
+.sw .meta b{display:block; font-size:12.2px}
+.sw .meta code{font-family:var(--num); color:var(--muted); font-size:10.8px}
+
+/* ============================================================
+   DIPA — pagu, blokir, cadangan, sisa efektif
+   ============================================================ */
+.dipahead{
+  display:flex; gap:16px; align-items:center; flex-wrap:wrap;
+  padding:14px 18px; border-radius:var(--r-lg);
+  border:1px solid var(--brass-line); background:var(--brass-tint);
+}
+.dipahead .no{font-family:var(--num); font-weight:700; font-size:14.5px; color:var(--brass); letter-spacing:-.01em}
+.dipahead .sub{font-size:11.8px; color:var(--muted); margin-top:1px}
+
+.verdict{display:flex; gap:12px; align-items:flex-start; padding:13px 16px; border-radius:var(--r); border:1px solid}
+.verdict svg{width:19px; height:19px; flex:none; margin-top:1px}
+.verdict b{display:block; font-size:13.4px}
+.verdict span{font-size:12.4px; opacity:.92}
+.verdict.pass{background:var(--ok-tint); border-color:var(--ok-line); color:var(--ok)}
+.verdict.fail{background:var(--crit-tint); border-color:var(--crit-line); color:var(--crit)}
+
+/* Neraca pagu: label kiri, angka kanan, baris hasil ditebalkan */
+.ledger{border:1px solid var(--line); border-radius:var(--r); overflow:hidden; font-size:13px}
+.ledger .lrow{display:flex; justify-content:space-between; gap:14px; padding:9px 14px; border-bottom:1px solid var(--line)}
+.ledger .lrow:last-child{border-bottom:0}
+.ledger .lrow span{color:var(--muted); min-width:0; overflow-wrap:anywhere}
+.ledger .lrow b{font-family:var(--num); font-variant-numeric:tabular-nums; font-weight:600; white-space:nowrap}
+.ledger .lrow.minus b{color:var(--warn)}
+.ledger .lrow.sub{background:var(--surface-2)}
+.ledger .lrow.net{background:var(--accent-tint); border-top:1px solid var(--accent-line)}
+.ledger .lrow.net span{color:var(--accent); font-weight:650}
+.ledger .lrow.net b{color:var(--accent); font-size:15px}
+.ledger .lrow.net.bad{background:var(--crit-tint); border-top-color:var(--crit-line)}
+.ledger .lrow.net.bad span, .ledger .lrow.net.bad b{color:var(--crit)}
+
+/* Meter pagu empat segmen */
+.meter i.blok{background:repeating-linear-gradient(45deg, var(--crit) 0 3px, transparent 3px 6px); background-color:var(--crit-tint)}
+
+/* Pohon mata anggaran */
+.tree{font-size:12.6px; display:flex; flex-direction:column; gap:0}
+.tree .lv{display:flex; gap:9px; align-items:baseline; padding:6px 0 6px 0; border-bottom:1px dashed var(--line)}
+.tree .lv:last-child{border-bottom:0}
+.tree .kd{font-family:var(--num); font-size:11.8px; color:var(--accent); font-weight:650; white-space:nowrap; min-width:112px}
+.tree .lv[data-depth="1"]{padding-left:14px}
+.tree .lv[data-depth="2"]{padding-left:28px}
+.tree .lv[data-depth="3"]{padding-left:42px}
+.tree .lv[data-depth="4"]{padding-left:56px}
+.tree .lv[data-depth="5"]{padding-left:70px}
+.tree .tag{font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:var(--faint); font-weight:700; min-width:78px}
+
+/* Halaman III — rencana penarikan dana bulanan */
+.rpd{display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:5px; align-items:end}
+.rpd .col{display:flex; flex-direction:column; justify-content:flex-end; height:136px}
+.rpd .track{position:relative; width:100%; background:var(--sunk); border-radius:3px 3px 0 0; border-bottom:1px solid var(--line-strong)}
+.rpd .fill{position:absolute; left:0; right:0; bottom:0; border-radius:3px 3px 0 0}
+.rpd .fill.real{background:var(--accent)}
+.rpd .fill.cad{background:var(--brass); opacity:.85}
+.rpd .mo{font-size:9.5px; text-align:center; color:var(--faint); margin-top:6px; font-weight:600; letter-spacing:.02em}
+.rpd .col.now .mo{color:var(--accent)}
+.rpd .col.now .track{outline:1.5px solid var(--accent-line); outline-offset:1px}
+
+/* Responsif */
+@media (max-width:1100px){
+  .detail-grid{grid-template-columns:minmax(0,1fr)}
+  .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  .rail{position:fixed; z-index:60; width:262px; transform:translateX(-100%); transition:transform .2s; box-shadow:var(--shadow-lg)}
+  .rail.open{transform:none}
+  .burger{display:grid}
+  .search{display:none}
+  .canvas{padding:16px}
+  .g3,.g2{grid-template-columns:minmax(0,1fr)}
+  .doc{padding:20px}
+}
+@media (max-width:560px){
+  .g4{grid-template-columns:minmax(0,1fr)}
+  .topbar{padding:10px 14px}
+  .crumb > span:first-child, .crumb .sep{display:none}
+  .rolepick label{display:none}
+}
+</style>
+
+<div class="app">
+
+  <!-- ================= RAIL KIRI ================= -->
+  <aside class="rail" id="rail">
+    <div class="brand">
+      <div class="mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3 4 7v5c0 4.6 3.3 8.3 8 9 4.7-.7 8-4.4 8-9V7l-8-4Z"/><path d="m9 12 2 2 4-4"/>
+        </svg>
+      </div>
+      <div>
+        <b>SIPERDIN</b>
+        <span>BAZNAS RI</span>
+      </div>
+    </div>
+
+    <nav class="navgroup">
+      <h4>Ringkasan</h4>
+      <button class="navitem" data-view="dashboard" aria-current="page">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        Beranda
+      </button>
+      <button class="navitem" data-view="daftar">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01" stroke-linecap="round"/></svg>
+        Daftar Perdin <em class="tally">24</em>
+      </button>
+      <button class="navitem" data-view="kotakmasuk">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h5l2 3h4l2-3h5" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.5 6.5 3 12v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6l-1.5-5.5A2 2 0 0 0 17.6 5H6.4a2 2 0 0 0-1.9 1.5Z"/></svg>
+        Kotak Persetujuan <em class="tally">6</em>
+      </button>
+    </nav>
+
+    <nav class="navgroup">
+      <h4>Anggaran</h4>
+      <button class="navitem" data-view="dipa">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V9m5 11V4m5 16v-7m5 7V7" stroke-linecap="round"/></svg>
+        Pagu &amp; DIPA
+      </button>
+      <button class="navitem" data-view="sbm">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h9l4 4v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v5h5M9 13h6M9 17h4" stroke-linecap="round"/></svg>
+        Standar Biaya
+      </button>
+    </nav>
+
+    <nav class="navgroup">
+      <h4>Berkas Aktif</h4>
+      <button class="navitem" data-view="detail">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 3v5h5"/><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2Z"/><path d="M8 13h8M8 17h5" stroke-linecap="round"/></svg>
+        PD/2026/08/0147
+      </button>
+      <button class="navitem" data-view="dokumen">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6Z"/></svg>
+        Arsip Dokumen
+      </button>
+      <button class="navitem" data-view="keuangan">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 12h.01M18 12h.01" stroke-linecap="round"/></svg>
+        Kas &amp; Pembayaran <em class="tally">3</em>
+      </button>
+    </nav>
+
+    <nav class="navgroup">
+      <h4>Referensi</h4>
+      <button class="navitem" data-view="sistem">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1" stroke-linecap="round"/></svg>
+        Panduan Desain
+      </button>
+      <button class="navitem" data-view="alur">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 6H15a3 3 0 0 1 3 3v6.5" stroke-linecap="round"/></svg>
+        Alur &amp; Peran
+      </button>
+    </nav>
+
+    <div class="railfoot">
+      <div class="who">
+        <div class="avatar">RM</div>
+        <div>
+          <b>Rizal Maulana</b>
+          <span id="whoRole">Amil — Div. Pengumpulan</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= AREA UTAMA ================= -->
+  <div class="main">
+    <header class="topbar">
+      <button class="iconbtn burger" id="burger" aria-label="Buka menu">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <div class="crumb">
+        <span>Perjalanan Dinas</span><span class="sep">/</span><b id="crumbNow">Beranda</b>
+      </div>
+
+      <div class="search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5" stroke-linecap="round"/></svg>
+        <input placeholder="Cari nomor perdin, pegawai, surat tugas…" aria-label="Pencarian">
+      </div>
+
+      <div class="rolepick">
+        <label for="roleSel">Peran</label>
+        <select id="roleSel">
+          <option value="pemohon">Pemohon / Amil</option>
+          <option value="pimpinan">Pimpinan</option>
+          <option value="kabag">Kepala Bagian</option>
+          <option value="verifikator">Verifikator Anggaran</option>
+          <option value="bendahara">Bendahara</option>
+          <option value="admin">Admin Anggaran</option>
+        </select>
+      </div>
+
+      <button class="iconbtn" aria-label="Notifikasi">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 1 0-12 0c0 6-2 7-2 7h16s-2-1-2-7Z"/><path d="M13.7 20a2 2 0 0 1-3.4 0" stroke-linecap="round"/></svg>
+        <i class="dot"></i>
+      </button>
+    </header>
+
+    <div class="canvas">
+
+<!-- ===================================================================
+     TAMPILAN 1 — BERANDA
+     =================================================================== -->
+<section class="view on" id="v-dashboard">
+  <div class="sect-h">
+    <div>
+      <h2>Beranda</h2>
+      <p>Ringkasan perjalanan dinas periode Agustus 2026 — per 11 Agustus, 09.40 WIB.</p>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn primary" data-goto="detail">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      Ajukan Perdin
+    </button>
+  </div>
+
+  <div class="stack">
+    <div class="grid g4">
+      <div class="card kpi s-accent">
+        <i class="stripe"></i>
+        <span class="k-lbl">Perdin berjalan</span>
+        <span class="k-val num">24</span>
+        <span class="k-meta"><span class="chip info"><i class="bullet"></i>9 unit kerja</span></span>
+        <svg class="spark" viewBox="0 0 120 34" preserveAspectRatio="none" aria-hidden="true">
+          <defs><linearGradient id="gA" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--accent)" stop-opacity=".28"/><stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+          </linearGradient></defs>
+          <path d="M0 26 L15 22 L30 24 L45 15 L60 18 L75 11 L90 13 L105 6 L120 8 L120 34 L0 34 Z" fill="url(#gA)"/>
+          <path d="M0 26 L15 22 L30 24 L45 15 L60 18 L75 11 L90 13 L105 6 L120 8" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"/>
+          <circle cx="120" cy="8" r="2.4" fill="var(--accent)"/>
+        </svg>
+      </div>
+
+      <div class="card kpi s-warn">
+        <i class="stripe"></i>
+        <span class="k-lbl">Menunggu persetujuan</span>
+        <span class="k-val num">6</span>
+        <span class="k-meta"><span class="chip warn"><i class="bullet"></i>2 lewat SLA 2×24 jam</span></span>
+        <svg class="spark" viewBox="0 0 120 34" preserveAspectRatio="none" aria-hidden="true">
+          <g fill="var(--warn)" opacity=".85">
+            <rect x="2" y="20" width="10" height="14" rx="2"/><rect x="19" y="14" width="10" height="20" rx="2"/>
+            <rect x="36" y="23" width="10" height="11" rx="2"/><rect x="53" y="11" width="10" height="23" rx="2"/>
+            <rect x="70" y="18" width="10" height="16" rx="2"/><rect x="87" y="8" width="10" height="26" rx="2"/>
+            <rect x="104" y="15" width="10" height="19" rx="2"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="card kpi s-brass">
+        <i class="stripe"></i>
+        <span class="k-lbl">Uang muka beredar</span>
+        <span class="k-val num">Rp 148,6<small> jt</small></span>
+        <span class="k-meta"><span class="chip seal">17 berkas belum di-SPJ</span></span>
+        <svg class="spark" viewBox="0 0 120 34" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 12 L20 14 L40 9 L60 17 L80 13 L100 21 L120 19" fill="none" stroke="var(--brass)" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M0 12 L20 14 L40 9 L60 17 L80 13 L100 21 L120 19 L120 34 L0 34 Z" fill="var(--brass)" opacity=".13"/>
+        </svg>
+      </div>
+
+      <div class="card kpi s-crit">
+        <i class="stripe"></i>
+        <span class="k-lbl">SPJ lewat tenggat</span>
+        <span class="k-val num">3</span>
+        <span class="k-meta"><span class="chip crit"><i class="bullet"></i>Tertua 21 hari</span></span>
+        <svg class="spark" viewBox="0 0 120 34" preserveAspectRatio="none" aria-hidden="true">
+          <g stroke="var(--crit)" stroke-width="1.6" fill="none">
+            <path d="M0 24 L24 25 L48 22 L72 18 L96 14 L120 9"/>
+          </g>
+          <circle cx="120" cy="9" r="2.4" fill="var(--crit)"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:1fr 1fr">
+      <div class="card">
+        <header>
+          <div>
+            <h3>Antrean tugas saya</h3>
+            <p class="sub">Diurutkan berdasarkan tenggat, bukan tanggal masuk.</p>
+          </div>
+          <span class="spacer"></span>
+          <span class="chip mute" id="queueRole">Peran: Pemohon</span>
+        </header>
+        <div class="queue">
+          <div class="qitem" data-goto="detail">
+            <span class="qnum">09</span>
+            <div>
+              <b>Lengkapi pertanggungjawaban — PD/2026/08/0147</b>
+              <span class="qmeta">Rakornas ZIS Wilayah Timur · Makassar · tenggat 26 Agu</span>
+            </div>
+            <span class="spacer"></span><span class="chip warn"><i class="bullet"></i>H-5</span>
+          </div>
+          <div class="qitem">
+            <span class="qnum">06</span>
+            <div>
+              <b>Perbaiki rincian uang muka — PD/2026/08/0152</b>
+              <span class="qmeta">Dikembalikan verifikator: tarif penginapan melebihi SBM Prov. Bali</span>
+            </div>
+            <span class="spacer"></span><span class="chip crit"><i class="bullet"></i>Dikembalikan</span>
+          </div>
+          <div class="qitem">
+            <span class="qnum">11</span>
+            <div>
+              <b>Unggah laporan perdin — PD/2026/07/0121</b>
+              <span class="qmeta">Monitoring mustahik program Z-Mart · Cirebon</span>
+            </div>
+            <span class="spacer"></span><span class="chip crit"><i class="bullet"></i>Telat 4 hari</span>
+          </div>
+          <div class="qitem">
+            <span class="qnum">01</span>
+            <div>
+              <b>Draf pengajuan belum dikirim — PD/2026/08/0158</b>
+              <span class="qmeta">Disimpan 9 Agu, belum ada lampiran undangan</span>
+            </div>
+            <span class="spacer"></span><span class="chip mute"><i class="bullet"></i>Draf</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <header>
+          <div>
+            <h3>Pagu DIPA perjalanan dinas</h3>
+            <p class="sub">SP DIPA-025.03.1.426871/2026 revisi ke-03 — disahkan Kementerian Keuangan.</p>
+          </div>
+          <span class="spacer"></span>
+          <button class="btn sm" data-goto="dipa">Buka DIPA</button>
+        </header>
+        <div class="body stack" style="gap:18px">
+          <div>
+            <div class="row" style="justify-content:space-between; margin-bottom:8px">
+              <span style="font-size:12.5px; font-weight:600; color:var(--ink-2)">Pagu lima akun perdin <b class="num">Rp 4,68 M</b></span>
+              <span class="num" style="font-size:12.5px; color:var(--ok); font-weight:600">Sisa efektif Rp 1,20 M</span>
+            </div>
+            <div class="meter" role="img" aria-label="Realisasi 51 persen, cadangan 11 persen, blokir 12 persen">
+              <i class="used" style="width:50.9%"></i><i class="hold" style="width:11.2%"></i><i class="blok" style="width:12.2%"></i>
+            </div>
+            <div class="legend" style="margin-top:9px">
+              <b><i style="background:var(--accent)"></i>Realisasi Rp 2,38 M</b>
+              <b><i style="background:var(--brass)"></i>Cadangan Rp 526,4 jt</b>
+              <b><i style="background:var(--crit)"></i>Blokir Rp 570,0 jt</b>
+              <b><i style="background:var(--sunk); border:1px solid var(--line-strong)"></i>Sisa efektif Rp 1,20 M</b>
+            </div>
+          </div>
+
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead><tr><th>Akun belanja</th><th class="r">Pagu</th><th class="r">Sisa efektif</th><th class="r">Serapan</th></tr></thead>
+              <tbody>
+                <tr><td><b class="num" style="color:var(--accent)">524111</b> Perjalanan Dinas Biasa</td><td class="r num">Rp 2,40 M</td><td class="r num">Rp 767,6 jt</td><td class="r"><span class="chip ok">53%</span></td></tr>
+                <tr><td><b class="num" style="color:var(--accent)">524113</b> Dalam Kota</td><td class="r num">Rp 340,0 jt</td><td class="r num">Rp 117,5 jt</td><td class="r"><span class="chip ok">58%</span></td></tr>
+                <tr><td><b class="num" style="color:var(--accent)">524114</b> Paket Meeting Dalam Kota</td><td class="r num">Rp 610,0 jt</td><td class="r num">Rp 152,7 jt</td><td class="r"><span class="chip ok">66%</span></td></tr>
+                <tr><td><b class="num" style="color:var(--accent)">524119</b> Paket Meeting Luar Kota</td><td class="r num">Rp 880,0 jt</td><td class="r num">Rp 162,0 jt</td><td class="r"><span class="chip warn">58%</span></td></tr>
+                <tr><td><b class="num" style="color:var(--crit)">524211</b> Luar Negeri<div class="sub">diblokir seluruhnya</div></td><td class="r num">Rp 450,0 jt</td><td class="r num" style="color:var(--crit)">Rp 0</td><td class="r"><span class="chip crit"><i class="bullet"></i>Terkunci</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <header>
+        <div><h3>Perdin terbaru</h3><p class="sub">Kolom “Tahap” memperlihatkan posisi berkas pada rel 13 tahap.</p></div>
+        <span class="spacer"></span>
+        <button class="btn sm" data-goto="daftar">Lihat semua</button>
+      </header>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead>
+            <tr><th>Nomor</th><th>Maksud &amp; tujuan</th><th>Pelaksana</th><th>Tanggal</th><th class="r">Uang muka</th><th>Tahap</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr style="cursor:pointer" data-goto="detail">
+              <td class="kode">PD/2026/08/0147</td>
+              <td>Rakornas Pengumpulan ZIS Wil. Timur<div class="sub">Makassar, Sulawesi Selatan</div></td>
+              <td>Rizal Maulana<div class="sub">+2 orang</div></td>
+              <td class="num">18–21 Agu</td>
+              <td class="r num">Rp 6.765.000</td>
+              <td><span class="chip info">09 · Pertanggungjawaban</span></td>
+              <td><span class="chip warn"><i class="bullet"></i>Proses</span></td>
+            </tr>
+            <tr>
+              <td class="kode">PD/2026/08/0152</td>
+              <td>Asesmen mitra penyalur zakat<div class="sub">Denpasar, Bali</div></td>
+              <td>Nurul Azizah</td>
+              <td class="num">24–26 Agu</td>
+              <td class="r num">Rp 5.120.000</td>
+              <td><span class="chip mute">06 · Rincian uang muka</span></td>
+              <td><span class="chip crit"><i class="bullet"></i>Dikembalikan</span></td>
+            </tr>
+            <tr>
+              <td class="kode">PD/2026/08/0149</td>
+              <td>Sosialisasi zakat perusahaan<div class="sub">Surabaya, Jawa Timur</div></td>
+              <td>Ahmad Fauzi<div class="sub">+1 orang</div></td>
+              <td class="num">19–20 Agu</td>
+              <td class="r num">Rp 4.480.000</td>
+              <td><span class="chip info">08 · Pembayaran uang muka</span></td>
+              <td><span class="chip info"><i class="bullet"></i>Siap bayar</span></td>
+            </tr>
+            <tr>
+              <td class="kode">PD/2026/07/0121</td>
+              <td>Monitoring mustahik program Z-Mart<div class="sub">Cirebon, Jawa Barat</div></td>
+              <td>Siti Rahmawati</td>
+              <td class="num">28–30 Jul</td>
+              <td class="r num">Rp 3.240.000</td>
+              <td><span class="chip mute">11 · Laporan perdin</span></td>
+              <td><span class="chip crit"><i class="bullet"></i>Telat SPJ</span></td>
+            </tr>
+            <tr>
+              <td class="kode">PD/2026/07/0118</td>
+              <td>Audit kepatuhan BAZNAS Kab. Sleman<div class="sub">Yogyakarta</div></td>
+              <td>Bayu Prasetyo<div class="sub">+3 orang</div></td>
+              <td class="num">21–24 Jul</td>
+              <td class="r num">Rp 9.870.000</td>
+              <td><span class="chip ok">13 · Pembayaran sisa</span></td>
+              <td><span class="chip ok"><i class="bullet"></i>Selesai</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     TAMPILAN 2 — DAFTAR PERDIN
+     =================================================================== -->
+<section class="view" id="v-daftar">
+  <div class="sect-h">
+    <div><h2>Daftar Perjalanan Dinas</h2><p>24 berkas aktif · 61 selesai tahun ini.</p></div>
+    <div class="spacer"></div>
+    <button class="btn"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 20h16" stroke-linecap="round"/></svg>Ekspor XLSX</button>
+    <button class="btn primary" data-goto="detail">Ajukan Perdin</button>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="body" style="padding:14px 18px">
+      <div class="row">
+        <div class="seg" role="group" aria-label="Saring status">
+          <button aria-pressed="true">Semua</button><button aria-pressed="false">Perlu tindakan saya</button>
+          <button aria-pressed="false">Menunggu pihak lain</button><button aria-pressed="false">Selesai</button>
+        </div>
+        <span class="spacer"></span>
+        <select class="inp" style="width:auto"><option>Semua unit kerja</option><option>Pengumpulan</option><option>Pendistribusian</option></select>
+        <select class="inp" style="width:auto"><option>Agustus 2026</option><option>Juli 2026</option></select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr><th>Nomor</th><th>Maksud perjalanan</th><th>Kota tujuan</th><th>Pelaksana</th><th class="r">Nilai</th><th>Posisi berkas</th><th>Menunggu</th></tr>
+        </thead>
+        <tbody id="listBody"></tbody>
+      </table>
+    </div>
+    <div class="foot">
+      <span style="font-size:12.3px; color:var(--muted)">Menampilkan 8 dari 24 berkas</span>
+      <span class="spacer"></span>
+      <button class="btn sm" disabled>Sebelumnya</button><button class="btn sm">Berikutnya</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     TAMPILAN 3 — KOTAK PERSETUJUAN
+     =================================================================== -->
+<section class="view" id="v-kotakmasuk">
+  <div class="sect-h">
+    <div><h2>Kotak Persetujuan</h2><p>Enam berkas menunggu keputusan. Yang melewati SLA 2×24 jam naik ke atas.</p></div>
+    <div class="spacer"></div>
+    <button class="btn">Setujui terpilih (0)</button>
+  </div>
+
+  <div class="note warn" style="margin-bottom:16px">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 9v4m0 4h.01M10.3 3.9 2.6 17.4A2 2 0 0 0 4.3 20.4h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" stroke-linecap="round"/></svg>
+    <div><b>Dua berkas melewati SLA.</b> PD/2026/08/0149 sudah 3 hari 4 jam di meja persetujuan. Keterlambatan menggeser tanggal pembayaran uang muka dan berisiko pelaksana menalangi biaya lebih dulu.</div>
+  </div>
+
+  <div class="stack">
+    <div class="card">
+      <header>
+        <span class="chip crit"><i class="bullet"></i>Lewat SLA · 3h 4j</span>
+        <div><h3>PD/2026/08/0149 — Sosialisasi zakat perusahaan</h3>
+        <p class="sub">Ahmad Fauzi (+1) · Surabaya · 19–20 Agu 2026 · diajukan 8 Agu 2026</p></div>
+        <span class="spacer"></span>
+        <span class="chip seal">Rp 4.480.000</span>
+      </header>
+      <div class="body">
+        <div class="grid g2">
+          <div class="stack" style="gap:14px">
+            <dl class="dl">
+              <dt>Dasar penugasan</dt><dd>Undangan Kadin Jatim No. 214/KADIN-JI/VIII/2026</dd>
+              <dt>Mata anggaran</dt><dd class="num">2104.EBA.994 · 051 · <b style="color:var(--accent)">524111</b></dd>
+              <dt>Sumber dana</dt><dd>SP DIPA-025.03.1.426871/2026 revisi ke-03</dd>
+              <dt>Moda</dt><dd>Kereta api eksekutif (PP) · penginapan 1 malam</dd>
+              <dt>Kelengkapan</dt><dd><span class="chip ok"><i class="bullet"></i>Lampiran undangan &amp; TOR ada</span></dd>
+            </dl>
+            <div>
+              <span class="lbl">Cek pagu DIPA — wajib sebelum memutuskan</span>
+              <div style="margin-top:8px" data-akun="524111" data-nilai="4480000"></div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="catatanPim">Catatan keputusan <span class="hint">— tampil di riwayat berkas dan terkirim ke pemohon</span></label>
+            <textarea class="inp" id="catatanPim" placeholder="Contoh: Disetujui. Uang harian mengikuti SBM Prov. Jawa Timur, penginapan maksimal 1 malam."></textarea>
+            <div class="row" style="margin-top:4px">
+              <span class="chip mute">Templat: Setuju dengan batasan biaya</span>
+              <span class="chip mute">Templat: Minta revisi rincian</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="foot">
+        <button class="btn primary" data-roles="pimpinan" data-act="Pengajuan disetujui">Setujui</button>
+        <button class="btn" data-roles="pimpinan" data-act="Disetujui dengan catatan">Setujui dengan catatan</button>
+        <button class="btn" data-roles="pimpinan" data-act="Dikembalikan ke pemohon">Kembalikan untuk revisi</button>
+        <button class="btn danger" data-roles="pimpinan" data-act="Pengajuan ditolak">Tolak</button>
+        <span class="spacer"></span>
+        <button class="btn ghost">Delegasikan ke Wakil Ketua</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <header>
+        <span class="chip crit"><i class="bullet"></i>Pagu terkunci</span>
+        <div><h3>PD/2026/08/0161 — World Zakat &amp; Waqf Forum</h3>
+        <p class="sub">Bayu Prasetyo (+1) · Kuala Lumpur, Malaysia · 8–11 Sep 2026 · diajukan 10 Agu 2026</p></div>
+        <span class="spacer"></span>
+        <span class="chip seal">Rp 42.500.000</span>
+      </header>
+      <div class="body">
+        <div class="grid g2">
+          <div class="stack" style="gap:14px">
+            <dl class="dl">
+              <dt>Mata anggaran</dt><dd class="num">2104.EBA.994 · 052 · <b style="color:var(--crit)">524211</b></dd>
+              <dt>Sumber dana</dt><dd>SP DIPA-025.03.1.426871/2026 revisi ke-03</dd>
+              <dt>Kelengkapan</dt><dd><span class="chip warn"><i class="bullet"></i>Izin Setneg belum terbit</span></dd>
+            </dl>
+            <div class="note info" style="font-size:12.3px">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+              <div>Berkas tetap tersimpan dan otomatis dinilai ulang begitu Revisi 04 disahkan — pemohon tidak perlu mengajukan ulang dari awal.</div>
+            </div>
+          </div>
+          <div>
+            <span class="lbl">Cek pagu DIPA — wajib sebelum memutuskan</span>
+            <div style="margin-top:8px" data-akun="524211" data-nilai="42500000" data-kunci="#aksiLN button[data-act='Pengajuan disetujui']"></div>
+          </div>
+        </div>
+      </div>
+      <div class="foot" id="aksiLN">
+        <button class="btn primary" data-roles="pimpinan" data-act="Pengajuan disetujui">Setujui</button>
+        <button class="btn" data-roles="pimpinan" data-act="Dikembalikan ke pemohon">Kembalikan untuk revisi</button>
+        <span class="spacer"></span>
+        <button class="btn" data-goto="dipa">Lihat status Revisi 04</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <header>
+        <span class="chip warn"><i class="bullet"></i>1h 6j</span>
+        <div><h3>PD/2026/08/0155 — Pendampingan BAZNAS Kab. Garut</h3>
+        <p class="sub">Dewi Anggraini · Garut · 27–28 Agu 2026</p></div>
+        <span class="spacer"></span><span class="chip seal">Rp 2.310.000</span>
+        <button class="btn sm">Buka</button>
+      </header>
+    </div>
+
+    <div class="card">
+      <header>
+        <span class="chip mute"><i class="bullet"></i>4 jam</span>
+        <div><h3>PD/2026/08/0157 — Rapat koordinasi zakat ASN</h3>
+        <p class="sub">Hendra Kusuma (+2) · Bandung · 1–2 Sep 2026</p></div>
+        <span class="spacer"></span><span class="chip seal">Rp 3.960.000</span>
+        <button class="btn sm">Buka</button>
+      </header>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     TAMPILAN 4 — DETAIL BERKAS (REL 12 TAHAP)
+     =================================================================== -->
+<section class="view" id="v-detail">
+  <div class="sect-h">
+    <div>
+      <div class="row" style="gap:9px; margin-bottom:3px">
+        <span class="chip info"><i class="bullet"></i>Sedang berjalan</span>
+        <span class="chip seal">PD/2026/08/0147</span>
+      </div>
+      <h2>Rakornas Pengumpulan ZIS Wilayah Timur</h2>
+      <p>Makassar, Sulawesi Selatan · 18–21 Agustus 2026 · 4 hari · 3 pelaksana</p>
+    </div>
+    <div class="spacer"></div>
+    <button class="btn"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9V4h12v5M6 18H4v-6h16v6h-2M8 14h8v6H8z"/></svg>Cetak berkas</button>
+    <button class="btn">Bagikan</button>
+  </div>
+
+  <!-- Rel 13 tahap -->
+  <div class="railstage" style="margin-bottom:16px">
+    <div class="rs-head">
+      <span class="lbl">Rel proses</span>
+      <span class="chip ok"><i class="bullet"></i>8 tahap selesai</span>
+      <span class="chip info"><i class="bullet"></i>Tahap 9 berjalan</span>
+      <span class="chip mute">4 tahap menunggu</span>
+      <span class="spacer"></span>
+      <span style="font-size:11.8px; color:var(--muted)">Klik tahap mana pun untuk membuka layarnya</span>
+    </div>
+    <div class="rs-scroll">
+      <div class="rs-track" id="rsTrack" role="tablist" aria-label="Tahap perjalanan dinas"></div>
+    </div>
+  </div>
+
+  <div class="detail-grid">
+    <div class="stack">
+      <!-- ===== PANEL TAHAP ===== -->
+      <div class="card">
+        <div class="stagehead">
+          <span class="idx" id="stIdx">08</span>
+          <div style="min-width:0">
+            <h3 id="stTitle">Pertanggungjawaban Perdin</h3>
+            <p class="desc" id="stDesc"></p>
+          </div>
+          <span class="spacer"></span>
+          <span class="chip" id="stChip"></span>
+        </div>
+
+        <!-- 01 PENGAJUAN -->
+        <div class="panel" data-panel="1">
+          <div class="body stack" style="gap:16px">
+            <div class="note info">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+              <div><b>Formulir menyesuaikan jenis perjalanan.</b> Memilih “Luar negeri” menambah kolom paspor, visa, dan izin Setneg; memilih “Dalam kota” menyembunyikan penginapan dan tiket.</div>
+            </div>
+
+            <div class="grid g2" style="gap:14px">
+              <div class="field">
+                <label>Jenis perjalanan <span class="req">*</span></label>
+                <div class="seg" role="group">
+                  <button aria-pressed="false">Dalam kota</button><button aria-pressed="true">Luar kota</button><button aria-pressed="false">Luar negeri</button>
+                </div>
+                <span class="hint">Jenis perjalanan menentukan akun belanja dan kelompok tarif SBM yang dipakai.</span>
+              </div>
+              <div class="field">
+                <label for="f-keg">Kegiatan pada DIPA <span class="req">*</span></label>
+                <select class="inp" id="f-keg">
+                  <option>2104 — Pengelolaan dan Pembinaan Zakat dan Wakaf</option>
+                  <option>2104 — Fasilitasi Pengelolaan Wakaf</option>
+                  <option>6301 — Dukungan Manajemen dan Pelaksanaan Tugas Teknis</option>
+                </select>
+                <span class="hint">Hanya kegiatan yang boleh diakses unit kerja Anda yang ditampilkan.</span>
+              </div>
+            </div>
+
+            <div class="card" style="box-shadow:none; background:var(--surface-2)">
+              <header style="padding:12px 16px">
+                <h3 style="font-size:13.6px">Usulan pembebanan anggaran</h3>
+                <span class="spacer"></span>
+                <span class="chip seal">SP DIPA-025.03.1.426871/2026 · rev. 03</span>
+                <span class="chip seal">SBM TA 2026</span>
+              </header>
+              <div class="body" style="padding:16px">
+                <div class="grid" style="grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px">
+                  <div class="field"><label for="f-kro">KRO</label><select class="inp" id="f-kro"><option>2104.EBA — Fasilitasi dan Pembinaan Lembaga</option></select></div>
+                  <div class="field"><label for="f-ro">Rincian Output</label><select class="inp" id="f-ro"><option>994 — Layanan Pembinaan Pengelolaan Zakat</option></select></div>
+                  <div class="field"><label for="f-komp">Komponen</label><select class="inp" id="f-komp"><option>052 — Rapat Koordinasi Nasional</option></select></div>
+                  <div class="field"><label for="f-akun">Akun belanja</label><select class="inp" id="f-akun"><option>524119 — Paket Meeting Luar Kota</option><option>524111 — Perjalanan Dinas Biasa</option><option>524113 — Perjalanan Dinas Dalam Kota</option></select></div>
+                </div>
+                <div class="grid g2" style="gap:16px; margin-top:16px; align-items:start">
+                  <div>
+                    <span class="lbl">Cek pagu seketika — dihitung ulang tiap kali nilai berubah</span>
+                    <div style="margin-top:8px" data-akun="524119" data-nilai="9020000"></div>
+                  </div>
+                  <div class="stack" style="gap:12px">
+                    <div class="note info">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+                      <div><b>Ini usulan, bukan penetapan.</b> Pengajuan tanpa mata anggaran yang sah tidak dapat dikirim. Namun akun definitif ditetapkan Verifikator Anggaran pada tahap 03 — pemohon tidak dituntut menguasai struktur DIPA.</div>
+                    </div>
+                    <div class="note warn">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 9v4m0 4h.01M10.3 3.9 2.6 17.4A2 2 0 0 0 4.3 20.4h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" stroke-linecap="round"/></svg>
+                      <div><b>Rencana penarikan dana Agustus tersisa Rp 21,6 jt.</b> Pengajuan ini masih di dalam rencana Halaman III, sehingga tidak memerlukan usulan revisi.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="f-maksud">Maksud perjalanan <span class="req">*</span></label>
+              <input class="inp" id="f-maksud" value="Menghadiri Rapat Koordinasi Nasional Pengumpulan ZIS Wilayah Timur">
+              <span class="hint">Kalimat ini disalin apa adanya ke Surat Tugas dan SPPD. Tulis seperti akan dibaca auditor.</span>
+            </div>
+
+            <div class="field">
+              <label for="f-dasar">Dasar penugasan <span class="req">*</span></label>
+              <input class="inp" id="f-dasar" value="Surat Undangan BAZNAS Prov. Sulawesi Selatan No. 431/BAZNAS-SS/VIII/2026">
+            </div>
+
+            <div class="grid" style="grid-template-columns:1.4fr 1fr 1fr .8fr; gap:14px">
+              <div class="field"><label for="f-kota">Kota / tempat tujuan <span class="req">*</span></label><input class="inp" id="f-kota" value="Makassar, Sulawesi Selatan"></div>
+              <div class="field"><label for="f-brkt">Berangkat <span class="req">*</span></label><input class="inp" id="f-brkt" type="date" value="2026-08-18"></div>
+              <div class="field"><label for="f-plg">Kembali <span class="req">*</span></label><input class="inp" id="f-plg" type="date" value="2026-08-21"></div>
+              <div class="field"><label>Lama</label><input class="inp num-inp" value="4 hari" readonly style="background:var(--sunk)"><span class="hint">otomatis</span></div>
+            </div>
+
+            <div class="field">
+              <label>Pelaksana perjalanan <span class="req">*</span></label>
+              <div class="row" style="gap:8px">
+                <span class="chip info" style="padding:5px 10px">Rizal Maulana · Amil Madya <b style="cursor:pointer; opacity:.6">×</b></span>
+                <span class="chip info" style="padding:5px 10px">Nurul Azizah · Amil Muda <b style="cursor:pointer; opacity:.6">×</b></span>
+                <span class="chip info" style="padding:5px 10px">Ahmad Fauzi · Staf <b style="cursor:pointer; opacity:.6">×</b></span>
+                <button class="btn sm">+ Tambah pegawai</button>
+              </div>
+              <span class="hint">Tingkat jabatan menentukan golongan uang harian dan batas tarif penginapan pada tahap 05.</span>
+            </div>
+
+            <div class="field">
+              <label>Lampiran pendukung</label>
+              <div class="row" style="gap:10px">
+                <div class="file" style="flex:1; min-width:220px"><span class="ft pdf">PDF</span><div><b>Undangan-Rakornas-Sulsel.pdf</b><span>412 KB · diunggah 7 Agu</span></div></div>
+                <div class="file" style="flex:1; min-width:220px"><span class="ft pdf">PDF</span><div><b>TOR-Rakornas.pdf</b><span>188 KB · diunggah 7 Agu</span></div></div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn primary" data-roles="pemohon" data-act="Pengajuan terkirim ke Pimpinan">Kirim ke Pimpinan</button>
+            <button class="btn" data-roles="pemohon">Simpan draf</button>
+            <span class="spacer"></span>
+            <span style="font-size:12px; color:var(--muted)">Perubahan terakhir 7 Agu 2026, 16.12</span>
+          </div>
+        </div>
+
+        <!-- 02 PERSETUJUAN PIMPINAN -->
+        <div class="panel" data-panel="2">
+          <div class="body stack" style="gap:16px">
+            <div class="note ok">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 13 4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div><b>Disetujui Ketua Bidang pada 8 Agu 2026, 10.24 WIB.</b> Catatan: “Disetujui. Uang harian mengikuti SBM Prov. Sulawesi Selatan; penginapan maksimal 3 malam.”</div>
+            </div>
+            <div class="grid g2">
+              <div class="stack" style="gap:14px">
+                <span class="lbl">Yang dilihat pimpinan sebelum memutuskan</span>
+                <dl class="dl">
+                  <dt>Ringkas maksud</dt><dd>Rakornas Pengumpulan ZIS Wil. Timur</dd>
+                  <dt>Nilai diajukan</dt><dd class="num">Rp 9.020.000</dd>
+                  <dt>Akun diusulkan</dt><dd class="num"><b style="color:var(--accent)">524119</b> — Paket Meeting Luar Kota</dd>
+                  <dt>Riwayat pemohon</dt><dd><span class="chip ok"><i class="bullet"></i>Tanpa tunggakan SPJ</span></dd>
+                </dl>
+                <div>
+                  <span class="lbl">Cek pagu DIPA saat keputusan — 8 Agu 2026, 10.24</span>
+                  <div class="ledger" style="margin-top:8px">
+                    <div class="lrow sub"><span>Sisa efektif akun 524119 saat itu</span><b>Rp 162.020.000</b></div>
+                    <div class="lrow minus"><span>Nilai pengajuan ini</span><b>− Rp 9.020.000</b></div>
+                    <div class="lrow net"><span>Sisa setelah disetujui</span><b>Rp 153.000.000</b></div>
+                  </div>
+                  <p style="font-size:11.8px; color:var(--muted); margin-top:7px">Angka dibekukan sebagai bukti audit. Cadangan ini kemudian dipindahkan verifikator ke akun 524111 pada tahap 03 — lihat jejaknya di sana.</p>
+                </div>
+              </div>
+              <div class="stack" style="gap:12px">
+                <span class="lbl">Jejak keputusan</span>
+                <ul class="tl" style="padding:0">
+                  <li><span class="tdot ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg></span>
+                    <div><b>Disetujui — Dr. H. Ridwan Hakim</b><span>Ketua Bidang Pengumpulan · 8 Agu, 10.24 · TTE tersertifikasi BSrE</span></div></li>
+                  <li><span class="tdot"></span>
+                    <div><b>Diterima di meja persetujuan</b><span>7 Agu, 16.31 · SLA 2×24 jam, selesai dalam 18 jam</span></div></li>
+                </ul>
+                <div class="note info" style="font-size:12.3px">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+                  <div><b>Persetujuan langsung mencadangkan pagu pada akun yang diusulkan.</b> Rp 9.020.000 terkunci sejak 8 Agu dan tidak dapat dipakai berkas lain. Bila verifikator memindahkan akunnya, cadangan ikut berpindah — jumlah bebannya tidak berubah.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn" data-roles="pimpinan" data-act="Persetujuan ditinjau ulang">Tinjau ulang keputusan</button>
+            <button class="btn ghost">Unduh lembar persetujuan</button>
+          </div>
+        </div>
+
+        <!-- 03 VERIFIKASI & ALOKASI ANGGARAN -->
+        <div class="panel" data-panel="3">
+          <div class="body stack" style="gap:16px">
+            <div class="note info">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+              <div><b>Pemohon mengusulkan, verifikator menetapkan.</b> Usulan pembebanan dari pemohon diuji terhadap data DIPA. Verifikator berwenang memindahkannya ke akun lain bila tidak sesuai, dan pemindahan itu memindahkan cadangan pagunya sekaligus.</div>
+            </div>
+
+            <div class="grid g2" style="gap:16px; align-items:start">
+              <div class="card" style="box-shadow:none; background:var(--surface-2)">
+                <header style="padding:12px 16px">
+                  <h3 style="font-size:13.4px">Usulan pemohon</h3>
+                  <span class="spacer"></span>
+                  <span class="chip crit"><i class="bullet"></i>Tidak sesuai</span>
+                </header>
+                <div class="body" style="padding:14px 16px">
+                  <dl class="dl" style="font-size:12.4px; gap:9px 14px"><dt>Kegiatan</dt><dd><b class="num">2104</b> · Pengelolaan dan Pembinaan Zakat dan Wakaf</dd><dt>RO</dt><dd><b class="num">2104.EBA.994</b> · Layanan Pembinaan Pengelolaan Zakat</dd><dt>Komponen</dt><dd><b class="num">052</b> · Rapat Koordinasi Nasional</dd><dt>Akun</dt><dd><b class="num" style="color:var(--crit)">524119</b> · Paket Meeting Luar Kota</dd></dl>
+                </div>
+              </div>
+
+              <div class="card" style="box-shadow:none; background:var(--accent-tint); border-color:var(--accent-line)">
+                <header style="padding:12px 16px; border-color:var(--accent-line)">
+                  <h3 style="font-size:13.4px">Penetapan verifikator</h3>
+                  <span class="spacer"></span>
+                  <span class="chip ok"><i class="bullet"></i>Ditetapkan</span>
+                </header>
+                <div class="body" style="padding:14px 16px">
+                  <dl class="dl" style="font-size:12.4px; gap:9px 14px"><dt>Kegiatan</dt><dd><b class="num">2104</b> · Pengelolaan dan Pembinaan Zakat dan Wakaf</dd><dt>RO</dt><dd><b class="num">2104.EBA.994</b> · Layanan Pembinaan Pengelolaan Zakat</dd><dt>Komponen</dt><dd><b class="num">051</b> · Koordinasi dan Pembinaan Lembaga</dd><dt>Akun</dt><dd><b class="num" style="color:var(--accent)">524111</b> · Perjalanan Dinas Biasa</dd></dl>
+                </div>
+              </div>
+            </div>
+
+            <div class="note warn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 9v4m0 4h.01M10.3 3.9 2.6 17.4A2 2 0 0 0 4.3 20.4h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" stroke-linecap="round"/></svg>
+              <div><b>Alasan pemindahan akun.</b> Penyelenggara tidak menanggung akomodasi dan konsumsi peserta, sehingga kegiatan ini bukan paket meeting. Biaya penginapan dan uang harian ditanggung sendiri, maka pembebanan yang benar adalah akun 524111 Perjalanan Dinas Biasa, bukan 524119.</div>
+            </div>
+
+            <div class="grid g2" style="gap:16px; align-items:start">
+              <div class="stack" style="gap:12px">
+                <span class="lbl">Daftar periksa verifikasi anggaran</span>
+                <label style="display:flex; gap:9px; align-items:flex-start; padding:9px 12px; border:1px solid var(--ok-line); background:var(--ok-tint); border-radius:var(--r); font-size:12.8px"><input type="checkbox" checked> Mata anggaran terdaftar pada DIPA revisi ke-03 yang berlaku</label>
+                <label style="display:flex; gap:9px; align-items:flex-start; padding:9px 12px; border:1px solid var(--ok-line); background:var(--ok-tint); border-radius:var(--r); font-size:12.8px"><input type="checkbox" checked> Akun sesuai jenis perjalanan — luar kota, bukan paket meeting</label>
+                <label style="display:flex; gap:9px; align-items:flex-start; padding:9px 12px; border:1px solid var(--ok-line); background:var(--ok-tint); border-radius:var(--r); font-size:12.8px"><input type="checkbox" checked> Tidak ada blokir tanda bintang pada akun tujuan</label>
+                <label style="display:flex; gap:9px; align-items:flex-start; padding:9px 12px; border:1px solid var(--ok-line); background:var(--ok-tint); border-radius:var(--r); font-size:12.8px"><input type="checkbox" checked> Sisa efektif mencukupi</label>
+                <label style="display:flex; gap:9px; align-items:flex-start; padding:9px 12px; border:1px solid var(--ok-line); background:var(--ok-tint); border-radius:var(--r); font-size:12.8px"><input type="checkbox" checked> Sesuai rencana penarikan dana Halaman III bulan Agustus</label>
+                <div class="field" style="margin-top:2px">
+                  <label for="f-register">Nomor register anggaran</label>
+                  <input class="inp num-inp" id="f-register" value="REG-ANG/2026/08/0288" style="text-align:left">
+                  <span class="hint">Diterbitkan sistem saat alokasi ditetapkan; menjadi rujukan pembebanan pada Surat Tugas dan SPPD.</span>
+                </div>
+              </div>
+
+              <div class="stack" style="gap:12px">
+                <span class="lbl">Pemindahan cadangan pagu</span>
+                <div class="ledger">
+                  <div class="lrow sub"><span>Akun 524119 — sebelum verifikasi</span><b>Rp 153.000.000</b></div>
+                  <div class="lrow"><span>Cadangan dilepas</span><b style="color:var(--ok)">+ Rp 9.020.000</b></div>
+                  <div class="lrow sub"><span>Sisa efektif 524119 sekarang</span><b>Rp 162.020.000</b></div>
+                </div>
+                <div class="ledger">
+                  <div class="lrow sub"><span>Akun 524111 — sebelum verifikasi</span><b>Rp 776.620.000</b></div>
+                  <div class="lrow minus"><span>Cadangan dibentuk</span><b>− Rp 9.020.000</b></div>
+                  <div class="lrow net"><span>Sisa efektif 524111 sekarang</span><b>Rp 767.600.000</b></div>
+                </div>
+                <div class="note ok">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 13 4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <div><b>Alokasi ditetapkan 8 Agu 2026, 11.40 WIB oleh Andi Saputra.</b> Dua baris mutasi terbentuk pada buku besar anggaran — pelepasan pada akun usulan dan pencadangan pada akun definitif — sehingga jumlah beban tidak pernah berubah.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="note info">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+              <div><b>Surat Tugas tidak dapat diterbitkan sebelum tahap ini selesai.</b> Nomor register anggaran dan akun definitif ikut tercetak pada Surat Tugas dan SPPD sebagai dasar pembebanan.</div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn primary" data-roles="verifikator" data-act="Alokasi anggaran ditetapkan">Tetapkan alokasi</button>
+            <button class="btn" data-roles="verifikator" data-act="Akun pembebanan dipindahkan">Pindahkan ke akun lain</button>
+            <button class="btn" data-roles="verifikator" data-act="Berkas dikembalikan ke pemohon">Kembalikan ke pemohon</button>
+            <span class="spacer"></span><span class="chip ok"><i class="bullet"></i>Diverifikasi 8 Agu, 11.40</span>
+          </div>
+        </div>
+
+        <!-- 04 EKSEKUSI KABAG -->
+        <div class="panel" data-panel="4">
+          <div class="body stack" style="gap:16px">
+            <p style="font-size:13.2px; color:var(--ink-2); max-width:70ch">Setelah alokasi anggaran ditetapkan verifikator, Kepala Bagian Umum menerbitkan berkas: memberi nomor agenda, menunjuk pemegang uang muka, dan mengunci komponen biaya agar tidak berubah setelah surat terbit.</p>
+            <div class="grid g2" style="gap:16px">
+              <div class="stack" style="gap:12px">
+                <span class="lbl">Daftar periksa eksekusi</span>
+                <label style="display:flex; gap:9px; align-items:flex-start; padding:9px 12px; border:1px solid var(--ok-line); background:var(--ok-tint); border-radius:var(--r); font-size:13px"><input type="checkbox" checked> Kelengkapan lampiran terverifikasi</label>
+                <label style="display:flex; gap:9px; align-items:flex-start; padding:9px 12px; border:1px solid var(--ok-line); background:var(--ok-tint); border-radius:var(--r); font-size:13px"><input type="checkbox" checked> Nomor Surat Tugas dialokasikan</label>
+                <label style="display:flex; gap:9px; align-items:flex-start; padding:9px 12px; border:1px solid var(--ok-line); background:var(--ok-tint); border-radius:var(--r); font-size:13px"><input type="checkbox" checked> Alokasi anggaran definitif diterima dari verifikator</label>
+                <label style="display:flex; gap:9px; align-items:flex-start; padding:9px 12px; border:1px solid var(--line); border-radius:var(--r); font-size:13px"><input type="checkbox" checked> Bendahara pembayar ditunjuk</label>
+              </div>
+              <div class="stack" style="gap:14px">
+                <div class="field"><label for="f-agenda">Nomor agenda</label><input class="inp num-inp" id="f-agenda" value="AG-2026-08-0331" style="text-align:left"></div>
+                <div class="field"><label for="f-pptk">Pemegang uang muka</label>
+                  <select class="inp" id="f-pptk"><option>Rizal Maulana — ketua rombongan</option><option>Nurul Azizah</option></select>
+                  <span class="hint">Uang muka satu rombongan disalurkan ke satu rekening penerima.</span>
+                </div>
+                <div class="field"><label for="f-bend">Bendahara pembayar</label>
+                  <select class="inp" id="f-bend"><option>Siti Marlina — Bendahara Pengeluaran</option></select>
+                </div>
+              </div>
+            </div>
+            <div class="note warn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 9v4m0 4h.01M10.3 3.9 2.6 17.4A2 2 0 0 0 4.3 20.4h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" stroke-linecap="round"/></svg>
+              <div><b>Menerbitkan berkas mengunci komponen biaya.</b> Perubahan setelah ini harus lewat adendum bernomor dan memicu penerbitan ulang Surat Tugas.</div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn primary" data-roles="kabag" data-act="Berkas diterbitkan — Surat Tugas siap">Terbitkan berkas</button>
+            <button class="btn" data-roles="kabag" data-act="Berkas dikembalikan ke pemohon">Kembalikan ke pemohon</button>
+            <span class="spacer"></span><span class="chip ok"><i class="bullet"></i>Dieksekusi 8 Agu, 13.05</span>
+          </div>
+        </div>
+
+        <!-- 05 SURAT TUGAS -->
+        <div class="panel" data-panel="5">
+          <div class="body stack" style="gap:14px">
+            <div class="row">
+              <div class="seg" role="group"><button aria-pressed="true">Pratinjau</button><button aria-pressed="false">Data isian</button><button aria-pressed="false">Riwayat versi</button></div>
+              <span class="spacer"></span>
+              <span class="chip seal">ST-BAZNAS/PG/VIII/2026/0147</span>
+            </div>
+            <div class="docnote">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+              Pratinjau tata letak dengan data contoh. Tanda tangan elektronik dibubuhkan saat penerbitan.
+            </div>
+
+            <div class="doc">
+              <div class="kop">
+                <div class="seal">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3 4 7v5c0 4.6 3.3 8.3 8 9 4.7-.7 8-4.4 8-9V7l-8-4Z"/><path d="m9 12 2 2 4-4" stroke-linecap="round"/></svg>
+                </div>
+                <div>
+                  <div class="org">BADAN AMIL ZAKAT NASIONAL</div>
+                  <div class="adr">Jalan Matraman Raya No. 134, Jakarta Timur 13150 · Telepon (021) 3913777 · baznas.go.id</div>
+                </div>
+              </div>
+
+              <div class="title">SURAT TUGAS</div>
+              <div class="nomor">Nomor: ST-BAZNAS/PG/VIII/2026/0147</div>
+
+              <div class="clause"><span class="k">Dasar</span><span>:</span>
+                <span>Surat Undangan BAZNAS Provinsi Sulawesi Selatan Nomor 431/BAZNAS-SS/VIII/2026 tanggal 4 Agustus 2026 perihal Rapat Koordinasi Nasional Pengumpulan ZIS Wilayah Timur.</span></div>
+
+              <div style="text-align:center; font-weight:700; letter-spacing:.14em; margin:14px 0 8px">MENUGASKAN</div>
+
+              <div class="clause"><span class="k">Kepada</span><span>:</span>
+                <span>
+                  <ol style="margin-top:0">
+                    <li>Rizal Maulana — Amil Madya, Divisi Pengumpulan (ketua rombongan)</li>
+                    <li>Nurul Azizah — Amil Muda, Divisi Pengumpulan</li>
+                    <li>Ahmad Fauzi — Staf Divisi Pengumpulan</li>
+                  </ol>
+                </span></div>
+
+              <div class="clause"><span class="k">Untuk</span><span>:</span>
+                <span>
+                  <ol style="margin-top:0">
+                    <li>Menghadiri Rapat Koordinasi Nasional Pengumpulan ZIS Wilayah Timur di Makassar, Sulawesi Selatan, pada tanggal 18 sampai dengan 21 Agustus 2026;</li>
+                    <li>Melaksanakan tugas dengan penuh tanggung jawab dan menyampaikan laporan tertulis paling lambat 5 (lima) hari kerja setelah kembali;</li>
+                    <li>Biaya perjalanan dibebankan pada DIPA Nomor SP DIPA-025.03.1.426871/2026, Kegiatan 2104.EBA.994 Komponen 051 Akun 524111 (Belanja Perjalanan Dinas Biasa), register anggaran REG-ANG/2026/08/0288.</li>
+                  </ol>
+                </span></div>
+
+              <div class="ttd">
+                <div class="blk">
+                  Jakarta, 8 Agustus 2026<br>Kepala Bagian Umum,
+                  <div class="esign">
+                    <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+                      <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>
+                      <path d="M14 14h3v3h-3zM19 14h2M14 19h2M18 18h3v3h-3z"/>
+                    </svg>
+                  </div>
+                  <b>Drs. H. Imam Santoso, M.M.</b><br>
+                  <span style="font-family:var(--ui); font-size:10.5px; color:var(--muted)">Ditandatangani elektronik · BSrE · 8 Agu 2026 13.12</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn primary" data-roles="kabag" data-act="Surat Tugas diterbitkan">Terbitkan &amp; tanda tangani</button>
+            <button class="btn">Unduh PDF</button>
+            <button class="btn">Kirim ke pelaksana</button>
+            <span class="spacer"></span><span class="chip ok"><i class="bullet"></i>Terbit · versi 1</span>
+          </div>
+        </div>
+
+        <!-- 06 RINCIAN UANG MUKA -->
+        <div class="panel" data-panel="6">
+          <div class="body stack" style="gap:16px">
+            <div class="row" style="gap:9px">
+              <span class="chip seal">SBM TA 2026 · PMK 49/PMK.02/2025</span>
+              <span class="chip info"><i class="bullet"></i>Seluruh komponen dibebankan pada akun 524111</span>
+              <span class="chip ok"><i class="bullet"></i>Dibekukan pada berkas ini sejak 8 Agu 2026</span>
+              <span class="spacer"></span>
+              <button class="btn sm" data-goto="sbm">Buka daftar tarif</button>
+            </div>
+
+            <div class="note info">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+              <div><b>Tiap baris dibandingkan seketika dengan SBM Prov. Sulawesi Selatan yang berlaku.</b> Naikkan harga satuan mana pun di atas batas untuk melihat baris berubah merah, kolom alasan terbuka, dan tombol pengajuan terkunci sampai alasannya diisi.</div>
+            </div>
+
+            <div class="tbl-wrap">
+              <table class="tbl" id="tblRencana" style="min-width:640px">
+                <thead>
+                  <tr><th style="width:30%">Komponen biaya</th><th class="r">Volume</th><th>Satuan</th><th class="r">Harga satuan</th><th class="r">Batas SBM</th><th class="r">Jumlah</th></tr>
+                </thead>
+                <tbody>
+                  <tr class="brs" data-sbm="3900000" data-ket="Batas tiket ekonomi PP rute CGK–UPG">
+                    <td>Tiket pesawat CGK–UPG pulang pergi<div class="sub">3 pelaksana · kelas ekonomi</div></td>
+                    <td class="r"><input class="inp num-inp" data-vol value="1" style="width:56px; padding:4px 7px" aria-label="Volume Tiket pesawat CGK–UPG pulang pergi"></td>
+                    <td>paket</td>
+                    <td class="r"><input class="inp num-inp" data-harga value="3800000" style="width:104px; padding:4px 7px" aria-label="Harga satuan Tiket pesawat CGK–UPG pulang pergi"></td>
+                    <td class="r"><div class="num" style="color:var(--muted)">Rp 3.900.000</div><div data-status style="margin-top:4px"></div></td>
+                    <td class="r num" data-jml></td>
+                  </tr>
+                  <tr class="als" hidden>
+                    <td colspan="6">
+                      <div class="row" style="gap:10px; align-items:center">
+                        <span class="chip crit"><i class="bullet"></i>Wajib diisi</span>
+                        <label for="als0" style="font-size:12.4px; font-weight:600; white-space:nowrap">Alasan melampaui SBM</label>
+                        <input class="inp" id="als0" data-alasan placeholder="Contoh: tarif hotel naik karena bersamaan dengan agenda nasional; tidak tersedia kamar pada tarif SBM." style="flex:1; min-width:200px">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="brs" data-sbm="1000000" data-ket="Penginapan Gol. III Prov. Sulawesi Selatan">
+                    <td>Penginapan<div class="sub">3 malam · Prov. Sulawesi Selatan</div></td>
+                    <td class="r"><input class="inp num-inp" data-vol value="3" style="width:56px; padding:4px 7px" aria-label="Volume Penginapan"></td>
+                    <td>malam</td>
+                    <td class="r"><input class="inp num-inp" data-harga value="1000000" style="width:104px; padding:4px 7px" aria-label="Harga satuan Penginapan"></td>
+                    <td class="r"><div class="num" style="color:var(--muted)">Rp 1.000.000</div><div data-status style="margin-top:4px"></div></td>
+                    <td class="r num" data-jml></td>
+                  </tr>
+                  <tr class="als" hidden>
+                    <td colspan="6">
+                      <div class="row" style="gap:10px; align-items:center">
+                        <span class="chip crit"><i class="bullet"></i>Wajib diisi</span>
+                        <label for="als1" style="font-size:12.4px; font-weight:600; white-space:nowrap">Alasan melampaui SBM</label>
+                        <input class="inp" id="als1" data-alasan placeholder="Contoh: tarif hotel naik karena bersamaan dengan agenda nasional; tidak tersedia kamar pada tarif SBM." style="flex:1; min-width:200px">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="brs" data-sbm="430000" data-ket="Uang harian Prov. Sulawesi Selatan">
+                    <td>Uang harian<div class="sub">4 hari · Prov. Sulawesi Selatan</div></td>
+                    <td class="r"><input class="inp num-inp" data-vol value="4" style="width:56px; padding:4px 7px" aria-label="Volume Uang harian"></td>
+                    <td>hari</td>
+                    <td class="r"><input class="inp num-inp" data-harga value="430000" style="width:104px; padding:4px 7px" aria-label="Harga satuan Uang harian"></td>
+                    <td class="r"><div class="num" style="color:var(--muted)">Rp 430.000</div><div data-status style="margin-top:4px"></div></td>
+                    <td class="r num" data-jml></td>
+                  </tr>
+                  <tr class="als" hidden>
+                    <td colspan="6">
+                      <div class="row" style="gap:10px; align-items:center">
+                        <span class="chip crit"><i class="bullet"></i>Wajib diisi</span>
+                        <label for="als2" style="font-size:12.4px; font-weight:600; white-space:nowrap">Alasan melampaui SBM</label>
+                        <input class="inp" id="als2" data-alasan placeholder="Contoh: tarif hotel naik karena bersamaan dengan agenda nasional; tidak tersedia kamar pada tarif SBM." style="flex:1; min-width:200px">
+                      </div>
+                    </td>
+                  </tr>
+                  <tr class="brs" data-sbm="250000" data-ket="Transpor lokal Prov. Sulawesi Selatan">
+                    <td>Transpor lokal / taksi bandara<div class="sub">keberangkatan &amp; kepulangan</div></td>
+                    <td class="r"><input class="inp num-inp" data-vol value="2" style="width:56px; padding:4px 7px" aria-label="Volume Transpor lokal / taksi bandara"></td>
+                    <td>kali</td>
+                    <td class="r"><input class="inp num-inp" data-harga value="250000" style="width:104px; padding:4px 7px" aria-label="Harga satuan Transpor lokal / taksi bandara"></td>
+                    <td class="r"><div class="num" style="color:var(--muted)">Rp 250.000</div><div data-status style="margin-top:4px"></div></td>
+                    <td class="r num" data-jml></td>
+                  </tr>
+                  <tr class="als" hidden>
+                    <td colspan="6">
+                      <div class="row" style="gap:10px; align-items:center">
+                        <span class="chip crit"><i class="bullet"></i>Wajib diisi</span>
+                        <label for="als3" style="font-size:12.4px; font-weight:600; white-space:nowrap">Alasan melampaui SBM</label>
+                        <input class="inp" id="als3" data-alasan placeholder="Contoh: tarif hotel naik karena bersamaan dengan agenda nasional; tidak tersedia kamar pada tarif SBM." style="flex:1; min-width:200px">
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr><td colspan="5">Total rencana biaya</td><td class="r num" id="totRencana">Rp 9.020.000</td><td data-status-total></td></tr>
+                </tfoot>
+              </table>
+            </div>
+            <button class="btn sm" style="align-self:flex-start">+ Tambah komponen</button>
+
+            <div class="grid g2" style="gap:16px; align-items:start">
+              <div class="stack" style="gap:12px">
+                <div class="field">
+                  <label for="pctUM">Porsi uang muka — <b class="num" id="pctVal">75%</b></label>
+                  <input type="range" id="pctUM" min="0" max="100" step="5" value="75" style="width:100%">
+                  <span class="hint">Kebijakan: maksimal 80% dari rencana biaya. Sisanya dibayarkan setelah SPJ rampung diverifikasi.</span>
+                </div>
+                <div class="field">
+                  <label for="f-rek">Rekening penerima uang muka</label>
+                  <input class="inp" id="f-rek" value="Bank Syariah Indonesia · 7211 xxxx 4408 · a.n. Rizal Maulana">
+                </div>
+              </div>
+              <div class="calc">
+                <div class="crow"><span>Total rencana biaya</span><b id="cRencana">Rp 9.020.000</b></div>
+                <div class="crow"><span>Porsi uang muka</span><b id="cPct">75%</b></div>
+                <div class="crow total"><span>Dibayarkan di muka</span><b id="cUM">Rp 6.765.000</b></div>
+                <div class="crow"><span>Ditahan sampai SPJ</span><b id="cTahan">Rp 2.255.000</b></div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn primary" id="btnAjukanSbm" data-roles="pemohon,kabag" data-act="Rincian uang muka dikirim ke Bendahara">Ajukan ke Bendahara</button>
+            <button class="btn">Simpan</button>
+            <button class="btn ghost">Salin dari perdin sebelumnya</button>
+          </div>
+        </div>
+
+        <!-- 07 DOKUMEN SPPD -->
+        <div class="panel" data-panel="7">
+          <div class="body stack" style="gap:14px">
+            <div class="row">
+              <div class="seg" role="group"><button aria-pressed="true">Lembar I — Penugasan</button><button aria-pressed="false">Lembar II — Pengesahan</button></div>
+              <span class="spacer"></span><span class="chip seal">SPPD/BAZNAS/VIII/2026/0147</span>
+            </div>
+            <div class="docnote">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+              Lembar II dicetak untuk dibubuhi cap tiba dan berangkat di tempat tujuan — inilah bukti fisik yang diminta auditor.
+            </div>
+
+            <div class="doc">
+              <div class="title" style="font-size:15px">SURAT PERINTAH PERJALANAN DINAS</div>
+              <div class="nomor">Nomor: SPPD/BAZNAS/VIII/2026/0147</div>
+              <table style="width:100%; border-collapse:collapse; font-size:13.6px">
+                <tbody>
+                  <tr><td style="width:34px; border:1px solid var(--line-strong); padding:7px 9px">1.</td><td style="border:1px solid var(--line-strong); padding:7px 9px">Pejabat yang memberi perintah</td><td style="border:1px solid var(--line-strong); padding:7px 9px">Kepala Bagian Umum BAZNAS RI</td></tr>
+                  <tr><td style="border:1px solid var(--line-strong); padding:7px 9px">2.</td><td style="border:1px solid var(--line-strong); padding:7px 9px">Nama pegawai yang diperintah</td><td style="border:1px solid var(--line-strong); padding:7px 9px">Rizal Maulana</td></tr>
+                  <tr><td style="border:1px solid var(--line-strong); padding:7px 9px">3.</td><td style="border:1px solid var(--line-strong); padding:7px 9px">Jabatan / golongan</td><td style="border:1px solid var(--line-strong); padding:7px 9px">Amil Madya / Gol. III</td></tr>
+                  <tr><td style="border:1px solid var(--line-strong); padding:7px 9px">4.</td><td style="border:1px solid var(--line-strong); padding:7px 9px">Maksud perjalanan dinas</td><td style="border:1px solid var(--line-strong); padding:7px 9px">Menghadiri Rakornas Pengumpulan ZIS Wilayah Timur</td></tr>
+                  <tr><td style="border:1px solid var(--line-strong); padding:7px 9px">5.</td><td style="border:1px solid var(--line-strong); padding:7px 9px">Alat angkut</td><td style="border:1px solid var(--line-strong); padding:7px 9px">Pesawat udara</td></tr>
+                  <tr><td style="border:1px solid var(--line-strong); padding:7px 9px">6.</td><td style="border:1px solid var(--line-strong); padding:7px 9px">Tempat berangkat / tujuan</td><td style="border:1px solid var(--line-strong); padding:7px 9px">Jakarta → Makassar</td></tr>
+                  <tr><td style="border:1px solid var(--line-strong); padding:7px 9px">7.</td><td style="border:1px solid var(--line-strong); padding:7px 9px">Lamanya perjalanan</td><td style="border:1px solid var(--line-strong); padding:7px 9px">4 (empat) hari, 18 s.d. 21 Agustus 2026</td></tr>
+                  <tr><td style="border:1px solid var(--line-strong); padding:7px 9px">8.</td><td style="border:1px solid var(--line-strong); padding:7px 9px">Pembebanan anggaran</td><td style="border:1px solid var(--line-strong); padding:7px 9px">Operasional Amil — Divisi Pengumpulan TA 2026</td></tr>
+                </tbody>
+              </table>
+              <div class="ttd">
+                <div class="blk">Jakarta, 8 Agustus 2026<br>Kepala Bagian Umum,
+                  <div class="esign"><svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM19 14h2M14 19h2M18 18h3v3h-3z"/></svg></div>
+                  <b>Drs. H. Imam Santoso, M.M.</b>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn primary" data-roles="kabag" data-act="SPPD diterbitkan">Terbitkan SPPD</button>
+            <button class="btn">Cetak lembar pengesahan</button>
+            <button class="btn ghost">Terbitkan untuk semua pelaksana (3)</button>
+          </div>
+        </div>
+
+        <!-- 08 PEMBAYARAN UANG MUKA -->
+        <div class="panel" data-panel="8">
+          <div class="body stack" style="gap:16px">
+            <div class="grid g2" style="gap:16px; align-items:start">
+              <div class="stack" style="gap:14px">
+                <span class="lbl">Instruksi pembayaran</span>
+                <dl class="dl">
+                  <dt>Nomor voucher</dt><dd class="num">BKK/2026/08/0219</dd>
+                  <dt>Penerima</dt><dd>Rizal Maulana — ketua rombongan</dd>
+                  <dt>Rekening</dt><dd class="num">BSI · 7211 xxxx 4408</dd>
+                  <dt>Mekanisme</dt><dd>Uang Persediaan (UP) — bendahara pengeluaran</dd>
+                  <dt>Pembebanan</dt><dd class="num">524111 · 2104.EBA.994 · 051</dd>
+                  <dt>Jadwal</dt><dd>15 Agu 2026 — H-3 keberangkatan</dd>
+                </dl>
+                <div class="note ok">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 13 4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <div><b>Dana ditransfer 15 Agu 2026, 09.12 WIB.</b> Bukti transfer terlampir dan status berkas otomatis berpindah ke tahap 09.</div>
+                </div>
+              </div>
+
+              <div class="stack" style="gap:14px">
+                <div class="calc">
+                  <div class="crow"><span>Total rencana biaya</span><b>Rp 9.020.000</b></div>
+                  <div class="crow"><span>Porsi uang muka 75%</span><b>Rp 6.765.000</b></div>
+                  <div class="crow"><span>Potongan / pajak</span><b>Rp 0</b></div>
+                  <div class="crow result"><span>Dibayarkan</span><b>Rp 6.765.000</b></div>
+                </div>
+                <div class="file"><span class="ft img">JPG</span><div><b>Bukti-transfer-BKK-0219.jpg</b><span>640 KB · diunggah Bendahara · 15 Agu 09.14</span></div><span class="spacer"></span><span class="chip ok"><i class="bullet"></i>Terverifikasi</span></div>
+                <div class="note info" style="font-size:12.3px">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+                  <div><b>Dibayar dari Uang Persediaan, belum menjadi realisasi DIPA.</b> Nilainya tetap berstatus cadangan pada akun 524111 sampai SPJ rampung menjadi dasar SPM-GUP dan KPPN menerbitkan SP2D.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn primary" data-roles="bendahara" data-act="Uang muka dibayarkan">Tandai sudah dibayar</button>
+            <button class="btn" data-roles="bendahara">Unggah bukti transfer</button>
+            <button class="btn ghost">Cetak voucher BKK</button>
+          </div>
+        </div>
+
+        <!-- 09 PERTANGGUNGJAWABAN -->
+        <div class="panel" data-panel="9">
+          <div class="body stack" style="gap:16px">
+            <div class="note warn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>
+              <div><b>Tenggat SPJ: 26 Agustus 2026 — 5 hari kerja setelah kembali.</b> Lewat tenggat, pengajuan perdin baru atas nama pelaksana ini akan tertahan otomatis.</div>
+            </div>
+
+            <div class="note info">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+              <div><b>Realisasi diuji dengan SBM TA 2026 yang sama seperti rencana.</b> Uang harian bersifat lumpsum dan tidak boleh melebihi tarif; penginapan dan transpor dibayar sesuai bukti riil sampai batas SBM. Kelebihan di atas batas menjadi beban pribadi pelaksana, kecuali sudah beralasan dan disetujui Kepala Bagian pada tahap 05.</div>
+            </div>
+
+            <div class="tbl-wrap">
+              <table class="tbl" id="tblRealisasi">
+                <thead>
+                  <tr><th style="width:30%">Komponen</th><th class="r">Rencana</th><th class="r">Realisasi</th><th class="r">Selisih</th><th>Bukti</th><th>Verifikasi</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Tiket pesawat CGK–UPG PP</td>
+                    <td class="r num">Rp 3.800.000</td>
+                    <td class="r"><input class="inp num-inp" data-real value="3640000" style="width:130px; padding:4px 8px"></td>
+                    <td class="r num" data-sel></td>
+                    <td><span class="chip ok"><i class="bullet"></i>e-tiket + boarding pass</span></td>
+                    <td><span class="chip ok"><i class="bullet"></i>Sah</span></td>
+                  </tr>
+                  <tr>
+                    <td>Penginapan 3 malam</td>
+                    <td class="r num">Rp 3.000.000</td>
+                    <td class="r"><input class="inp num-inp" data-real value="2850000" style="width:130px; padding:4px 8px"></td>
+                    <td class="r num" data-sel></td>
+                    <td><span class="chip ok"><i class="bullet"></i>Kuitansi hotel</span></td>
+                    <td><span class="chip ok"><i class="bullet"></i>Sah</span></td>
+                  </tr>
+                  <tr>
+                    <td>Uang harian 4 hari</td>
+                    <td class="r num">Rp 1.720.000</td>
+                    <td class="r"><input class="inp num-inp" data-real value="1720000" style="width:130px; padding:4px 8px"></td>
+                    <td class="r num" data-sel></td>
+                    <td><span class="chip mute">Daftar penerimaan (lumpsum)</span></td>
+                    <td><span class="chip ok"><i class="bullet"></i>Sah</span></td>
+                  </tr>
+                  <tr>
+                    <td>Transpor lokal</td>
+                    <td class="r num">Rp 500.000</td>
+                    <td class="r"><input class="inp num-inp" data-real value="465000" style="width:130px; padding:4px 8px"></td>
+                    <td class="r num" data-sel></td>
+                    <td><span class="chip warn"><i class="bullet"></i>1 bukti buram</span></td>
+                    <td><span class="chip warn"><i class="bullet"></i>Perlu ganti</span></td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td>Jumlah</td>
+                    <td class="r num">Rp 9.020.000</td>
+                    <td class="r num" id="totRealisasi">Rp 8.675.000</td>
+                    <td class="r num" id="totSelisih"></td>
+                    <td colspan="2"></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <div class="grid g2" style="gap:16px; align-items:start">
+              <div class="field">
+                <label for="f-catatanpj">Catatan pelaksana</label>
+                <textarea class="inp" id="f-catatanpj" placeholder="Jelaskan penyimpangan dari rencana, mis. perubahan jadwal penerbangan.">Harga tiket lebih rendah dari rencana karena perubahan jam penerbangan pulang. Tarif hotel memperoleh potongan korporat.</textarea>
+              </div>
+              <div class="calc">
+                <div class="crow"><span>Uang muka diterima</span><b>Rp 6.765.000</b></div>
+                <div class="crow"><span>Realisasi dipertanggungjawabkan</span><b id="pjReal">Rp 8.675.000</b></div>
+                <div class="crow result"><span>BAZNAS masih harus membayar</span><b id="pjKurang">Rp 1.910.000</b></div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn primary" data-roles="pemohon" data-act="SPJ dikirim ke Bendahara untuk verifikasi">Kirim pertanggungjawaban</button>
+            <button class="btn">Simpan sementara</button>
+            <span class="spacer"></span><span class="chip warn"><i class="bullet"></i>1 bukti perlu diganti</span>
+          </div>
+        </div>
+
+        <!-- 10 SPJ RAMPUNG -->
+        <div class="panel" data-panel="10">
+          <div class="body stack" style="gap:16px">
+            <div class="drop">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.7" style="margin-bottom:6px"><path d="M12 16V4m0 0L8 8m4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 16v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3"/></svg>
+              <div class="big">Seret berkas ke sini atau klik untuk memilih</div>
+              <div class="small">PDF, JPG, atau PNG · maksimal 10 MB per berkas · sistem mengenali jenis dokumen dari isinya</div>
+            </div>
+
+            <div class="stack" style="gap:9px">
+              <div class="file"><span class="ft pdf">PDF</span><div><b>SPJ-Rampung-PD-0147.pdf</b><span>Berkas gabungan · 2,4 MB · 24 Agu 14.02 · versi 2</span></div><span class="spacer"></span><span class="chip ok"><i class="bullet"></i>Terverifikasi</span></div>
+              <div class="file"><span class="ft pdf">PDF</span><div><b>Kuitansi-hotel-Makassar.pdf</b><span>318 KB · 24 Agu 14.02</span></div><span class="spacer"></span><span class="chip ok"><i class="bullet"></i>Terverifikasi</span></div>
+              <div class="file"><span class="ft img">JPG</span><div><b>Boarding-pass-UPG-CGK.jpg</b><span>1,1 MB · 24 Agu 14.03</span></div><span class="spacer"></span><span class="chip ok"><i class="bullet"></i>Terverifikasi</span></div>
+              <div class="file" style="border-color:var(--warn-line); background:var(--warn-tint)">
+                <span class="ft img">JPG</span>
+                <div><b>Struk-taksi-bandara.jpg</b><span style="color:var(--warn)">Teks nominal tidak terbaca — unggah ulang atau lampirkan surat pernyataan riil</span></div>
+                <span class="spacer"></span>
+                <button class="btn sm">Ganti berkas</button>
+              </div>
+              <div class="file"><span class="ft pdf">PDF</span><div><b>SPPD-lembar-II-tercap.pdf</b><span>Cap tiba &amp; berangkat lengkap · 892 KB</span></div><span class="spacer"></span><span class="chip ok"><i class="bullet"></i>Terverifikasi</span></div>
+            </div>
+
+            <div class="note info">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+              <div><b>4 dari 5 dokumen wajib sudah lengkap.</b> Berkas tidak bisa dinyatakan rampung selama masih ada dokumen berstatus perlu perbaikan.</div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn primary" data-roles="bendahara" data-act="SPJ dinyatakan rampung">Nyatakan SPJ rampung</button>
+            <button class="btn" data-roles="bendahara" data-act="Berkas dikembalikan untuk perbaikan">Kembalikan ke pelaksana</button>
+            <span class="spacer"></span><span class="chip warn"><i class="bullet"></i>1 dokumen perlu perbaikan</span>
+          </div>
+        </div>
+
+        <!-- 11 LAPORAN PERDIN -->
+        <div class="panel" data-panel="11">
+          <div class="body stack" style="gap:16px">
+            <p style="font-size:13.2px; color:var(--ink-2); max-width:70ch">Laporan substansi dipisahkan dari pertanggungjawaban keuangan: yang satu dinilai pimpinan program, yang satu diverifikasi bendahara. Memisahkannya mencegah laporan bagus tertahan hanya karena satu struk hilang.</p>
+            <div class="grid g2" style="gap:16px; align-items:start">
+              <div class="stack" style="gap:14px">
+                <div class="field"><label for="l-ring">Ringkasan pelaksanaan</label>
+                  <textarea class="inp" id="l-ring" style="min-height:96px">Rakornas diikuti 34 BAZNAS provinsi dan kabupaten/kota wilayah timur. Agenda utama: penyelarasan target pengumpulan 2027 dan penyeragaman pelaporan digital melalui SIMBA.</textarea></div>
+                <div class="field"><label for="l-hasil">Hasil yang dicapai</label>
+                  <textarea class="inp" id="l-hasil" style="min-height:96px">Kesepakatan target pengumpulan wilayah timur naik 18% pada 2027; komitmen 12 BAZNAS daerah mengadopsi kanal pembayaran terpadu pada kuartal I 2027.</textarea></div>
+                <div class="field"><label for="l-tl">Tindak lanjut &amp; rekomendasi</label>
+                  <textarea class="inp" id="l-tl" style="min-height:80px">Menyusun panduan integrasi kanal pembayaran (target Oktober 2026) dan menjadwalkan pendampingan teknis untuk 12 BAZNAS daerah.</textarea></div>
+              </div>
+              <div class="stack" style="gap:14px">
+                <div>
+                  <span class="lbl">Dokumentasi kegiatan</span>
+                  <div class="grid g3" style="gap:8px; margin-top:8px">
+                    <div style="aspect-ratio:4/3; border-radius:var(--r); background:var(--sunk); border:1px solid var(--line); display:grid; place-items:center; color:var(--faint)">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m4 17 5-5 4 4 3-2 4 3"/></svg>
+                    </div>
+                    <div style="aspect-ratio:4/3; border-radius:var(--r); background:var(--sunk); border:1px solid var(--line); display:grid; place-items:center; color:var(--faint)">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="m4 17 5-5 4 4 3-2 4 3"/></svg>
+                    </div>
+                    <div style="aspect-ratio:4/3; border-radius:var(--r); border:1.5px dashed var(--line-strong); display:grid; place-items:center; color:var(--faint); cursor:pointer">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                    </div>
+                  </div>
+                </div>
+                <div class="file"><span class="ft pdf">PDF</span><div><b>Notulen-Rakornas-Sulsel.pdf</b><span>1,3 MB · lampiran laporan</span></div></div>
+                <div class="note info" style="font-size:12.3px">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+                  <div>Laporan yang disetujui otomatis masuk ke Arsip Dokumen dan dapat dicari lintas tahun berdasarkan kota, unit, atau kata kunci hasil.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn primary" data-roles="pemohon" data-act="Laporan perdin dikirim ke Kabag">Kirim laporan</button>
+            <button class="btn">Pratinjau PDF</button>
+            <button class="btn ghost">Simpan draf</button>
+          </div>
+        </div>
+
+        <!-- 12 SELISIH -->
+        <div class="panel" data-panel="12">
+          <div class="body stack" style="gap:16px">
+            <div class="grid g2" style="gap:16px; align-items:start">
+              <div class="stack" style="gap:14px">
+                <span class="lbl">Dasar perhitungan</span>
+                <div class="tbl-wrap">
+                  <table class="tbl">
+                    <thead><tr><th>Komponen</th><th class="r">Rencana</th><th class="r">Realisasi</th><th class="r">Selisih</th></tr></thead>
+                    <tbody>
+                      <tr><td>Tiket pesawat</td><td class="r num">3.800.000</td><td class="r num">3.640.000</td><td class="r num" style="color:var(--ok)">−160.000</td></tr>
+                      <tr><td>Penginapan</td><td class="r num">3.000.000</td><td class="r num">2.850.000</td><td class="r num" style="color:var(--ok)">−150.000</td></tr>
+                      <tr><td>Uang harian</td><td class="r num">1.720.000</td><td class="r num">1.720.000</td><td class="r num" style="color:var(--muted)">0</td></tr>
+                      <tr><td>Transpor lokal</td><td class="r num">500.000</td><td class="r num">465.000</td><td class="r num" style="color:var(--ok)">−35.000</td></tr>
+                    </tbody>
+                    <tfoot><tr><td>Jumlah</td><td class="r num">9.020.000</td><td class="r num">8.675.000</td><td class="r num" style="color:var(--ok)">−345.000</td></tr></tfoot>
+                  </table>
+                </div>
+                <div class="note ok">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 13 4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  <div><b>Realisasi Rp 345.000 di bawah rencana.</b> Efisiensi ini dikembalikan ke pagu unit, bukan menjadi hak pelaksana.</div>
+                </div>
+              </div>
+
+              <div class="stack" style="gap:14px">
+                <div class="calc">
+                  <div class="crow"><span>Realisasi disetujui</span><b>Rp 8.675.000</b></div>
+                  <div class="crow"><span>Uang muka telah dibayar</span><b>Rp 6.765.000</b></div>
+                  <div class="crow result"><span>Kurang bayar — hak pelaksana</span><b>Rp 1.910.000</b></div>
+                </div>
+
+                <div class="note info">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+                  <div><b>Dua arah selisih, dua alur berbeda.</b> Bila realisasi lebih kecil dari uang muka, sistem menerbitkan tagihan pengembalian beserta kode setor. Bila lebih besar seperti berkas ini, sistem membuat instruksi pelunasan ke pelaksana.</div>
+                </div>
+
+                <div>
+                  <span class="lbl">Simulasi arah sebaliknya</span>
+                  <div class="calc" style="margin-top:8px; opacity:.72">
+                    <div class="crow"><span>Andai realisasi</span><b>Rp 5.900.000</b></div>
+                    <div class="crow"><span>Uang muka</span><b>Rp 6.765.000</b></div>
+                    <div class="crow result minus"><span>Wajib dikembalikan pelaksana</span><b>Rp 865.000</b></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn primary" data-roles="bendahara" data-act="Perhitungan selisih disahkan">Sahkan perhitungan</button>
+            <button class="btn" data-roles="bendahara">Terbitkan instruksi pembayaran</button>
+            <button class="btn ghost">Unduh kertas kerja</button>
+          </div>
+        </div>
+
+        <!-- 13 PEMBAYARAN SISA -->
+        <div class="panel" data-panel="13">
+          <div class="body stack" style="gap:16px">
+            <div class="grid g2" style="gap:16px; align-items:start">
+              <div class="stack" style="gap:14px">
+                <span class="lbl">Instruksi pelunasan</span>
+                <dl class="dl">
+                  <dt>Nomor voucher</dt><dd class="num">BKK/2026/08/0244</dd>
+                  <dt>Sifat</dt><dd>Pelunasan kurang bayar perjalanan dinas</dd>
+                  <dt>Penerima</dt><dd>Rizal Maulana</dd>
+                  <dt>Rekening</dt><dd class="num">BSI · 7211 xxxx 4408</dd>
+                  <dt>Nilai</dt><dd class="num" style="color:var(--accent); font-weight:700">Rp 1.910.000</dd>
+                  <dt>Pembebanan</dt><dd class="num">524111 · 2104.EBA.994 · 051</dd>
+                  <dt>Dasar penihilan</dt><dd class="num">SPM-GUP 00214/2026 → SP2D KPPN Jakarta II</dd>
+                  <dt>Jadwal transfer</dt><dd>29 Agustus 2026 (siklus pembayaran Jumat)</dd>
+                </dl>
+                <div class="field"><label for="f-catbayar">Catatan bendahara</label>
+                  <input class="inp" id="f-catbayar" value="Dibayarkan setelah SPJ rampung diverifikasi dan laporan perdin disetujui."></div>
+              </div>
+
+              <div class="stack" style="gap:14px">
+                <div class="calc">
+                  <div class="crow"><span>Total realisasi disahkan</span><b>Rp 8.675.000</b></div>
+                  <div class="crow"><span>Sudah dibayar (uang muka)</span><b>Rp 6.765.000</b></div>
+                  <div class="crow result"><span>Dibayarkan sekarang</span><b>Rp 1.910.000</b></div>
+                  <div class="crow total"><span>Sisa kewajiban setelah transaksi ini</span><b>Rp 0</b></div>
+                </div>
+
+                <span class="lbl">Penutupan berkas — 4 syarat</span>
+                <div class="stack" style="gap:7px">
+                  <div class="row" style="gap:8px; font-size:12.8px"><span class="chip ok"><i class="bullet"></i>✓</span> SPJ rampung terverifikasi</div>
+                  <div class="row" style="gap:8px; font-size:12.8px"><span class="chip ok"><i class="bullet"></i>✓</span> Laporan perdin disetujui Kabag</div>
+                  <div class="row" style="gap:8px; font-size:12.8px"><span class="chip ok"><i class="bullet"></i>✓</span> Perhitungan selisih disahkan</div>
+                  <div class="row" style="gap:8px; font-size:12.8px"><span class="chip mute"><i class="bullet"></i>—</span> Pembayaran sisa dieksekusi</div>
+                </div>
+
+                <div class="note info" style="font-size:12.3px">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+                  <div>Setelah SP2D terbit, berkas berstatus <b>Selesai</b>: nilai berpindah dari cadangan menjadi <b>realisasi</b> pada akun 524111, sisa efektif DIPA diperbarui, dan seluruh dokumen dikunci — hanya bisa dibaca dan diunduh.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="foot">
+            <button class="btn primary" data-roles="bendahara" data-act="Pembayaran sisa dieksekusi — berkas selesai">Bayar &amp; tutup berkas</button>
+            <button class="btn" data-roles="bendahara">Jadwalkan ulang</button>
+            <button class="btn ghost">Cetak voucher</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== KOLOM KANAN ===== -->
+    <div class="stack">
+      <div class="card">
+        <header><h3>Ringkasan keuangan</h3></header>
+        <div class="body" style="padding:0">
+          <div class="calc" style="border:0; border-radius:0">
+            <div class="crow"><span>Rencana biaya</span><b>Rp 9.020.000</b></div>
+            <div class="crow"><span>Uang muka dibayar</span><b>Rp 6.765.000</b></div>
+            <div class="crow"><span>Realisasi SPJ</span><b>Rp 8.675.000</b></div>
+            <div class="crow result"><span>Sisa dibayarkan</span><b>Rp 1.910.000</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <header><h3>Pihak terkait</h3></header>
+        <div class="body stack" style="gap:11px; padding:14px 18px">
+          <div class="who"><div class="avatar">RM</div><div><b>Rizal Maulana</b><span>Pemohon · ketua rombongan</span></div></div>
+          <div class="who"><div class="avatar" style="background:var(--accent-tint); color:var(--accent); border-color:var(--accent-line)">RH</div><div><b>Dr. H. Ridwan Hakim</b><span>Pimpinan · penyetuju</span></div></div>
+          <div class="who"><div class="avatar" style="background:var(--brass-tint); color:var(--brass); border-color:var(--brass-line)">AS</div><div><b>Andi Saputra</b><span>Verifikator anggaran</span></div></div>
+          <div class="who"><div class="avatar" style="background:var(--accent-tint); color:var(--accent); border-color:var(--accent-line)">IS</div><div><b>Drs. H. Imam Santoso</b><span>Kabag Umum · pelaksana</span></div></div>
+          <div class="who"><div class="avatar" style="background:var(--ok-tint); color:var(--ok); border-color:var(--ok-line)">SM</div><div><b>Siti Marlina</b><span>Bendahara pengeluaran</span></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <header><h3>Dokumen berkas</h3><span class="spacer"></span><span class="chip mute">6</span></header>
+        <div class="body stack" style="gap:8px; padding:14px">
+          <div class="file" style="padding:8px 11px"><span class="ft pdf" style="width:26px; height:31px; font-size:8px">PDF</span><div><b>Surat Tugas</b><span>ST-…/0147 · v1</span></div></div>
+          <div class="file" style="padding:8px 11px"><span class="ft pdf" style="width:26px; height:31px; font-size:8px">PDF</span><div><b>SPPD</b><span>SPPD-…/0147 · 3 lembar</span></div></div>
+          <div class="file" style="padding:8px 11px"><span class="ft pdf" style="width:26px; height:31px; font-size:8px">PDF</span><div><b>Rincian uang muka</b><span>disahkan 12 Agu</span></div></div>
+          <div class="file" style="padding:8px 11px"><span class="ft pdf" style="width:26px; height:31px; font-size:8px">PDF</span><div><b>SPJ rampung</b><span>v2 · 24 Agu</span></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <header><h3>Linimasa berkas</h3></header>
+        <ul class="tl">
+          <li><span class="tdot now"></span><div><b>Menunggu perbaikan bukti transpor</b><span>Hari ini, 09.10 · Bendahara</span></div></li>
+          <li><span class="tdot ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg></span><div><b>SPJ diunggah (versi 2)</b><span>24 Agu, 14.03 · Rizal Maulana</span></div></li>
+          <li><span class="tdot ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg></span><div><b>Perjalanan selesai</b><span>21 Agu · cap SPPD lengkap</span></div></li>
+          <li><span class="tdot ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg></span><div><b>Uang muka ditransfer</b><span>15 Agu, 09.12 · Rp 6.765.000</span></div></li>
+          <li><span class="tdot ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg></span><div><b>Surat Tugas &amp; SPPD terbit</b><span>8 Agu, 13.12 · Kabag Umum</span></div></li>
+          <li><span class="tdot ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg></span><div><b>Alokasi anggaran ditetapkan</b><span>8 Agu, 11.40 · Andi Saputra · 524119 → 524111</span></div></li>
+          <li><span class="tdot ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg></span><div><b>Disetujui pimpinan</b><span>8 Agu, 10.24 · Ridwan Hakim</span></div></li>
+          <li><span class="tdot ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m5 13 4 4L19 7"/></svg></span><div><b>Pengajuan dikirim</b><span>7 Agu, 16.31 · Rizal Maulana</span></div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     TAMPILAN 5 — ARSIP DOKUMEN
+     =================================================================== -->
+<section class="view" id="v-dokumen">
+  <div class="sect-h">
+    <div><h2>Arsip Dokumen</h2><p>Setiap dokumen terikat pada nomor berkas dan tahap penerbitnya — tidak ada berkas yatim.</p></div>
+    <div class="spacer"></div>
+    <button class="btn">Unduh paket audit</button>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="body" style="padding:14px 18px">
+      <div class="row">
+        <div class="seg" role="group"><button aria-pressed="true">Semua jenis</button><button aria-pressed="false">Surat Tugas</button><button aria-pressed="false">SPPD</button><button aria-pressed="false">Bukti bayar</button><button aria-pressed="false">SPJ</button><button aria-pressed="false">Laporan</button></div>
+        <span class="spacer"></span>
+        <span style="font-size:12.3px; color:var(--muted)">148 dokumen · 2,1 GB</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Dokumen</th><th>Jenis</th><th>Berkas</th><th>Tahap</th><th>Diterbitkan</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><b>ST-BAZNAS/PG/VIII/2026/0147</b><div class="sub">Surat Tugas Rakornas ZIS Wil. Timur</div></td><td>Surat Tugas</td><td class="kode">PD/2026/08/0147</td><td><span class="chip mute">05</span></td><td class="num">8 Agu 2026</td><td><span class="chip ok"><i class="bullet"></i>Ditandatangani</span></td></tr>
+          <tr><td><b>SPPD/BAZNAS/VIII/2026/0147</b><div class="sub">3 lembar · cap tiba &amp; berangkat lengkap</div></td><td>SPPD</td><td class="kode">PD/2026/08/0147</td><td><span class="chip mute">08</span></td><td class="num">8 Agu 2026</td><td><span class="chip ok"><i class="bullet"></i>Lengkap</span></td></tr>
+          <tr><td><b>BKK/2026/08/0219</b><div class="sub">Bukti transfer uang muka Rp 6.765.000</div></td><td>Bukti bayar</td><td class="kode">PD/2026/08/0147</td><td><span class="chip mute">07</span></td><td class="num">15 Agu 2026</td><td><span class="chip ok"><i class="bullet"></i>Terverifikasi</span></td></tr>
+          <tr><td><b>SPJ-Rampung-PD-0147</b><div class="sub">Versi 2 · 5 lampiran</div></td><td>SPJ</td><td class="kode">PD/2026/08/0147</td><td><span class="chip mute">11</span></td><td class="num">24 Agu 2026</td><td><span class="chip warn"><i class="bullet"></i>1 perlu perbaikan</span></td></tr>
+          <tr><td><b>Laporan-Perdin-0121</b><div class="sub">Monitoring mustahik Z-Mart Cirebon</div></td><td>Laporan</td><td class="kode">PD/2026/07/0121</td><td><span class="chip mute">10</span></td><td class="num">—</td><td><span class="chip crit"><i class="bullet"></i>Belum diunggah</span></td></tr>
+          <tr><td><b>BKK/2026/07/0198</b><div class="sub">Pelunasan sisa perdin Rp 1.240.000</div></td><td>Bukti bayar</td><td class="kode">PD/2026/07/0118</td><td><span class="chip mute">13</span></td><td class="num">31 Jul 2026</td><td><span class="chip ok"><i class="bullet"></i>Lunas</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     TAMPILAN 6 — KAS & PEMBAYARAN
+     =================================================================== -->
+<section class="view" id="v-keuangan">
+  <div class="sect-h">
+    <div><h2>Kas &amp; Pembayaran</h2><p>Layar kerja bendahara: satu antrean untuk uang muka, satu untuk pelunasan sisa.</p></div>
+    <div class="spacer"></div>
+    <button class="btn primary" data-roles="bendahara" data-act="Batch pembayaran dieksekusi">Eksekusi batch (3)</button>
+  </div>
+
+  <div class="grid g3" style="margin-bottom:16px">
+    <div class="card kpi s-accent"><i class="stripe"></i><span class="k-lbl">Jatuh tempo hari ini</span><span class="k-val num">Rp 12,4<small> jt</small></span><span class="k-meta"><span class="chip info"><i class="bullet"></i>3 instruksi</span></span></div>
+    <div class="card kpi s-brass"><i class="stripe"></i><span class="k-lbl">Uang muka belum di-SPJ</span><span class="k-val num">Rp 148,6<small> jt</small></span><span class="k-meta"><span class="chip seal">17 berkas</span></span></div>
+    <div class="card kpi s-warn"><i class="stripe"></i><span class="k-lbl">Menunggu pengembalian</span><span class="k-val num">Rp 3,1<small> jt</small></span><span class="k-meta"><span class="chip warn"><i class="bullet"></i>4 pelaksana</span></span></div>
+  </div>
+
+  <div class="card">
+    <header><h3>Antrean pembayaran</h3><p class="sub">Kolom “Sifat” membedakan uang muka di depan dari pelunasan di belakang.</p></header>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th style="width:34px"><input type="checkbox" aria-label="Pilih semua"></th><th>Voucher</th><th>Berkas &amp; penerima</th><th>Sifat</th><th class="r">Nilai</th><th>Jadwal</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><input type="checkbox" checked></td><td class="kode">BKK/2026/08/0244</td><td>Rizal Maulana<div class="sub">PD/2026/08/0147 · BSI 7211 xxxx 4408</div></td><td><span class="chip info">Pelunasan sisa</span></td><td class="r num">Rp 1.910.000</td><td class="num">29 Agu</td><td><span class="chip warn"><i class="bullet"></i>Siap bayar</span></td></tr>
+          <tr><td><input type="checkbox" checked></td><td class="kode">BKK/2026/08/0241</td><td>Ahmad Fauzi<div class="sub">PD/2026/08/0149 · Mandiri 1400 xxxx 2277</div></td><td><span class="chip seal">Uang muka</span></td><td class="r num">Rp 4.480.000</td><td class="num">16 Agu</td><td><span class="chip warn"><i class="bullet"></i>Siap bayar</span></td></tr>
+          <tr><td><input type="checkbox" checked></td><td class="kode">BKK/2026/08/0245</td><td>Hendra Kusuma<div class="sub">PD/2026/08/0157 · BSI 7188 xxxx 9012</div></td><td><span class="chip seal">Uang muka</span></td><td class="r num">Rp 3.960.000</td><td class="num">30 Agu</td><td><span class="chip mute"><i class="bullet"></i>Menunggu ST</span></td></tr>
+          <tr><td><input type="checkbox"></td><td class="kode">STR/2026/08/0032</td><td>Dewi Anggraini<div class="sub">PD/2026/07/0114 · tagihan pengembalian</div></td><td><span class="chip warn">Pengembalian</span></td><td class="r num" style="color:var(--warn)">Rp 865.000</td><td class="num">Jatuh tempo 20 Agu</td><td><span class="chip crit"><i class="bullet"></i>Telat 5 hari</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="foot"><span style="font-size:12.3px; color:var(--muted)">3 terpilih · total <b class="num">Rp 10.350.000</b></span><span class="spacer"></span><button class="btn sm">Ekspor daftar transfer bank</button></div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     TAMPILAN — PAGU & DIPA
+     =================================================================== -->
+<section class="view" id="v-dipa">
+  <div class="sect-h">
+    <div><h2>Pagu &amp; DIPA</h2><p>Sumber kebenaran anggaran. Tidak ada perjalanan dinas yang bisa diajukan di luar mata anggaran yang terdaftar di sini.</p></div>
+    <div class="spacer"></div>
+    <button class="btn">Unduh RKA-K/L</button>
+    <button class="btn">Riwayat revisi</button>
+  </div>
+
+  <div class="stack">
+    <div class="dipahead">
+      <div style="width:40px; height:40px; flex:none; border-radius:9px; border:1px solid var(--brass-line); display:grid; place-items:center; color:var(--brass)">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 4 7v5c0 4.6 3.3 8.3 8 9 4.7-.7 8-4.4 8-9V7l-8-4Z"/><path d="m9 12 2 2 4-4" stroke-linecap="round"/></svg>
+      </div>
+      <div style="min-width:0">
+        <div class="no">SP DIPA-025.03.1.426871/2026</div>
+        <div class="sub">Satker 426871 — Badan Amil Zakat Nasional · BA 025.03 Ditjen Bimas Islam · Tahun Anggaran 2026</div>
+      </div>
+      <span class="spacer"></span>
+      <div style="text-align:right">
+        <span class="chip ok"><i class="bullet"></i>Disahkan Kementerian Keuangan</span>
+        <div class="sub" style="margin-top:4px">Revisi ke-03 · disahkan 14 Juli 2026 oleh Kanwil DJPb Prov. DKI Jakarta</div>
+      </div>
+    </div>
+
+    <div class="grid g4" id="dipaKpi"></div>
+
+    <div class="card">
+      <header>
+        <div><h3>Mata anggaran perjalanan dinas</h3><p class="sub">Sisa efektif = pagu − blokir − realisasi − cadangan. Hanya sisa efektif yang boleh dipakai menyetujui perdin baru.</p></div>
+      </header>
+      <div class="tbl-wrap">
+        <table class="tbl" id="tblAkun" style="min-width:860px">
+          <thead>
+            <tr><th>Akun belanja</th><th class="r">Pagu</th><th class="r">Blokir</th><th class="r">Realisasi</th><th class="r">Cadangan</th><th class="r">Sisa efektif</th><th style="width:150px">Komposisi</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="foot">
+        <div class="legend">
+          <b><i style="background:var(--accent)"></i>Realisasi — SP2D terbit</b>
+          <b><i style="background:var(--brass)"></i>Cadangan — disetujui, belum dibayar</b>
+          <b><i style="background:var(--crit)"></i>Blokir — tanda bintang halaman IV</b>
+          <b><i style="background:var(--sunk); border:1px solid var(--line-strong)"></i>Sisa efektif</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <header><h3>Struktur mata anggaran</h3><p class="sub">Jalur pembebanan berkas PD/2026/08/0147.</p></header>
+        <div class="body">
+          <div class="tree">
+            <div class="lv" data-depth="0"><span class="tag">Program</span><span class="kd">025.03.WA</span><span>Kerukunan Umat Beragama</span></div>
+            <div class="lv" data-depth="1"><span class="tag">Kegiatan</span><span class="kd">2104</span><span>Pengelolaan dan Pembinaan Zakat dan Wakaf</span></div>
+            <div class="lv" data-depth="2"><span class="tag">KRO</span><span class="kd">2104.EBA</span><span>Fasilitasi dan Pembinaan Lembaga</span></div>
+            <div class="lv" data-depth="3"><span class="tag">RO</span><span class="kd">2104.EBA.994</span><span>Layanan Pembinaan Pengelolaan Zakat</span></div>
+            <div class="lv" data-depth="4"><span class="tag">Komponen</span><span class="kd">051</span><span>Koordinasi dan Pembinaan Lembaga Pengelola Zakat</span></div>
+            <div class="lv" data-depth="5"><span class="tag">Akun</span><span class="kd">524111</span><span>Belanja Perjalanan Dinas Biasa</span></div>
+          </div>
+          <div class="note info" style="margin-top:14px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+            <div><b>Pemohon tidak mengetik kode.</b> Ia memilih kegiatan dari daftar yang boleh diakses unitnya; sistem menurunkan sendiri KRO, RO, komponen, dan akun belanja sesuai jenis perjalanan.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <header>
+          <div><h3>Halaman III — rencana penarikan dana</h3><p class="sub">Akun 524111 · pagu Rp 2,40 M sepanjang 2026.</p></div>
+        </header>
+        <div class="body">
+          <div class="rpd" id="rpdChart"></div>
+          <div class="legend" style="margin-top:14px">
+            <b><i style="background:var(--sunk); border:1px solid var(--line-strong)"></i>Rencana bulanan</b>
+            <b><i style="background:var(--accent)"></i>Realisasi</b>
+            <b><i style="background:var(--brass)"></i>Cadangan</b>
+          </div>
+          <div class="note warn" style="margin-top:14px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 9v4m0 4h.01M10.3 3.9 2.6 17.4A2 2 0 0 0 4.3 20.4h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" stroke-linecap="round"/></svg>
+            <div><b>Rencana Agustus tersisa Rp 21,6 jt.</b> Pengajuan melebihi rencana bulan berjalan tetap dapat disetujui, tetapi wajib disertai alasan dan memicu usulan revisi Halaman III.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <header><h3>Riwayat revisi DIPA</h3><p class="sub">Setiap revisi mengubah pagu yang boleh dipakai — berkas yang sedang berjalan dinilai ulang otomatis.</p></header>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Revisi</th><th>Perihal</th><th>Pengesah</th><th class="r">Dampak pada akun perdin</th><th>Tanggal sah</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="num">Revisi 03</td><td>Pergeseran antar-komponen dalam satu keluaran</td><td>Kanwil DJPb DKI Jakarta</td><td class="r num" style="color:var(--ok)">+Rp 180.000.000</td><td class="num">14 Jul 2026</td><td><span class="chip ok"><i class="bullet"></i>Berlaku</span></td></tr>
+            <tr><td class="num">Revisi 02</td><td>Pembukaan blokir sebagian akun 524119</td><td>Ditjen Anggaran Kemenkeu</td><td class="r num" style="color:var(--ok)">+Rp 240.000.000</td><td class="num">28 Apr 2026</td><td><span class="chip mute">Digantikan</span></td></tr>
+            <tr><td class="num">Revisi 01</td><td>Penyesuaian Halaman III rencana penarikan dana</td><td>Kanwil DJPb DKI Jakarta</td><td class="r num" style="color:var(--muted)">Rp 0</td><td class="num">17 Feb 2026</td><td><span class="chip mute">Digantikan</span></td></tr>
+            <tr><td class="num">DIPA Awal</td><td>Pengesahan DIPA Tahun Anggaran 2026</td><td>Ditjen Anggaran Kemenkeu</td><td class="r num">Rp 4.260.000.000</td><td class="num">28 Nov 2025</td><td><span class="chip mute">Digantikan</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <header><h3>Usulan revisi berjalan</h3></header>
+      <div class="body stack" style="gap:12px">
+        <div class="note warn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>
+          <div><b>Revisi 04 — pembukaan blokir akun 524211 (perjalanan dinas luar negeri) senilai Rp 450.000.000.</b> Diajukan 4 Agu 2026, menunggu izin Setneg dan penelaahan Ditjen Anggaran. Sampai revisi disahkan, seluruh pengajuan perdin luar negeri ditolak sistem.</div>
+        </div>
+        <div class="row" style="font-size:12.6px; color:var(--muted)">
+          <span class="chip mute"><i class="bullet"></i>Berkas tertahan: 2</span>
+          <span class="chip mute"><i class="bullet"></i>Nilai tertahan: Rp 78.400.000</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     TAMPILAN — STANDAR BIAYA MASUKAN (SBM)
+     =================================================================== -->
+<section class="view" id="v-sbm">
+  <div class="sect-h">
+    <div><h2>Standar Biaya Masukan</h2><p>Data induk tarif. Diperbarui admin setiap tahun anggaran; seluruh rincian perdin mengacu ke versi yang berlaku.</p></div>
+    <div class="spacer"></div>
+    <button class="btn" data-roles="admin">Unduh templat XLSX</button>
+    <button class="btn primary" data-roles="admin" data-act="Berkas SBM tahun baru diunggah">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 16V4m0 0L8 8m4-4 4 4" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 16v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3"/></svg>
+      Unggah SBM tahun baru
+    </button>
+  </div>
+
+  <div class="stack">
+    <div class="dipahead">
+      <div style="width:40px; height:40px; flex:none; border-radius:9px; border:1px solid var(--brass-line); display:grid; place-items:center; color:var(--brass)">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l4 4v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v5h5M9 13h6M9 17h4" stroke-linecap="round"/></svg>
+      </div>
+      <div style="min-width:0">
+        <div class="no">SBM Tahun Anggaran 2026</div>
+        <div class="sub">Dasar: PMK No. 49/PMK.02/2025 tentang Standar Biaya Masukan TA 2026 · berlaku sejak 1 Januari 2026</div>
+      </div>
+      <span class="spacer"></span>
+      <div style="text-align:right">
+        <span class="chip ok"><i class="bullet"></i>Versi berlaku</span>
+        <div class="sub" style="margin-top:4px">Diunggah Fitri Handayani (Admin Anggaran) · 12 Des 2025</div>
+      </div>
+    </div>
+
+    <div class="note warn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>
+      <div><b>SBM Tahun Anggaran 2027 belum diunggah.</b> Tenggat 31 Desember 2026. Bila terlewat, pengajuan perdin bertanggal 2027 tertahan karena tidak ada tarif acuan yang berlaku.</div>
+    </div>
+
+    <div class="card">
+      <header>
+        <div><h3>Daftar tarif</h3><p class="sub">Kolom pembanding memperlihatkan perubahan terhadap tahun anggaran sebelumnya.</p></div>
+        <span class="spacer"></span>
+        <div class="seg" id="segSbm" role="group" aria-label="Kategori tarif"></div>
+      </header>
+      <div class="tbl-wrap">
+        <table class="tbl" id="tblSbm" style="min-width:720px">
+          <thead>
+            <tr><th id="sbmKol">Uraian</th><th>Satuan</th><th class="r">Tarif TA 2026</th><th class="r">Tarif TA 2025</th><th class="r">Perubahan</th><th style="width:72px"></th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="foot">
+        <button class="btn sm" data-roles="admin">+ Tambah tarif</button>
+        <button class="btn sm" data-roles="admin">Impor dari XLSX</button>
+        <span class="spacer"></span>
+        <span style="font-size:12.3px; color:var(--muted)" id="sbmHitung"></span>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <header><h3>Riwayat versi SBM</h3><p class="sub">Satu versi berlaku pada satu waktu. Versi lama tidak dihapus — berkas lama tetap bisa dibaca dengan tarif yang dipakainya.</p></header>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th>Versi</th><th>Dasar hukum</th><th>Diunggah oleh</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td class="num">TA 2027</td><td>—</td><td>—</td><td><span class="chip warn"><i class="bullet"></i>Belum diunggah</span></td></tr>
+              <tr><td class="num">TA 2026</td><td>PMK 49/PMK.02/2025</td><td>Fitri Handayani</td><td><span class="chip ok"><i class="bullet"></i>Berlaku</span></td></tr>
+              <tr><td class="num">TA 2025</td><td>PMK 54/PMK.02/2024</td><td>Fitri Handayani</td><td><span class="chip mute">Arsip</span></td></tr>
+              <tr><td class="num">TA 2024</td><td>PMK 49/PMK.02/2023</td><td>Rahmat Hidayat</td><td><span class="chip mute">Arsip</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <header><h3>Aturan pemberlakuan</h3><p class="sub">Yang menentukan versi mana yang dipakai sebuah berkas.</p></header>
+        <div class="body stack" style="gap:12px">
+          <div class="note info">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+            <div><b>Berkas mengambil SBM yang berlaku pada tanggal berangkat</b>, bukan tanggal pengajuan. Perjalanan 28 Des 2026–3 Jan 2027 memakai SBM TA 2026 untuk seluruh harinya.</div>
+          </div>
+          <div class="note ok">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 13 4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div><b>Versi dibekukan saat Surat Tugas terbit.</b> Pembaruan SBM setelah itu tidak mengubah rincian yang sudah disetujui — auditor melihat tarif yang benar-benar berlaku saat keputusan diambil.</div>
+          </div>
+          <div class="note warn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 9v4m0 4h.01M10.3 3.9 2.6 17.4A2 2 0 0 0 4.3 20.4h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" stroke-linecap="round"/></svg>
+            <div><b>Berkas yang masih draf ikut versi terbaru.</b> Saat SBM baru diberlakukan, sistem menandai draf yang tarifnya menjadi tidak sesuai dan memberi tahu pemohonnya — 4 berkas terdampak pada pemberlakuan TA 2026.</div>
+          </div>
+          <div class="note info">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg>
+            <div><b>Melebihi SBM bukan berarti terlarang.</b> Baris yang melampaui batas wajib diberi alasan tertulis dan disetujui Kepala Bagian; alasan ikut tercetak pada kertas kerja rincian biaya.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     TAMPILAN 7 — ALUR & PERAN
+     =================================================================== -->
+<section class="view" id="v-alur">
+  <div class="sect-h">
+    <div><h2>Alur &amp; Peran</h2><p>Siapa mengerjakan apa pada tiap tahap, dan apa yang menahan berkas berpindah.</p></div>
+  </div>
+
+  <div class="stack">
+    <div class="card">
+      <header><h3>Matriks tanggung jawab</h3><p class="sub">E = eksekutor · P = pemutus · V = verifikator · L = dilihat saja</p></header>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th style="width:44px">#</th><th>Tahap</th><th>Pemohon</th><th>Pimpinan</th><th>Verifikator</th><th>Kabag</th><th>Bendahara</th><th>Syarat berpindah</th></tr></thead>
+          <tbody id="raciBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <header><h3>Status berkas &amp; artinya</h3></header>
+        <div class="body stack" style="gap:11px">
+          <div class="row" style="gap:11px"><span class="chip mute" style="min-width:98px; justify-content:center"><i class="bullet"></i>Draf</span><span style="font-size:12.8px; color:var(--ink-2)">Hanya terlihat pemohon; belum menyentuh anggaran.</span></div>
+          <div class="row" style="gap:11px"><span class="chip warn" style="min-width:98px; justify-content:center"><i class="bullet"></i>Proses</span><span style="font-size:12.8px; color:var(--ink-2)">Ada pihak yang harus bertindak; SLA berjalan.</span></div>
+          <div class="row" style="gap:11px"><span class="chip crit" style="min-width:98px; justify-content:center"><i class="bullet"></i>Dikembalikan</span><span style="font-size:12.8px; color:var(--ink-2)">Bola di pemohon; alasan wajib diisi dan tampil di riwayat.</span></div>
+          <div class="row" style="gap:11px"><span class="chip info" style="min-width:98px; justify-content:center"><i class="bullet"></i>Siap bayar</span><span style="font-size:12.8px; color:var(--ink-2)">Menunggu siklus transfer, bukan menunggu keputusan.</span></div>
+          <div class="row" style="gap:11px"><span class="chip info" style="min-width:98px; justify-content:center"><i class="bullet"></i>Verifikasi</span><span style="font-size:12.8px; color:var(--ink-2)">Menunggu penetapan akun definitif; Surat Tugas belum boleh terbit.</span></div>
+          <div class="row" style="gap:11px"><span class="chip crit" style="min-width:98px; justify-content:center"><i class="bullet"></i>Pagu terkunci</span><span style="font-size:12.8px; color:var(--ink-2)">Akun diblokir atau sisa efektif tidak cukup; menunggu revisi DIPA.</span></div>
+          <div class="row" style="gap:11px"><span class="chip crit" style="min-width:98px; justify-content:center"><i class="bullet"></i>Telat SPJ</span><span style="font-size:12.8px; color:var(--ink-2)">Melewati 5 hari kerja; menahan pengajuan baru pelaksana.</span></div>
+          <div class="row" style="gap:11px"><span class="chip ok" style="min-width:98px; justify-content:center"><i class="bullet"></i>Selesai</span><span style="font-size:12.8px; color:var(--ink-2)">Dokumen terkunci, hanya bisa dibaca dan diunduh.</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <header><h3>Sembilan keputusan desain</h3><p class="sub">Alasan di balik bentuk antarmuka ini.</p></header>
+        <div class="body stack" style="gap:13px">
+          <div><b style="font-size:13px">Pemohon mengusulkan, verifikator menetapkan</b><p style="font-size:12.6px; color:var(--muted)">Struktur DIPA tidak dituntut dikuasai pemohon. Akun definitif ditetapkan verifikator sebelum Surat Tugas terbit, dan pemindahan akun memindahkan cadangan pagunya sekaligus.</p></div>
+          <div><b style="font-size:13px">SBM adalah data induk, bukan angka hafalan</b><p style="font-size:12.6px; color:var(--muted)">Tarif diperbarui admin sekali setahun di satu tempat, lalu dipakai ulang oleh setiap rincian. Versinya dibekukan saat Surat Tugas terbit agar berkas lama tidak berubah ketika tarif baru berlaku.</p></div>
+          <div><b style="font-size:13px">DIPA adalah gerbang, bukan lampiran</b><p style="font-size:12.6px; color:var(--muted)">Mata anggaran diisi di tahap 01 dan diuji di tahap 02. Pengajuan tanpa akun yang sah tidak bisa dikirim, dan persetujuan terkunci bila sisa efektif tidak cukup.</p></div>
+          <div><b style="font-size:13px">Rel 13 tahap sebagai tulang punggung</b><p style="font-size:12.6px; color:var(--muted)">Semua orang melihat posisi berkas yang sama. Penomoran dipakai karena ini memang urutan wajib, bukan hiasan.</p></div>
+          <div><b style="font-size:13px">Uang selalu ditampilkan berpasangan</b><p style="font-size:12.6px; color:var(--muted)">Rencana ↔ realisasi, uang muka ↔ selisih. Angka tunggal tanpa pembanding memicu salah tafsir.</p></div>
+          <div><b style="font-size:13px">Serif hanya untuk dokumen resmi</b><p style="font-size:12.6px; color:var(--muted)">Surat Tugas dan SPPD memakai huruf berkait agar terbaca sebagai berkas, bukan layar aplikasi.</p></div>
+          <div><b style="font-size:13px">Selisih punya dua arah</b><p style="font-size:12.6px; color:var(--muted)">Kurang bayar berwarna aksen (BAZNAS membayar); kelebihan berwarna peringatan (pelaksana mengembalikan).</p></div>
+          <div><b style="font-size:13px">Tombol tak pernah hilang, hanya nonaktif</b><p style="font-size:12.6px; color:var(--muted)">Pengguna tetap melihat langkah berikutnya dan siapa yang berwenang — ganti peran di kanan atas untuk membuktikannya.</p></div>
+          <div><b style="font-size:13px">Laporan terpisah dari SPJ keuangan</b><p style="font-size:12.6px; color:var(--muted)">Satu struk hilang tidak boleh menahan laporan substansi yang sudah selesai.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================================================================
+     TAMPILAN 8 — PANDUAN DESAIN
+     =================================================================== -->
+<section class="view" id="v-sistem">
+  <div class="sect-h">
+    <div><h2>Panduan Desain</h2><p>Token dan komponen yang membentuk seluruh antarmuka SIPERDIN.</p></div>
+  </div>
+
+  <div class="stack">
+    <div class="card">
+      <header><h3>Palet</h3><p class="sub">Satu aksen. Kuningan khusus dokumen resmi. Warna semantik berdiri sendiri.</p></header>
+      <div class="body">
+        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(148px,1fr))">
+          <div class="sw"><div class="chipbox" style="background:var(--accent)"></div><div class="meta"><b>Biru amanah</b><code>--accent</code></div></div>
+          <div class="sw"><div class="chipbox" style="background:var(--brass)"></div><div class="meta"><b>Kuningan dokumen</b><code>--brass</code></div></div>
+          <div class="sw"><div class="chipbox" style="background:var(--ok)"></div><div class="meta"><b>Sah / lunas</b><code>--ok</code></div></div>
+          <div class="sw"><div class="chipbox" style="background:var(--warn)"></div><div class="meta"><b>Perlu tindakan</b><code>--warn</code></div></div>
+          <div class="sw"><div class="chipbox" style="background:var(--crit)"></div><div class="meta"><b>Telat / ditolak</b><code>--crit</code></div></div>
+          <div class="sw"><div class="chipbox" style="background:var(--ink)"></div><div class="meta"><b>Tinta</b><code>--ink</code></div></div>
+          <div class="sw"><div class="chipbox" style="background:var(--paper); border-bottom:1px solid var(--line)"></div><div class="meta"><b>Kertas dingin</b><code>--paper</code></div></div>
+          <div class="sw"><div class="chipbox" style="background:var(--sunk)"></div><div class="meta"><b>Bidang cekung</b><code>--sunk</code></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <header><h3>Tipografi</h3></header>
+        <div class="body stack" style="gap:16px">
+          <div>
+            <span class="lbl">Antarmuka — sans sistem</span>
+            <div style="font-size:26px; font-weight:650; letter-spacing:-.02em; margin-top:5px">Rincian Uang Muka</div>
+            <p style="font-size:13.5px; color:var(--ink-2); max-width:60ch">Teks isi 13–14 px dengan tinggi baris 1,55 dan lebar kolom ±65 karakter agar nyaman dibaca berjam-jam.</p>
+          </div>
+          <div>
+            <span class="lbl">Dokumen resmi — serif</span>
+            <div style="font-family:var(--doc); font-size:clamp(15px,3.6vw,20px); font-weight:700; letter-spacing:.05em; margin-top:5px">SURAT PERINTAH PERJALANAN DINAS</div>
+            <p style="font-family:var(--doc); font-size:14.5px; color:var(--ink-2)">Dipakai hanya di dalam pratinjau berkas — memberi isyarat bahwa ini akan dicetak dan ditandatangani.</p>
+          </div>
+          <div>
+            <span class="lbl">Angka — mono tabular</span>
+            <div class="num" style="font-size:clamp(15px,3.4vw,19px); margin-top:5px; white-space:normal">Rp 9.020.000 · Rp 6.765.000 · Rp 1.910.000</div>
+            <p style="font-size:12.6px; color:var(--muted)">Semua nominal, nomor berkas, dan tanggal memakai angka lebar sama agar sejajar dalam kolom.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <header><h3>Komponen</h3></header>
+        <div class="body stack" style="gap:16px">
+          <div><span class="lbl">Tombol</span><div class="row" style="margin-top:8px"><button class="btn primary">Utama</button><button class="btn">Sekunder</button><button class="btn ghost">Halus</button><button class="btn danger">Merusak</button><button class="btn" disabled>Nonaktif</button></div></div>
+          <div><span class="lbl">Label status</span><div class="row" style="margin-top:8px"><span class="chip ok"><i class="bullet"></i>Selesai</span><span class="chip warn"><i class="bullet"></i>Proses</span><span class="chip crit"><i class="bullet"></i>Telat</span><span class="chip info"><i class="bullet"></i>Siap bayar</span><span class="chip mute"><i class="bullet"></i>Draf</span><span class="chip seal">Nomor dokumen</span></div></div>
+          <div><span class="lbl">Isian</span><div class="stack" style="gap:9px; margin-top:8px"><input class="inp" placeholder="Teks biasa"><input class="inp num-inp" value="6765000"><div class="seg"><button aria-pressed="true">Pratinjau</button><button aria-pressed="false">Data isian</button></div></div></div>
+          <div><span class="lbl">Pesan sistem</span>
+            <div class="stack" style="gap:8px; margin-top:8px">
+              <div class="note ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 13 4 4L19 7" stroke-linecap="round"/></svg><div>Uang muka ditransfer 15 Agu 2026, 09.12 WIB.</div></div>
+              <div class="note warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 9v4m0 4h.01" stroke-linecap="round"/><path d="M10.3 3.9 2.6 17.4A2 2 0 0 0 4.3 20.4h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg><div>Struk taksi tidak terbaca. Unggah ulang atau lampirkan surat pernyataan riil.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <header><h3>Aturan penulisan</h3><p class="sub">Kata adalah bahan desain, bukan hiasan.</p></header>
+      <div class="body">
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th style="width:33%">Jangan</th><th style="width:33%">Tulis</th><th>Alasan</th></tr></thead>
+            <tbody>
+              <tr><td style="color:var(--crit)">“Submit data berhasil”</td><td style="color:var(--ok)">“Pengajuan terkirim ke Pimpinan”</td><td>Sebutkan ke mana perginya, bukan bahwa tombol berfungsi.</td></tr>
+              <tr><td style="color:var(--crit)">“Error: validasi gagal”</td><td style="color:var(--ok)">“Tarif penginapan Rp 1.400.000 melebihi SBM Bali Rp 1.200.000. Turunkan atau beri alasan.”</td><td>Sebutkan angkanya dan cara memperbaikinya.</td></tr>
+              <tr><td style="color:var(--crit)">“Approval workflow stage 3”</td><td style="color:var(--ok)">“Menunggu eksekusi Kepala Bagian”</td><td>Nama yang dikenali manusia, bukan istilah sistem.</td></tr>
+              <tr><td style="color:var(--crit)">“Nominal: 6765000”</td><td style="color:var(--ok)">“Rp 6.765.000”</td><td>Format rupiah penuh dengan pemisah ribuan di semua layar.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <header><h3>Aksesibilitas &amp; ketahanan</h3></header>
+      <div class="body grid g2" style="gap:14px">
+        <div class="note info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg><div><b>Status tak pernah hanya warna.</b> Setiap label memuat titik bentuk dan teks, sehingga tetap terbaca oleh pengguna buta warna dan pada cetakan hitam-putih.</div></div>
+        <div class="note info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg><div><b>Dua tema penuh.</b> Seluruh warna berasal dari token; mode gelap mengikuti setelan perangkat tanpa membalik nilai secara mentah.</div></div>
+        <div class="note info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg><div><b>Tabel lebar menggulir sendiri.</b> Halaman tidak pernah bergeser ke samping di layar ponsel — penting karena SPJ sering diisi dari lapangan.</div></div>
+        <div class="note info"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5m0-3h.01" stroke-linecap="round"/></svg><div><b>Fokus papan tik terlihat.</b> Bendahara memproses puluhan baris per hari; seluruh alur bayar dapat dijalankan tanpa tetikus.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    </div>
+  </div>
+</div>
+
+<div class="toaster" id="toaster" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Data 13 tahap ---------- */
+  const TAHAP = [
+    {n:1,  nm:"Pengajuan Perdin",        st:"done", pj:"Pemohon",     desc:"Pemohon mengisi maksud, tujuan, tanggal, pelaksana, dan usulan pembebanan anggaran. Usulan ini belum mengikat — verifikator yang menetapkannya."},
+    {n:2,  nm:"Persetujuan Pimpinan",    st:"done", pj:"Pimpinan",    desc:"Pimpinan memutuskan substansi perjalanan dengan lembar cek pagu DIPA atas akun yang diusulkan di hadapannya."},
+    {n:3,  nm:"Verifikasi Anggaran",     st:"done", pj:"Verifikator", desc:"Verifikator mencocokkan usulan dengan data DIPA dan menetapkan akun definitif. Bila akun usulan keliru, cadangan pagu dipindahkan ke akun yang benar."},
+    {n:4,  nm:"Eksekusi Kabag",          st:"done", pj:"Kabag",       desc:"Kepala Bagian menerbitkan berkas: nomor agenda, penunjukan pemegang uang muka, dan penguncian komponen biaya."},
+    {n:5,  nm:"Surat Tugas",             st:"done", pj:"Kabag",       desc:"Surat Tugas terbit dengan nomor resmi, dasar pembebanan anggaran yang sudah ditetapkan, dan tanda tangan elektronik tersertifikasi."},
+    {n:6,  nm:"Rincian Uang Muka",       st:"done", pj:"Pemohon",     desc:"Komponen biaya dirinci per satuan dan dibandingkan otomatis dengan Standar Biaya Masukan daerah tujuan."},
+    {n:7,  nm:"Dokumen SPPD",            st:"done", pj:"Kabag",       desc:"SPPD terbit dua lembar: lembar penugasan dan lembar pengesahan yang dicap di tempat tujuan."},
+    {n:8,  nm:"Pembayaran Uang Muka",    st:"done", pj:"Bendahara",   desc:"Bendahara membayar uang muka dari Uang Persediaan ke rekening ketua rombongan. Nilainya masih berstatus cadangan DIPA, belum realisasi."},
+    {n:9,  nm:"Pertanggung\u00ADjawaban", st:"now", pj:"Pemohon",     desc:"Pelaksana mengisi realisasi per komponen beserta buktinya, bersanding dengan rencana biaya."},
+    {n:10, nm:"Upload SPJ Rampung",      st:"wait", pj:"Bendahara",   desc:"Seluruh bukti digabung dan diverifikasi. Berkas tidak dapat dinyatakan rampung selama masih ada dokumen bermasalah."},
+    {n:11, nm:"Laporan Perdin",          st:"wait", pj:"Pemohon",     desc:"Laporan substansi: ringkasan pelaksanaan, hasil, tindak lanjut, dan dokumentasi kegiatan."},
+    {n:12, nm:"Perhitungan Selisih",     st:"wait", pj:"Bendahara",   desc:"Selisih uang muka terhadap realisasi dihitung dan disahkan — bisa kurang bayar atau kelebihan yang wajib dikembalikan."},
+    {n:13, nm:"Pembayaran Sisa",         st:"wait", pj:"Bendahara",   desc:"Pelunasan sisa dieksekusi. Setelah SP2D terbit, nilai berpindah dari cadangan menjadi realisasi DIPA dan berkas ditutup."}
+  ];
+
+  const CHIP = {done:['ok','Selesai'], now:['warn','Sedang berjalan'], wait:['mute','Menunggu tahap sebelumnya']};
+
+  /* ---------- Bangun rel tahap ---------- */
+  const track = document.getElementById('rsTrack');
+  TAHAP.forEach(t=>{
+    const b = document.createElement('button');
+    b.className = 'station ' + t.st;
+    b.type = 'button';
+    b.setAttribute('role','tab');
+    b.setAttribute('aria-selected', t.st==='now' ? 'true':'false');
+    b.dataset.n = t.n;
+    b.innerHTML = '<span class="bar"></span><span class="pin">'+String(t.n).padStart(2,'0')+'</span><span class="nm">'+t.nm+'</span>';
+    b.addEventListener('click', ()=>pilihTahap(t.n));
+    track.appendChild(b);
+  });
+
+  const elIdx = document.getElementById('stIdx');
+  const elTitle = document.getElementById('stTitle');
+  const elDesc = document.getElementById('stDesc');
+  const elChip = document.getElementById('stChip');
+
+  function pilihTahap(n){
+    const t = TAHAP.find(x=>x.n===n);
+    elIdx.textContent = String(n).padStart(2,'0');
+    elTitle.textContent = t.nm;
+    elDesc.textContent = t.desc;
+    elChip.className = 'chip ' + CHIP[t.st][0];
+    elChip.innerHTML = '<i class="bullet"></i>' + CHIP[t.st][1] + ' · ' + t.pj;
+    document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('on', p.dataset.panel === String(n)));
+    document.querySelectorAll('.station').forEach(s=>s.setAttribute('aria-selected', s.dataset.n === String(n) ? 'true':'false'));
+    terapkanPeran();
+  }
+
+  /* ---------- Navigasi tampilan ---------- */
+  const JUDUL = {dashboard:'Beranda', daftar:'Daftar Perdin', kotakmasuk:'Kotak Persetujuan',
+                 dipa:'Pagu & DIPA', sbm:'Standar Biaya', detail:'PD/2026/08/0147', dokumen:'Arsip Dokumen',
+                 keuangan:'Kas & Pembayaran', alur:'Alur & Peran', sistem:'Panduan Desain'};
+
+  function bukaTampilan(v){
+    document.querySelectorAll('.view').forEach(s=>s.classList.toggle('on', s.id === 'v'+'-'+v));
+    document.querySelectorAll('.navitem').forEach(b=>{
+      if(b.dataset.view === v) b.setAttribute('aria-current','page'); else b.removeAttribute('aria-current');
+    });
+    document.getElementById('crumbNow').textContent = JUDUL[v] || v;
+    document.getElementById('rail').classList.remove('open');
+    window.scrollTo({top:0, behavior:'instant'});
+  }
+  document.querySelectorAll('.navitem').forEach(b=>b.addEventListener('click',()=>bukaTampilan(b.dataset.view)));
+  document.querySelectorAll('[data-goto]').forEach(el=>el.addEventListener('click',()=>bukaTampilan(el.dataset.goto)));
+  document.getElementById('burger').addEventListener('click',()=>document.getElementById('rail').classList.toggle('open'));
+
+  /* ---------- Peran ---------- */
+  const NAMA_PERAN = {pemohon:'Pemohon', pimpinan:'Pimpinan', kabag:'Kepala Bagian', bendahara:'Bendahara', verifikator:'Verifikator Anggaran', admin:'Admin Anggaran'};
+  const IDENTITAS = {
+    pemohon:  ['RM','Rizal Maulana','Amil — Div. Pengumpulan'],
+    pimpinan: ['RH','Dr. H. Ridwan Hakim','Ketua Bidang Pengumpulan'],
+    kabag:    ['IS','Drs. H. Imam Santoso','Kepala Bagian Umum'],
+    bendahara:['SM','Siti Marlina','Bendahara Pengeluaran'],
+    verifikator:['AS','Andi Saputra','Verifikator Anggaran — Bag. Keuangan'],
+    admin:    ['FH','Fitri Handayani','Admin Anggaran & Referensi']
+  };
+  const sel = document.getElementById('roleSel');
+
+  function terapkanPeran(){
+    const r = sel.value;
+    document.querySelectorAll('[data-roles]').forEach(b=>{
+      const boleh = b.dataset.roles.split(',').includes(r);
+      const pagu = b.dataset.pagublokir === '1';
+      const sbm  = b.dataset.sbmblokir === '1';
+      b.disabled = !boleh || pagu || sbm;
+      b.title = pagu ? 'Terkunci: pagu DIPA tidak tersedia pada akun yang dibebankan'
+             : sbm  ? 'Terkunci: ada baris melampaui SBM yang belum diberi alasan'
+             : (boleh ? '' : 'Wewenang ' + b.dataset.roles.split(',').map(x=>NAMA_PERAN[x]).join(' atau '));
+    });
+    const id = IDENTITAS[r];
+    document.querySelector('.railfoot .avatar').textContent = id[0];
+    document.querySelector('.railfoot .who b').textContent = id[1];
+    document.getElementById('whoRole').textContent = id[2];
+    document.getElementById('queueRole').textContent = 'Peran: ' + NAMA_PERAN[r];
+  }
+  sel.addEventListener('change',()=>{
+    terapkanPeran();
+    toast('Peran diganti', 'Kini Anda melihat aplikasi sebagai ' + NAMA_PERAN[sel.value] + '. Tombol di luar wewenang dinonaktifkan, bukan disembunyikan.');
+  });
+
+  /* ---------- Rupiah ---------- */
+  const rp = n => 'Rp ' + Math.round(n).toLocaleString('id-ID');
+  const rpRingkas = n => n >= 1e9
+    ? 'Rp ' + (n/1e9).toFixed(2).replace('.',',') + ' M'
+    : 'Rp ' + (n/1e6).toFixed(1).replace('.',',') + ' jt';
+
+  /* ---------- DIPA — sumber kebenaran anggaran ---------- */
+  const DIPA = {
+    nomor:'SP DIPA-025.03.1.426871/2026',
+    revisi:3,
+    akun:[
+      {kd:'524111', ur:'Belanja Perjalanan Dinas Biasa',                      pagu:2400000000, blokir:0,         realisasi:1272000000, cadangan:360400000},
+      {kd:'524113', ur:'Belanja Perjalanan Dinas Dalam Kota',                 pagu:340000000,  blokir:0,         realisasi:198500000,  cadangan:24000000},
+      {kd:'524114', ur:'Belanja Perjalanan Dinas Paket Meeting Dalam Kota',   pagu:610000000,  blokir:0,         realisasi:402300000,  cadangan:55000000},
+      {kd:'524119', ur:'Belanja Perjalanan Dinas Paket Meeting Luar Kota',    pagu:880000000,  blokir:120000000, realisasi:511000000,  cadangan:86980000},
+      {kd:'524211', ur:'Belanja Perjalanan Dinas Biasa — Luar Negeri',        pagu:450000000,  blokir:450000000, realisasi:0,          cadangan:0}
+    ]
+  };
+  const sisaEfektif = a => a.pagu - a.blokir - a.realisasi - a.cadangan;
+  const akun = kd => DIPA.akun.find(a=>a.kd===kd);
+
+  /* Kartu ringkas DIPA */
+  (function(){
+    const t = DIPA.akun.reduce((s,a)=>({
+      pagu:s.pagu+a.pagu, blokir:s.blokir+a.blokir, realisasi:s.realisasi+a.realisasi, cadangan:s.cadangan+a.cadangan
+    }), {pagu:0,blokir:0,realisasi:0,cadangan:0});
+    const sisa = t.pagu - t.blokir - t.realisasi - t.cadangan;
+    const kartu = [
+      ['s-accent','Pagu perjalanan dinas', rpRingkas(t.pagu), 'info', '5 akun belanja · revisi ke-'+DIPA.revisi],
+      ['s-accent','Realisasi (SP2D terbit)', rpRingkas(t.realisasi), 'ok', Math.round(t.realisasi/t.pagu*100)+'% dari pagu'],
+      ['s-brass','Cadangan berkas berjalan', rpRingkas(t.cadangan), 'seal', 'disetujui, belum dibayar'],
+      ['s-crit','Diblokir (tanda bintang)', rpRingkas(t.blokir), 'crit', 'menunggu revisi &amp; izin Setneg']
+    ];
+    document.getElementById('dipaKpi').innerHTML = kartu.map(k=>
+      '<div class="card kpi '+k[0]+'"><i class="stripe"></i><span class="k-lbl">'+k[1]+
+      '</span><span class="k-val num">'+k[2]+'</span><span class="k-meta"><span class="chip '+k[3]+'">'+
+      (k[3]==='seal'?'':'<i class="bullet"></i>')+k[4]+'</span></span></div>').join('') +
+      '<div class="card kpi s-accent" style="grid-column:1/-1"><i class="stripe"></i><span class="k-lbl">Sisa efektif yang boleh dipakai menyetujui perdin baru</span><span class="k-val num">'+
+      rpRingkas(sisa)+'</span><span class="k-meta"><span class="chip info"><i class="bullet"></i>pagu − blokir − realisasi − cadangan</span></span></div>';
+  })();
+
+  /* Tabel mata anggaran */
+  document.querySelector('#tblAkun tbody').innerHTML = DIPA.akun.map(a=>{
+    const s = sisaEfektif(a);
+    const pc = x => (x/a.pagu*100).toFixed(1)+'%';
+    const habis = s === 0;
+    return '<tr><td><b class="num" style="color:var(--accent)">'+a.kd+'</b><div class="sub">'+a.ur+'</div></td>'+
+      '<td class="r num">'+rpRingkas(a.pagu)+'</td>'+
+      '<td class="r num" style="color:'+(a.blokir?'var(--crit)':'var(--faint)')+'">'+(a.blokir?rpRingkas(a.blokir):'—')+'</td>'+
+      '<td class="r num">'+rpRingkas(a.realisasi)+'</td>'+
+      '<td class="r num" style="color:var(--brass)">'+(a.cadangan?rpRingkas(a.cadangan):'—')+'</td>'+
+      '<td class="r"><b class="num" style="color:'+(habis?'var(--crit)':'var(--ok)')+'">'+rpRingkas(s)+'</b>'+
+      (habis?'<div class="sub" style="color:var(--crit)">tidak dapat dipakai</div>':'')+'</td>'+
+      '<td><div class="meter"><i class="used" style="width:'+pc(a.realisasi)+'"></i>'+
+      '<i class="hold" style="width:'+pc(a.cadangan)+'"></i>'+
+      '<i class="blok" style="width:'+pc(a.blokir)+'"></i></div></td></tr>';
+  }).join('');
+
+  /* Halaman III — rencana penarikan dana bulanan akun 524111 (juta rupiah) */
+  const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  const RPD_RENCANA  = [120,150,180,200,210,230,240,240,230,220,200,180];
+  const RPD_REALISASI= [108,142,171,196,205,232,218,  0,  0,  0,  0,  0];
+  const RPD_CADANGAN = [  0,  0,  0,  0,  0,  0,  0,218.4,142,  0,  0,  0];
+  (function(){
+    const maks = Math.max.apply(null, RPD_RENCANA);
+    document.getElementById('rpdChart').innerHTML = RPD_RENCANA.map((r,i)=>{
+      const tinggiTrack = (r/maks*100).toFixed(1);
+      const isi = RPD_REALISASI[i] + RPD_CADANGAN[i];
+      const hIsi = (isi/r*100).toFixed(1);
+      const hReal = (RPD_REALISASI[i]/r*100).toFixed(1);
+      return '<div class="col'+(i===7?' now':'')+'" title="'+BULAN[i]+': rencana Rp '+r+' jt">'+
+        '<div class="track" style="height:'+tinggiTrack+'%">'+
+        (isi>0 ? '<i class="fill cad" style="height:'+hIsi+'%"></i><i class="fill real" style="height:'+hReal+'%"></i>' : '')+
+        '</div><div class="mo">'+BULAN[i]+'</div></div>';
+    }).join('');
+  })();
+
+  /* Lembar cek pagu — dipakai di pengajuan, kotak persetujuan, dan tahap 02 */
+  const kurang = (label, nilai) => nilai > 0
+    ? '<div class="lrow minus"><span>'+label+'</span><b>− '+rpRingkas(nilai)+'</b></div>'
+    : '<div class="lrow"><span>'+label+'</span><b style="color:var(--faint)">Rp 0</b></div>';
+
+  function lembarPagu(el){
+    const a = akun(el.dataset.akun);
+    const nilai = parseFloat(el.dataset.nilai);
+    const sisa = sisaEfektif(a);
+    const sesudah = sisa - nilai;
+    const cukup = a.blokir < a.pagu && sesudah >= 0;
+    const alasan = a.blokir >= a.pagu
+      ? 'Seluruh pagu akun ' + a.kd + ' diblokir tanda bintang pada Halaman IV DIPA. Pengajuan tidak dapat disetujui sampai Revisi 04 disahkan Ditjen Anggaran.'
+      : 'Nilai pengajuan melebihi sisa efektif akun ' + a.kd + ' sebesar ' + rp(-sesudah) + '. Turunkan nilai, geser ke akun lain, atau ajukan revisi DIPA.';
+    el.innerHTML =
+      '<div class="ledger">'+
+        '<div class="lrow sub"><span>Akun '+a.kd+' — '+a.ur+'</span><b>'+rpRingkas(a.pagu)+'</b></div>'+
+        (a.blokir?'<div class="lrow minus"><span>Blokir tanda bintang (Halaman IV)</span><b>− '+rpRingkas(a.blokir)+'</b></div>':'')+
+        kurang('Realisasi — SP2D terbit', a.realisasi)+
+        kurang('Cadangan berkas berjalan', a.cadangan)+
+        '<div class="lrow sub"><span>Sisa efektif</span><b>'+rp(sisa)+'</b></div>'+
+        '<div class="lrow minus"><span>Nilai pengajuan ini</span><b>− '+rp(nilai)+'</b></div>'+
+        '<div class="lrow net'+(cukup?'':' bad')+'"><span>'+(cukup?'Sisa setelah disetujui':'Kekurangan pagu')+
+          '</span><b>'+rp(Math.abs(sesudah))+'</b></div>'+
+      '</div>'+
+      '<div class="verdict '+(cukup?'pass':'fail')+'" style="margin-top:12px">'+
+        (cukup
+          ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m5 13 4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>Pagu tersedia — pengajuan boleh disetujui</b><span>Persetujuan langsung mencadangkan '+rp(nilai)+' pada akun '+a.kd+' sehingga tidak dapat dipakai berkas lain.</span></div>'
+          : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6" stroke-linecap="round"/></svg><div><b>Pagu tidak tersedia — persetujuan dikunci</b><span>'+alasan+'</span></div>')+
+      '</div>';
+    return cukup;
+  }
+  document.querySelectorAll('[data-akun]').forEach(el=>{
+    const cukup = lembarPagu(el);
+    if(!cukup && el.dataset.kunci){
+      document.querySelectorAll(el.dataset.kunci).forEach(b=>{
+        b.dataset.pagublokir = '1';
+        b.disabled = true;
+        b.title = 'Pagu DIPA tidak tersedia pada akun ' + el.dataset.akun;
+      });
+    }
+  });
+
+  /* ---------- Tahap 05: rincian uang muka terhadap SBM ---------- */
+  const tblR = document.getElementById('tblRencana');
+  function hitungRencana(){
+    let total = 0, lampaui = 0, tanpaAlasan = 0;
+    tblR.querySelectorAll('tr.brs').forEach(tr=>{
+      const v = parseFloat(tr.querySelector('[data-vol]').value) || 0;
+      const h = parseFloat(tr.querySelector('[data-harga]').value) || 0;
+      const j = v*h; total += j;
+      tr.querySelector('[data-jml]').textContent = rp(j);
+
+      const batas = parseFloat(tr.dataset.sbm);
+      const inp = tr.querySelector('[data-harga]');
+      const selisih = h - batas;
+      const st = tr.querySelector('[data-status]');
+      const brsAlasan = tr.nextElementSibling;
+      const isiAlasan = brsAlasan.querySelector('[data-alasan]');
+
+      if(selisih > 0){
+        lampaui++;
+        st.innerHTML = '<span class="chip crit"><i class="bullet"></i>Lebih ' + rp(selisih) + '</span>';
+        tr.style.background = 'var(--crit-tint)';
+        inp.style.borderColor = 'var(--crit)';
+        brsAlasan.hidden = false;
+        if(!isiAlasan.value.trim()) tanpaAlasan++;
+      } else {
+        st.innerHTML = selisih === 0
+          ? '<span class="chip ok"><i class="bullet"></i>Tepat batas</span>'
+          : '<span class="chip ok"><i class="bullet"></i>Sesuai</span>';
+        tr.style.background = '';
+        inp.style.borderColor = '';
+        brsAlasan.hidden = true;
+      }
+    });
+
+    const tot = tblR.querySelector('[data-status-total]');
+    tot.innerHTML = lampaui === 0
+      ? '<span class="chip ok"><i class="bullet"></i>Seluruh baris sesuai SBM</span>'
+      : '<span class="chip crit"><i class="bullet"></i>' + lampaui + ' baris melampaui SBM</span>';
+
+    const btn = document.getElementById('btnAjukanSbm');
+    btn.dataset.sbmblokir = tanpaAlasan > 0 ? '1' : '0';
+    terapkanPeran();
+    const pct = parseInt(document.getElementById('pctUM').value,10);
+    const um = total*pct/100;
+    document.getElementById('totRencana').textContent = rp(total);
+    document.getElementById('cRencana').textContent = rp(total);
+    document.getElementById('pctVal').textContent = pct + '%';
+    document.getElementById('cPct').textContent = pct + '%';
+    document.getElementById('cUM').textContent = rp(um);
+    document.getElementById('cTahan').textContent = rp(total - um);
+  }
+  tblR.querySelectorAll('input').forEach(i=>i.addEventListener('input', hitungRencana));
+  document.getElementById('pctUM').addEventListener('input', hitungRencana);
+
+  /* ---------- Data induk SBM — diperbarui admin tiap tahun anggaran ---------- */
+  const SBM = {
+    tahun:2026, dasar:'PMK No. 49/PMK.02/2025',
+    kategori:[
+      {id:'harian', nm:'Uang harian', kol:'Provinsi', satuan:'orang/hari', baris:[
+        ['DKI Jakarta',530000,530000], ['Jawa Barat',440000,430000], ['Jawa Timur',410000,410000],
+        ['Bali',480000,480000], ['Sulawesi Selatan',430000,420000], ['Papua',600000,580000]
+      ]},
+      {id:'inap', nm:'Penginapan', kol:'Provinsi — Gol. III / Eselon III–IV', satuan:'orang/malam', baris:[
+        ['DKI Jakarta',1170000,1130000], ['Jawa Barat',620000,600000], ['Jawa Timur',680000,660000],
+        ['Bali',1200000,1150000], ['Sulawesi Selatan',1000000,960000], ['Papua',1400000,1350000]
+      ]},
+      {id:'transpor', nm:'Transpor lokal', kol:'Provinsi', satuan:'orang/kali', baris:[
+        ['DKI Jakarta',300000,290000], ['Jawa Barat',225000,215000], ['Jawa Timur',240000,230000],
+        ['Bali',275000,260000], ['Sulawesi Selatan',250000,240000], ['Papua',380000,360000]
+      ]},
+      {id:'tiket', nm:'Tiket pesawat', kol:'Rute — kelas ekonomi pulang pergi', satuan:'orang/PP', baris:[
+        ['CGK–UPG Jakarta–Makassar',3900000,3740000], ['CGK–DPS Jakarta–Denpasar',2600000,2480000],
+        ['CGK–SUB Jakarta–Surabaya',2200000,2100000], ['CGK–DJJ Jakarta–Jayapura',7400000,7050000]
+      ]}
+    ]
+  };
+
+  (function(){
+    const seg = document.getElementById('segSbm');
+    seg.innerHTML = SBM.kategori.map((k,i)=>
+      '<button aria-pressed="'+(i===0)+'" data-kat="'+k.id+'">'+k.nm+'</button>').join('');
+
+    function gambar(id){
+      const k = SBM.kategori.find(x=>x.id===id);
+      document.getElementById('sbmKol').textContent = k.kol;
+      document.querySelector('#tblSbm tbody').innerHTML = k.baris.map(b=>{
+        const d = (b[1]-b[2])/b[2]*100;
+        const chip = d === 0 ? '<span class="chip mute">tetap</span>'
+          : '<span class="chip ' + (d>0?'warn':'ok') + '">' + (d>0?'+':'−') + Math.abs(d).toFixed(1).replace('.',',') + '%</span>';
+        return '<tr><td><b>'+b[0]+'</b></td><td class="sub">'+k.satuan+'</td>'+
+          '<td class="r num" style="font-weight:650">'+rp(b[1])+'</td>'+
+          '<td class="r num" style="color:var(--muted)">'+rp(b[2])+'</td>'+
+          '<td class="r">'+chip+'</td>'+
+          '<td class="r"><button class="btn sm" data-roles="admin">Ubah</button></td></tr>';
+      }).join('');
+      document.getElementById('sbmHitung').textContent =
+        k.baris.length + ' tarif pada kategori ' + k.nm.toLowerCase() + ' · SBM TA ' + SBM.tahun;
+      terapkanPeran();
+    }
+
+    seg.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>gambar(b.dataset.kat)));
+    gambar(SBM.kategori[0].id);
+  })();
+
+  /* ---------- Tahap 08: realisasi & selisih ---------- */
+  const RENCANA = [3800000, 3000000, 1720000, 500000];
+  const UANG_MUKA = 6765000;
+  const tblRe = document.getElementById('tblRealisasi');
+  function hitungRealisasi(){
+    let total = 0;
+    tblRe.querySelectorAll('tbody tr').forEach((tr,i)=>{
+      const real = parseFloat(tr.querySelector('[data-real]').value) || 0;
+      total += real;
+      const d = real - RENCANA[i];
+      const td = tr.querySelector('[data-sel]');
+      td.textContent = d === 0 ? '0' : (d>0 ? '+' : '−') + Math.abs(d).toLocaleString('id-ID');
+      td.style.color = d === 0 ? 'var(--muted)' : (d>0 ? 'var(--warn)' : 'var(--ok)');
+    });
+    const dTot = total - RENCANA.reduce((a,b)=>a+b,0);
+    document.getElementById('totRealisasi').textContent = rp(total);
+    const ts = document.getElementById('totSelisih');
+    ts.textContent = (dTot>0?'+':'−') + Math.abs(dTot).toLocaleString('id-ID');
+    ts.style.color = dTot>0 ? 'var(--warn)' : 'var(--ok)';
+    document.getElementById('pjReal').textContent = rp(total);
+
+    const kurang = total - UANG_MUKA;
+    const row = document.getElementById('pjKurang').parentElement;
+    const lab = row.querySelector('span');
+    if(kurang >= 0){
+      row.classList.remove('minus');
+      lab.textContent = 'BAZNAS masih harus membayar';
+      document.getElementById('pjKurang').textContent = rp(kurang);
+    } else {
+      row.classList.add('minus');
+      lab.textContent = 'Wajib dikembalikan pelaksana';
+      document.getElementById('pjKurang').textContent = rp(-kurang);
+    }
+  }
+  tblRe.querySelectorAll('[data-real]').forEach(i=>i.addEventListener('input', hitungRealisasi));
+
+  /* ---------- Segmented control ---------- */
+  document.querySelectorAll('.seg').forEach(g=>{
+    g.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+      g.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));
+      b.setAttribute('aria-pressed','true');
+    }));
+  });
+
+  /* ---------- Toast ---------- */
+  const toaster = document.getElementById('toaster');
+  function toast(judul, isi){
+    const el = document.createElement('div');
+    el.className = 'toast';
+    el.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--ok)" stroke-width="2.4" style="margin-top:2px; flex:none"><path d="m5 13 4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg><div><b>'+judul+'</b><span>'+isi+'</span></div>';
+    toaster.appendChild(el);
+    setTimeout(()=>el.remove(), 4200);
+  }
+  document.querySelectorAll('[data-act]').forEach(b=>b.addEventListener('click',()=>{
+    if(b.disabled) return;
+    toast(b.dataset.act, 'Prototipe desain — aksi dicatat di linimasa berkas, tidak mengubah data sungguhan.');
+  }));
+
+  /* ---------- Daftar perdin ---------- */
+  const DAFTAR = [
+    ['PD/2026/08/0147','Rakornas Pengumpulan ZIS Wil. Timur','Makassar','Rizal Maulana +2','Rp 9.020.000',9,'Pemohon','warn'],
+    ['PD/2026/08/0152','Asesmen mitra penyalur zakat','Denpasar','Nurul Azizah','Rp 5.120.000',6,'Pemohon','crit'],
+    ['PD/2026/08/0149','Sosialisasi zakat perusahaan','Surabaya','Ahmad Fauzi +1','Rp 4.480.000',8,'Bendahara','info'],
+    ['PD/2026/08/0155','Pendampingan BAZNAS Kab. Garut','Garut','Dewi Anggraini','Rp 2.310.000',3,'Verifikator','info'],
+    ['PD/2026/08/0157','Rapat koordinasi zakat ASN','Bandung','Hendra Kusuma +2','Rp 3.960.000',2,'Pimpinan','warn'],
+    ['PD/2026/07/0121','Monitoring mustahik program Z-Mart','Cirebon','Siti Rahmawati','Rp 3.240.000',11,'Pemohon','crit'],
+    ['PD/2026/07/0118','Audit kepatuhan BAZNAS Kab. Sleman','Yogyakarta','Bayu Prasetyo +3','Rp 9.870.000',13,'—','ok'],
+    ['PD/2026/07/0114','Verifikasi lapangan bantuan bencana','Palu','Dewi Anggraini','Rp 7.450.000',12,'Pemohon','crit']
+  ];
+  document.getElementById('listBody').innerHTML = DAFTAR.map(d=>{
+    const t = TAHAP.find(x=>x.n===d[5]);
+    return '<tr style="cursor:pointer"><td class="kode">'+d[0]+'</td><td>'+d[1]+'</td><td>'+d[2]+
+      '</td><td>'+d[3]+'</td><td class="r num">'+d[4]+'</td><td><span class="chip '+d[7]+'">'+
+      String(d[5]).padStart(2,'0')+' · '+t.nm+'</span></td><td>'+
+      (d[6]==='—' ? '<span class="chip ok"><i class="bullet"></i>Selesai</span>' : d[6])+'</td></tr>';
+  }).join('');
+  document.querySelectorAll('#listBody tr').forEach(tr=>tr.addEventListener('click',()=>bukaTampilan('detail')));
+
+  /* ---------- Matriks RACI ---------- */
+  const RACI = [
+    [1,'Pengajuan Perdin','E','L','—','L','—','Usulan pembebanan terisi dan pagu mencukupi'],
+    [2,'Persetujuan Pimpinan','L','P','L','L','—','Cek pagu DIPA lulus; keputusan bercatatan'],
+    [3,'Verifikasi Anggaran','L','L','E','L','V','Akun definitif ditetapkan; cadangan terbentuk'],
+    [4,'Eksekusi Kabag','L','L','L','E','L','Empat butir daftar periksa tercentang'],
+    [5,'Surat Tugas','L','L','L','E','L','Tanda tangan elektronik terbubuh'],
+    [6,'Rincian Uang Muka','E','L','V','V','V','Sesuai SBM TA berjalan, atau beralasan tertulis'],
+    [7,'Dokumen SPPD','L','L','—','E','L','SPPD terbit untuk tiap pelaksana'],
+    [8,'Pembayaran Uang Muka','L','—','L','L','E','Bukti transfer terunggah'],
+    [9,'Pertanggungjawaban','E','—','L','L','V','Tiap komponen punya bukti sah'],
+    [10,'Upload SPJ Rampung','E','—','L','L','P','Tidak ada dokumen bermasalah'],
+    [11,'Laporan Perdin','E','L','—','P','—','Ringkasan, hasil, dan tindak lanjut terisi'],
+    [12,'Perhitungan Selisih','L','—','V','L','E','Selisih disahkan bendahara'],
+    [13,'Pembayaran Sisa','L','—','L','L','E','SP2D terbit; tiga syarat penutupan terpenuhi']
+  ];
+  const badge = v => {
+    const map = {E:['info','E'], P:['warn','P'], V:['ok','V'], L:['mute','L']};
+    if(v === '—') return '<span style="color:var(--faint)">—</span>';
+    const m = map[v];
+    return '<span class="chip '+m[0]+'" style="min-width:26px; justify-content:center">'+m[1]+'</span>';
+  };
+  document.getElementById('raciBody').innerHTML = RACI.map(r=>
+    '<tr><td class="num" style="color:var(--muted)">'+String(r[0]).padStart(2,'0')+'</td><td><b>'+r[1]+
+    '</b></td><td>'+badge(r[2])+'</td><td>'+badge(r[3])+'</td><td>'+badge(r[4])+'</td><td>'+badge(r[5])+
+    '</td><td>'+badge(r[6])+'</td><td class="sub">'+r[7]+'</td></tr>').join('');
+
+  /* ---------- Mula ---------- */
+  hitungRencana();
+  hitungRealisasi();
+  pilihTahap(9);
+  terapkanPeran();
+})();
+</script>
+
+</body>
+</html>
