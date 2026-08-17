@@ -1,5 +1,8 @@
 ---
+# Document root subdomain sudah diarahkan ke folder public/, sehingga berkas
+# repositori (PRD.md, README.md, .git) berada di luar jangkauan web.
+# Penggelaran cukup menarik perubahan; tugas di bawah hanya menstempel waktunya
+# agar hasil penggelaran dapat diperiksa.
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/semestat/perdin.semestateknologiutama.com
-    - /bin/cp -f public/index.html $DEPLOYPATH/index.html
+    - /bin/date -u +"%Y-%m-%dT%H:%M:%SZ" > /home/semestat/perdin.semestateknologiutama.com/public/.digelar
